@@ -1,5 +1,5 @@
 ﻿namespace SGE.Aplicacion;
-public class CasoDeUsoExpedienteBaja
+public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio repo)
 {
 
 }

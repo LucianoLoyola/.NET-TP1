@@ -10,7 +10,6 @@
     <Folder Include="Entidades\" />
     <Folder Include="Excepciones\" />
     <Folder Include="Servicios\" />
-    <Folder Include="Validadores\" />
   </ItemGroup>
 
 </Project>
