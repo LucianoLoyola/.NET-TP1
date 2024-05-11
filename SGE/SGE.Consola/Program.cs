@@ -32,7 +32,7 @@ try
     AgregarTramite.Ejecutar(tra2,exp2.Id,1);
     AgregarTramite.Ejecutar(tra3,exp.Id,1);
     AgregarTramite.Ejecutar(tra4,exp2.Id,1);
-    //EliminarTramite.Ejecutar(tra2.Id,1);
+    EliminarTramite.Ejecutar(tra2.Id,1);
     var lista = ListarExpedientes.Ejecutar();
     Console.WriteLine("------------------------------------------");
     var listaTramites = ListarTramites.Ejecutar();

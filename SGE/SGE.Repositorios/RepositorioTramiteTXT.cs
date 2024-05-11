@@ -99,7 +99,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                     if (line.Contains("id: "+id.ToString()))
                     {
                         skipNext=true;
-                        skip=8;
+                        skip=6;
                         continue;
                     }
 
