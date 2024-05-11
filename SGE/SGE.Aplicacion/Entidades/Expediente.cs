@@ -10,6 +10,7 @@ public class Expediente
     public DateTime fechaHoraUModificacion { get; set; }
     public int IdUsuarioMod { get; set; }
     public Estado estado { get; set; }
+    public List<Tramite>? listaTramites { get; set; }
     public override string ToString(){
         return $"Los datos del Expediente son: \nCaratula: '{caratula}' | Id:{Id}";
     }
