@@ -1,9 +1,9 @@
 ﻿namespace SGE.Aplicacion;
 public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio repo)
 {
-     public void Ejecutar(int id){
+     public void Ejecutar(int idExpediente, int idUsuario){
         //validacion de permiso de usuario
-        repo.EliminarExpediente(id);
+        repo.EliminarExpediente(idExpediente);
         //eliminar tambien los tramites
     }
 }
