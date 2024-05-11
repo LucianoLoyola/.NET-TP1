@@ -19,6 +19,8 @@ Expediente exp2 = new Expediente() {caratula="Prueba"};
 //Creo los trámites
 Tramite tra1=new Tramite() {Contenido="Test"};
 Tramite tra2=new Tramite() {Contenido="Xes"};
+Tramite tra3=new Tramite() {Contenido="Res"};
+Tramite tra4=new Tramite() {Contenido="Mes"};
 
 //ejecuto los casos de uso con validaciones 
 try
@@ -28,8 +30,11 @@ try
     AgregarExpediente.Ejecutar(exp2,exp2.Id,1);
     AgregarTramite.Ejecutar(tra1,exp.Id,1);
     AgregarTramite.Ejecutar(tra2,exp2.Id,1);
-    EliminarTramite.Ejecutar(tra2.Id,1);
+    AgregarTramite.Ejecutar(tra3,exp.Id,1);
+    AgregarTramite.Ejecutar(tra4,exp2.Id,1);
+    //EliminarTramite.Ejecutar(tra2.Id,1);
     var lista = ListarExpedientes.Ejecutar();
+    Console.WriteLine("------------------------------------------");
     var listaTramites = ListarTramites.Ejecutar();
     foreach(Expediente e in lista){
         Console.WriteLine(e);
