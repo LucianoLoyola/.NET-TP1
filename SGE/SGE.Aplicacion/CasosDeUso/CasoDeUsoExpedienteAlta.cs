@@ -2,7 +2,7 @@
 public class CasoDeUsoExpedienteAlta(IExpedienteRepositorio repo, ExpedienteValidador validador){
     public void Ejecutar(Expediente expediente, int idExpediente,int idUsuario){
         //validacion de permiso de usuario
-        if(!validador.Validar(expediente, out string mensajeError)){
+        if(!validador.Validar(expediente,idUsuario, out string mensajeError)){
            throw new Exception(mensajeError); 
         }
         expediente.fechaHoraCreacion = DateTime.Now;

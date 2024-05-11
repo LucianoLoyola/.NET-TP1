@@ -19,3 +19,24 @@ C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Consola\ob
 C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.pdb
 C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.genruntimeconfig.cache
 C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\ref\SGE.Consola.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Consola.exe
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Consola.deps.json
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Consola.runtimeconfig.json
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Consola.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Consola.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Aplicacion.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Repositorios.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Aplicacion.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\bin\Debug\net8.0\SGE.Repositorios.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.csproj.AssemblyReference.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.GeneratedMSBuildEditorConfig.editorconfig
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.AssemblyInfoInputs.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.AssemblyInfo.cs
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.csproj.CoreCompileInputs.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.sourcelink.json
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Cons.1669A3FB.Up2Date
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\refint\SGE.Consola.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\SGE.Consola.genruntimeconfig.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\obj\Debug\net8.0\ref\SGE.Consola.dll
