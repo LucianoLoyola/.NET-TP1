@@ -3,7 +3,7 @@
 public interface ITramiteRepositorio
 {
     void AgregarTramite(Tramite tramite);
-    void ModificarExpediente(Tramite tramite);
-    void EliminarExpediente(int id);
+    void ModificarTramite(Tramite tramite);
+    void EliminarTramite(int id);
     List<Tramite> ListarTramite();
 }
