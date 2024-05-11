@@ -3,7 +3,7 @@ using SGE.Aplicacion;
 public class RepositorioExpedienteTXT : IExpedienteRepositorio
 {
     readonly string _nombreArch = "expedientes.txt";
-    int IDUnico = 1;
+    int IDUnico = 0;
 
     public void AgregarExpediente(Expediente expediente){
     // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
@@ -20,22 +20,33 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
             bool skipNext = false;
             int salida;
             int max = 1;
+            int skip=0;
+            int cant=0;
 
             while ((line = sr.ReadLine()) != null)
             {
                 if (skipNext)
                 {
-                    skipNext = false;
+                    cant++;
+                    if(cant==skip){
+                        cant=0;
+                        skipNext = false;
+                    }
                     continue;
                 }
-                if (int.TryParse(line, out salida))
+                if (line.StartsWith("Id: "))
                 {
-                    if (salida > max)
+                    skip=5;
+                    string numberPart = line.Substring(4).Trim();
+                    if (int.TryParse(numberPart, out int idValue) && idValue > max)
                     {
-                        max = salida;
+                            max = idValue;
                     }
                     skipNext = true; // Marcar para saltar la siguiente línea
                     continue;
+                }
+                else{
+                    skipNext=true;
                 }
             }
 
@@ -45,9 +56,15 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
 
             // Mover el puntero al final del archivo para escribir el nuevo trámite
             fs.Seek(0, SeekOrigin.End);
-            sw.WriteLine(expediente.Id);
-            sw.WriteLine(expediente.caratula);
+            sw.WriteLine("Id: "+expediente.Id);
+            sw.WriteLine("fechaHoraCreacion: "+expediente.fechaHoraCreacion);
+            sw.WriteLine("fechaHoraUModificacion:"+expediente.fechaHoraUModificacion);
+            sw.WriteLine("IdUsuarioMod:"+expediente.IdUsuarioMod);
+            sw.WriteLine("estado:"+expediente.estado);
+            //+5
         }
+
+
     }
     }
     public void ModificarExpediente(Expediente expediente){

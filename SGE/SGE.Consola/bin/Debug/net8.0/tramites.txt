@@ -1,40 +1,28 @@
-0
-Test
-0
-Xes
-0
-Res
-0
-Mes
-0
-Test
-0
-Xes
-0
-Res
-0
-Mes
-1
-Test
-2
-Xes
-3
-Res
-4
-Mes
-5
-Test
-6
-Xes
-7
-Res
-8
-Mes
-9
-Test
-10
-Xes
-11
-Res
-12
-Mes
+id: 2
+expedienteID: 0
+etiqueta: Escrito_presentado
+contenido: Test
+fechaHoraCreacion: 11/5/2024 15:36:10
+fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+idUsuarioMod: 0
+id: 3
+expedienteID: 0
+etiqueta: Escrito_presentado
+contenido: Xes
+fechaHoraCreacion: 11/5/2024 15:36:11
+fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+idUsuarioMod: 0
+id: 3
+expedienteID: 0
+etiqueta: Escrito_presentado
+contenido: Res
+fechaHoraCreacion: 11/5/2024 15:36:11
+fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+idUsuarioMod: 0
+id: 3
+expedienteID: 0
+etiqueta: Escrito_presentado
+contenido: Mes
+fechaHoraCreacion: 11/5/2024 15:36:13
+fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+idUsuarioMod: 0

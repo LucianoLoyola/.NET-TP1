@@ -1,36 +1,10 @@
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-1
-Random
-2
-Prueba
-3
-Random
-4
-Prueba
+Id: 2
+fechaHoraCreacion: 11/5/2024 15:34:44
+fechaHoraUModificacion:1/1/0001 00:00:00
+IdUsuarioMod:0
+estado:Recien_iniciado
+Id: 3
+fechaHoraCreacion: 11/5/2024 15:35:03
+fechaHoraUModificacion:1/1/0001 00:00:00
+IdUsuarioMod:0
+estado:Recien_iniciado

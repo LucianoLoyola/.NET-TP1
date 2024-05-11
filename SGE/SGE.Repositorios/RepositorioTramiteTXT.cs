@@ -5,7 +5,7 @@ using SGE.Aplicacion;
 public class RepositorioTramiteTXT : ITramiteRepositorio
 {
     readonly string _nombreArch = "tramites.txt";
-    int IDUnico = 1;
+    int IDUnico = 0;
 
     public void AgregarTramite(Tramite tramite, int idExpediente){
         // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
@@ -22,22 +22,33 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
             bool skipNext = false;
             int salida;
             int max = 1;
+            int skip=0;
+            int cant=0;
 
             while ((line = sr.ReadLine()) != null)
             {
                 if (skipNext)
                 {
-                    skipNext = false;
+                    cant++;
+                    if(cant==skip){
+                        cant=0;
+                        skipNext = false;
+                    }
                     continue;
                 }
-                if (int.TryParse(line, out salida))
+                if (line.StartsWith("id: "))
                 {
-                    if (salida > max)
+                    skip=7;
+                    string numberPart = line.Substring(4).Trim();
+                    if (int.TryParse(numberPart, out int idValue) && idValue > max)
                     {
-                        max = salida;
+                            max = idValue;
                     }
                     skipNext = true; // Marcar para saltar la siguiente línea
                     continue;
+                }
+                else{
+                    skipNext=true;
                 }
             }
 
@@ -47,8 +58,14 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
 
             // Mover el puntero al final del archivo para escribir el nuevo trámite
             fs.Seek(0, SeekOrigin.End);
-            sw.WriteLine(tramite.Id);
-            sw.WriteLine(tramite.Contenido);
+            sw.WriteLine("id: "+tramite.Id);
+            sw.WriteLine("expedienteID: "+tramite.ExpedienteId);
+            sw.WriteLine("etiqueta: "+tramite.etiqueta);
+            sw.WriteLine("contenido: "+tramite.Contenido);
+            sw.WriteLine("fechaHoraCreacion: "+tramite.fechaHoraCreacion);
+            sw.WriteLine("fechaHoraUltimaModificacion: "+tramite.fechaHoraUltimaModificacion);
+            sw.WriteLine("idUsuarioMod: "+tramite.IdUsuarioMod);
+            //+7
         }
     }
     }
@@ -63,19 +80,25 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
             {
                 string line;
                 bool skipNext = false;
-
+                skipNext=false;
+                int skip=0;
+                int cant=0;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (skipNext)
-                    {
-                        skipNext = false;
+                    if(skipNext){
+                        cant++;
+                        if(cant==skip){
+                            cant=0;
+                            skipNext=false;
+                        }
                         continue;
                     }
                     var test=id.ToString();
                     var cond=line.Contains(id.ToString());
-                    if (line.Contains(id.ToString()))
+                    if (line.Contains("id: "+id.ToString()))
                     {
-                        skipNext = true; // Marcar para saltar la siguiente línea
+                        skipNext=true;
+                        skip=8;
                         continue;
                     }
 
