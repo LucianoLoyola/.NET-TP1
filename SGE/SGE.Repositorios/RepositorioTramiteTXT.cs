@@ -6,6 +6,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
 {
     readonly string _nombreArch = "tramites.txt";
     int IDUnico = 0;
+    int max=0;
 
     public void AgregarTramite(Tramite tramite, int idExpediente){
         // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
@@ -21,7 +22,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
             string line;
             bool skipNext = false;
             int salida;
-            int max = 1;
+            //int max = 1;
             int skip=0;
             int cant=0;
 
@@ -38,7 +39,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                 }
                 if (line.StartsWith("id: "))
                 {
-                    skip=7;
+                    skip=6;
                     string numberPart = line.Substring(4).Trim();
                     if (int.TryParse(numberPart, out int idValue) && idValue > max)
                     {
@@ -123,10 +124,41 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
         using var sr = new StreamReader(_nombreArch);
         while(!sr.EndOfStream){
             var tramite = new Tramite();
-            tramite.Id = int.Parse(sr.ReadLine() ?? "");
-            tramite.Contenido = sr.ReadLine() ?? "";
+            tramite.Id = int.Parse((sr.ReadLine() ?? "").Substring(4).Trim());
+            tramite.ExpedienteId = int.Parse((sr.ReadLine() ?? "").Substring(14).Trim());
+            
+            string etiqueta = (sr.ReadLine() ?? "").Substring(10).Trim();
+            tramite.etiqueta=ConvertirAEtiqueta(etiqueta);
+
+            tramite.Contenido = (sr.ReadLine() ?? "").Substring(11).Trim();
+            tramite.fechaHoraCreacion = DateTime.Parse((sr.ReadLine() ?? "").Substring(19).Trim());
+            tramite.fechaHoraUltimaModificacion = DateTime.Parse((sr.ReadLine() ?? "").Substring(29).Trim());
+            tramite.IdUsuarioMod = int.Parse((sr.ReadLine() ?? "").Substring(14).Trim());
+
+
             resultado.Add(tramite);
         }
         return resultado;
+    }
+
+    static Etiqueta ConvertirAEtiqueta(string input)
+    {
+        switch (input)
+        {
+            case "Escrito_presentado":
+                return Etiqueta.Escrito_presentado;
+            case "Pase_a_estudio":
+                return Etiqueta.Pase_a_estudio;
+            case "Despacho":
+                return Etiqueta.Despacho;
+            case "Resolución":
+                return Etiqueta.Resolución;
+            case "Notificación":
+                return Etiqueta.Notificación;
+            case "Pase_al_Archivo":
+                return Etiqueta.Pase_al_Archivo;
+            default:
+                throw new ArgumentException("Valor de entrada no válido para Etiqueta");
+        }
     }
 }
