@@ -16,23 +16,41 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
 
     }
     public void EliminarTramite(int id){
-        // Leer todas las líneas del archivo
-        string relativePath = @"SGE.Consola\tramites.txt"; // Ajusta esta ruta
-        string basePath = AppDomain.CurrentDomain.BaseDirectory;
-        string fullPath = Path.Combine(basePath, relativePath);
-        List<string> lines = File.ReadAllLines(fullPath).ToList();
-        // Buscar el índice de la línea que contiene el ID
-        int index = lines.FindIndex(line => line.Contains((char)id));
-        // Si se encuentra el ID y no es la última línea del archivo
-        if (index != -1 && index < lines.Count - 1)
+        try
         {
-            // Eliminar la línea del ID y la siguiente
-            lines.RemoveAt(index);
-            lines.RemoveAt(index); // índice sigue siendo el mismo ya que se eliminó la línea anterior
-        }
+            using (var sr = new StreamReader("tramites.txt"))
+            using (var sw = new StreamWriter("tramitesTemp.txt"))
+            {
+                string line;
+                bool skipNext = false;
 
-        // Escribir las líneas restantes de nuevo al archivo
-        File.WriteAllLines(fullPath, lines);
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (skipNext)
+                    {
+                        skipNext = false;
+                        continue;
+                    }
+                    var test=id.ToString();
+                    var cond=line.Contains(id.ToString());
+                    if (line.Contains(id.ToString()))
+                    {
+                        skipNext = true; // Marcar para saltar la siguiente línea
+                        continue;
+                    }
+
+                    sw.WriteLine(line); // Escribir la línea al archivo temporal
+                }
+            }
+
+            File.Delete("tramites.txt"); // Eliminar el archivo original
+            File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ocurrió un error: " + ex.Message);
+            File.Delete("tramitesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
+        }
 
 
     }

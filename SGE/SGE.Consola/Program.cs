@@ -10,6 +10,7 @@ var ListarExpedientes = new CasoDeUsoListarExpedientes(repo);
 
 var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador());
 var ListarTramites = new CasoDeUsoListarTramites(repoT);
+var EliminarTramite=new CasoDeUsoTramiteBaja(repoT);
 
 //creo los expedientes
 Expediente exp = new Expediente() {caratula="Random"};
@@ -27,13 +28,14 @@ try
     AgregarExpediente.Ejecutar(exp2,exp2.Id,1);
     AgregarTramite.Ejecutar(tra1,exp.Id,1);
     AgregarTramite.Ejecutar(tra2,exp2.Id,1);
+    EliminarTramite.Ejecutar(tra2.Id,1);
     var lista = ListarExpedientes.Ejecutar();
     var listaTramites = ListarTramites.Ejecutar();
     foreach(Expediente e in lista){
         Console.WriteLine(e);
     }
-    foreach(Tramite e in listaTramites){
-        Console.WriteLine(e);
+    foreach(Tramite t in listaTramites){
+        Console.WriteLine(t);
     }
 }
 catch (System.Exception ex)
