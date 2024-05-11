@@ -11,7 +11,7 @@ public class Expediente
     public int IdUsuarioMod { get; set; }
     public Estado estado { get; set; }
     public override string ToString(){
-        return $"Los datos del Expediente son: \n Caratula: '{caratula}' | Id:{Id}";
+        return $"Los datos del Expediente son: \nCaratula: '{caratula}' | Id:{Id}";
     }
 
 }
