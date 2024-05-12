@@ -21,3 +21,9 @@ packages/
 *.sln.docstates
 # Ignorar todos los archivos llamados "desktop.ini"
 desktop.ini
+SGE/SGE.Consola/obj/
+SGE/SGE.Aplicacion/obj/
+SGE/SGE.Repositorios/obj/
+SGE/SGE.Consola/bin/
+SGE/SGE.Aplicacion/bin/
+SGE/SGE.Repositorios/bin/

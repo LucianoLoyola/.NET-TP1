@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "hAa8hPvW5KQ9AIQuHUislZjcN2GzEwWMcOSz+3pnV9XEgJBB+WNq7Xh41mwMHn7GXpkAuRzv10GWOvXglhjJsQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj",
+=======
+  "dgSpecHash": "QuGhVOAuW6oABkyAAxxnXC8/dj4R1zy+wsY1t5bUweE2o5v2Ug9hwu1xgxTneLrotx/4/ZLMm3f4UgWd5zyCXA==",
+  "success": true,
+  "projectFilePath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj",
+>>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\joaqu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj": {}
+  },
+  "projects": {
+    "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+        "projectName": "SGE.Aplicacion",
+        "projectPath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+        "packagesPath": "C:\\Users\\lucci\\.nuget\\packages\\",
+        "outputPath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lucci\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -58,10 +75,11 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
+<<<<<<< HEAD
     "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -73,6 +91,19 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\joaqu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj",
+        "projectName": "SGE.Repositorios",
+        "projectPath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\SGE.Repositorios.csproj",
+        "packagesPath": "C:\\Users\\lucci\\.nuget\\packages\\",
+        "outputPath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Repositorios\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lucci\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -84,8 +115,13 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+<<<<<<< HEAD
               "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj": {
                 "projectPath": "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj"
+=======
+              "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj": {
+                "projectPath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj"
+>>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
               }
             }
           }
@@ -120,7 +156,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

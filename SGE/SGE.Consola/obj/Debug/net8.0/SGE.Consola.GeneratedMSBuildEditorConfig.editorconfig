@@ -8,6 +8,10 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SGE.Consola
+<<<<<<< HEAD
 build_property.ProjectDir = C:\Users\joaqu\Desktop\Facultad\.NET\.NET-TP1\SGE\SGE.Consola\
+=======
+build_property.ProjectDir = E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Consola\
+>>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
