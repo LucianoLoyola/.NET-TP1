@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\sgabr\\.nuget\\packages\\": {}
+    "C:\\Users\\joaqu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sgabr\\Documents\\Facultad - UNLP\\Taller .NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+      "projectUniqueName": "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
       "projectName": "SGE.Aplicacion",
-      "projectPath": "C:\\Users\\sgabr\\Documents\\Facultad - UNLP\\Taller .NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
-      "packagesPath": "C:\\Users\\sgabr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sgabr\\Documents\\Facultad - UNLP\\Taller .NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\obj\\",
+      "projectPath": "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+      "packagesPath": "C:\\Users\\joaqu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\sgabr\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\joaqu\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
