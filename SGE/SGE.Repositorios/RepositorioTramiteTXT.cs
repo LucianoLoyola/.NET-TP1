@@ -71,6 +71,85 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
     }
     }
     public void ModificarTramite(Tramite tramite){
+        int id=tramite.Id;
+        try
+        {
+            using (var sr = new StreamReader("tramites.txt"))
+            using (var sw = new StreamWriter("tramitesTemp.txt"))
+            {
+                string line;
+                bool skipNext = false;
+                skipNext=false;
+                int skip=0;
+                int cant=0;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    var test=id.ToString();
+                    var cond=line.Contains(id.ToString());
+                    if (line.Contains("id: "+id.ToString()))
+                    {
+                        skipNext=true;
+                        skip=5;
+                        cant=6;
+                        int i=0;
+                        for(i=0;i<=cant;i++){
+                            switch (i)
+                            {
+                                case 0:
+                                    line="id: "+tramite.Id;
+                                    sw.WriteLine(line);
+                                    break;
+                                case 1:
+                                    line="expedienteID: "+tramite.ExpedienteId;
+                                    sw.WriteLine(line);
+                                    break;
+                                case 2:
+                                    line="etiqueta: "+tramite.etiqueta;
+                                    sw.WriteLine(line);
+                                    break;
+                                case 3:
+                                    line="contenido: "+tramite.Contenido;
+                                    sw.WriteLine(line);
+                                    break;
+                                case 4:
+                                    line="fechaHoraCreacion: "+tramite.fechaHoraCreacion;
+                                    sw.WriteLine(line);
+                                    break;
+                                case 5:
+                                    line="fechaHoraUltimaModificacion: "+tramite.fechaHoraUltimaModificacion;
+                                    sw.WriteLine(line);
+                                    break;
+                                case 6:
+                                    line="idUsuarioMod: "+tramite.IdUsuarioMod;
+                                    sw.WriteLine(line);
+                                    break;
+                                default:
+                                    throw new ArgumentException("Valor de entrada no válido para Etiqueta");
+                            }
+
+                        }
+                    }
+                    if(skipNext){
+                        skip--;
+                        if(skip==0){
+                            skipNext=false;
+
+                        }
+                        continue;
+                    }
+                    sw.WriteLine(line); // Escribir la línea al archivo temporal
+                }
+            }
+
+            File.Delete("tramites.txt"); // Eliminar el archivo original
+            File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ocurrió un error: " + ex.Message);
+            File.Delete("tramitesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
+        }
+
 
     }
     public void EliminarTramite(int id){
