@@ -21,4 +21,7 @@ packages/
 *.sln.docstates
 # Ignorar todos los archivos llamados "desktop.ini"
 desktop.ini
+<<<<<<< HEAD
 obj/
+=======
+>>>>>>> main
