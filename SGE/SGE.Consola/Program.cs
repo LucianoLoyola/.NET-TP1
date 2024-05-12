@@ -40,25 +40,32 @@ try
     AgregarTramite.Ejecutar(tra2,exp2.Id,1);
     AgregarTramite.Ejecutar(tra3,exp.Id,1);
     AgregarTramite.Ejecutar(tra4,exp2.Id,1);
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
     EliminarTramite.Ejecutar(tra2.Id,1);
     var lista = ListarExpedientes.Ejecutar();
-    Console.WriteLine("------------------------------------------");
     var listaTramites = ListarTramites.Ejecutar();
+
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Listado de expedientes:");
     foreach(Expediente e in lista){
         Console.WriteLine(e);
     }
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Listado de tramites:");
     foreach(Tramite t in listaTramites){
         Console.WriteLine(t);
     }
+
     Console.WriteLine("------------------------------------------");
     //Console.WriteLine("Por eliminar expediente con ID: "+exp.Id);
     //EliminarExpediente.Ejecutar(exp.Id,1,listaDeTramites,EliminarTramite);
     Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);
+    Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);//ESTA FUNCIONANDO MAL
     tra1.Contenido="Cambio de contenido";
     ModificarTramite.Ejecutar(tra1,1);
     Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por modificar expediente con ID: "+exp.Id);
+    Console.WriteLine("Por modificar expediente con ID: "+exp.Id);//ESTA FUNCIONANDO MAL
     exp.caratula="Este es un cambio";
     ModificarExpediente.Ejecutar(exp,1);
     

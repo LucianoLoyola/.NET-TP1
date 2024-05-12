@@ -2,22 +2,41 @@ id: 1
 expedienteID: 40
 etiqueta: Escrito_presentado
 contenido: Cambio de contenido
-fechaHoraCreacion: 12/5/2024 16:55:44
-fechaHoraUltimaModificacion: 12/5/2024 16:55:45
-idUsuarioMod: 0
-fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+fechaHoraCreacion: 12/5/2024 17:41:48
+fechaHoraUltimaModificacion: 12/5/2024 17:41:49
 idUsuarioMod: 0
 id: 3
 expedienteID: 42
 etiqueta: Escrito_presentado
 contenido: Res
-fechaHoraCreacion: 12/5/2024 16:55:44
+fechaHoraCreacion: 12/5/2024 17:41:48
 fechaHoraUltimaModificacion: 1/1/0001 00:00:00
 idUsuarioMod: 0
 id: 4
 expedienteID: 43
 etiqueta: Escrito_presentado
 contenido: Mes
-fechaHoraCreacion: 12/5/2024 16:55:44
+fechaHoraCreacion: 12/5/2024 17:41:48
+fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+idUsuarioMod: 0
+id: 5
+expedienteID: 40
+etiqueta: Escrito_presentado
+contenido: Cambio de contenido
+fechaHoraCreacion: 12/5/2024 17:42:43
+fechaHoraUltimaModificacion: 12/5/2024 17:42:45
+idUsuarioMod: 0
+id: 7
+expedienteID: 42
+etiqueta: Escrito_presentado
+contenido: Res
+fechaHoraCreacion: 12/5/2024 17:42:43
+fechaHoraUltimaModificacion: 1/1/0001 00:00:00
+idUsuarioMod: 0
+id: 8
+expedienteID: 43
+etiqueta: Escrito_presentado
+contenido: Mes
+fechaHoraCreacion: 12/5/2024 17:42:43
 fechaHoraUltimaModificacion: 1/1/0001 00:00:00
 idUsuarioMod: 0

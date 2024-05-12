@@ -1,31 +1,24 @@
+Id: 1
+caratula: Este es un cambio
+fechaHoraCreacion: 12/5/2024 17:41:47
+fechaHoraUModificacion: 12/5/2024 17:42:12
+IdUsuarioMod: 0
+estado: Recien_iniciado
 Id: 2
 caratula: Prueba
-fechaHoraCreacion: 12/5/2024 16:52:35
+fechaHoraCreacion: 12/5/2024 17:41:48
 fechaHoraUModificacion: 1/1/0001 00:00:00
 IdUsuarioMod: 0
 estado: Recien_iniciado
 Id: 3
-caratula: Random
-fechaHoraCreacion: 12/5/2024 16:53:45
-fechaHoraUModificacion: 1/1/0001 00:00:00
+caratula: Este es un cambio
+fechaHoraCreacion: 12/5/2024 17:42:43
+fechaHoraUModificacion: 12/5/2024 17:42:45
 IdUsuarioMod: 0
 estado: Recien_iniciado
 Id: 4
 caratula: Prueba
-fechaHoraCreacion: 12/5/2024 16:53:45
-fechaHoraUModificacion: 1/1/0001 00:00:00
-IdUsuarioMod: 0
-estado: Recien_iniciado
-Id: 5
-caratula: Este es un cambio
-fechaHoraCreacion: 12/5/2024 16:55:44
-fechaHoraUModificacion: 12/5/2024 16:55:45
-IdUsuarioMod: 0
-estado: Recien_iniciado
-estado: Recien_iniciado
-Id: 6
-caratula: Prueba
-fechaHoraCreacion: 12/5/2024 16:55:44
+fechaHoraCreacion: 12/5/2024 17:42:43
 fechaHoraUModificacion: 1/1/0001 00:00:00
 IdUsuarioMod: 0
 estado: Recien_iniciado
