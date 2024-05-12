@@ -72,7 +72,61 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
     public void ModificarExpediente(Expediente expediente){
 
     }
-    public void EliminarExpediente(int id){
+    public void EliminarExpediente(int id,List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite){
+        Queue<int> idExpedientes = new Queue<int>();
+        try
+        {
+            using (var sr = new StreamReader("expedientes.txt"))
+            using (var sw = new StreamWriter("expedientesTemp.txt"))
+            {
+                string line;
+                bool skipNext = false;
+                skipNext=false;
+                int skip=0;
+                int cant=0;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if(skipNext){
+                        cant++;
+                        if(cant==skip){
+                            cant=0;
+                            skipNext=false;
+                        }
+                        continue;
+                    }
+                    var test=id.ToString();
+                    var cond=line.Contains(id.ToString());
+                    if (line.Contains("Id: "+id.ToString()))
+                    {
+                        skipNext=true;
+                        idExpedientes.Enqueue(id);
+                        skip=5;
+                        continue;
+                    }
+
+                    sw.WriteLine(line); // Escribir la línea al archivo temporal
+                }
+            }
+
+            File.Delete("expedientes.txt"); // Eliminar el archivo original
+            File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Ocurrió un error: " + ex.Message);
+            File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
+        }
+        //Debe borrar los tramites con ese expediente asociado
+         foreach (Tramite tramite in listaT)
+        {
+            Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
+            if (tramite.ExpedienteId == id)
+            {
+                EliminarTramite.Ejecutar(tramite.Id,1);
+                Console.WriteLine("Elimine un tramite");
+            }
+        }
+
 
     }
     public List<Expediente> ListarExpedientes(){

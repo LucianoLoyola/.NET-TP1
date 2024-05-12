@@ -7,6 +7,7 @@ ITramiteRepositorio repoT = new RepositorioTramiteTXT();
 //creo los casos de uso 
 var AgregarExpediente = new CasoDeUsoExpedienteAlta(repo, new ExpedienteValidador());
 var ListarExpedientes = new CasoDeUsoListarExpedientes(repo);
+var EliminarExpediente=new CasoDeUsoExpedienteBaja(repo);
 
 var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador());
 var ListarTramites = new CasoDeUsoListarTramites(repoT);
@@ -17,10 +18,15 @@ Expediente exp = new Expediente() {caratula="Random"};
 Expediente exp2 = new Expediente() {caratula="Prueba"};
 
 //Creo los trámites
-Tramite tra1=new Tramite() {Contenido="Test"};
-Tramite tra2=new Tramite() {Contenido="Xes"};
-Tramite tra3=new Tramite() {Contenido="Res"};
-Tramite tra4=new Tramite() {Contenido="Mes"};
+Tramite tra1=new Tramite() {Contenido="Test", ExpedienteId=40};
+Tramite tra2=new Tramite() {Contenido="Xes", ExpedienteId=41};
+Tramite tra3=new Tramite() {Contenido="Res", ExpedienteId=42};
+Tramite tra4=new Tramite() {Contenido="Mes", ExpedienteId=43};
+List<Tramite> listaDeTramites = new List<Tramite>();
+listaDeTramites.Add(tra1);
+listaDeTramites.Add(tra2);
+listaDeTramites.Add(tra3);
+listaDeTramites.Add(tra4);
 
 //ejecuto los casos de uso con validaciones 
 try
@@ -42,6 +48,10 @@ try
     foreach(Tramite t in listaTramites){
         Console.WriteLine(t);
     }
+    Console.WriteLine("------------------------------------------");
+
+    Console.WriteLine("Por eliminar expediente con ID: "+exp.Id);
+    EliminarExpediente.Ejecutar(exp.Id,1,listaDeTramites,EliminarTramite);
 }
 catch (System.Exception ex)
 {
