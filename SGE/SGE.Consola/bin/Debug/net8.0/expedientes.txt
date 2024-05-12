@@ -1,24 +1,12 @@
-Id: 1
-caratula: Este es un cambio
-fechaHoraCreacion: 12/5/2024 17:41:47
-fechaHoraUModificacion: 12/5/2024 17:42:12
-IdUsuarioMod: 0
-estado: Recien_iniciado
 Id: 2
-caratula: Prueba
-fechaHoraCreacion: 12/5/2024 17:41:48
+caratula: Expediente N° 2
+fechaHoraCreacion: 12/5/2024 17:53:54
 fechaHoraUModificacion: 1/1/0001 00:00:00
 IdUsuarioMod: 0
 estado: Recien_iniciado
 Id: 3
-caratula: Este es un cambio
-fechaHoraCreacion: 12/5/2024 17:42:43
-fechaHoraUModificacion: 12/5/2024 17:42:45
-IdUsuarioMod: 0
-estado: Recien_iniciado
-Id: 4
-caratula: Prueba
-fechaHoraCreacion: 12/5/2024 17:42:43
+caratula: Expediente N° 3
+fechaHoraCreacion: 12/5/2024 17:53:54
 fechaHoraUModificacion: 1/1/0001 00:00:00
 IdUsuarioMod: 0
 estado: Recien_iniciado
