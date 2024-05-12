@@ -22,6 +22,15 @@ packages/
 # Ignorar todos los archivos llamados "desktop.ini"
 desktop.ini
 <<<<<<< HEAD
+=======
+SGE/SGE.Consola/obj/
+SGE/SGE.Aplicacion/obj/
+SGE/SGE.Repositorios/obj/
+SGE/SGE.Consola/bin/
+SGE/SGE.Aplicacion/bin/
+SGE/SGE.Repositorios/bin/
+>>>>>>> db648d752da6e2e39c036138de305c91f0ef27d0
+<<<<<<< HEAD
 obj/
 =======
 >>>>>>> main

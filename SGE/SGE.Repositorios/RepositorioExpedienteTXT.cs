@@ -88,7 +88,7 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
                     if (line.Contains("Id: "+id.ToString()))
                     {
                         skipNext=true;
-                        skip=5;
+                        skip=6;
                         cant=5;
                         int i=0;
                         for(i=0;i<=cant;i++){
