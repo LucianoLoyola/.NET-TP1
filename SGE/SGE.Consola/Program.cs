@@ -8,10 +8,12 @@ ITramiteRepositorio repoT = new RepositorioTramiteTXT();
 var AgregarExpediente = new CasoDeUsoExpedienteAlta(repo, new ExpedienteValidador());
 var ListarExpedientes = new CasoDeUsoListarExpedientes(repo);
 var EliminarExpediente=new CasoDeUsoExpedienteBaja(repo);
+var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repo);
 
 var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador());
 var ListarTramites = new CasoDeUsoListarTramites(repoT);
 var EliminarTramite=new CasoDeUsoTramiteBaja(repoT);
+var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT);
 
 //creo los expedientes
 Expediente exp = new Expediente() {caratula="Random"};
@@ -49,9 +51,17 @@ try
         Console.WriteLine(t);
     }
     Console.WriteLine("------------------------------------------");
-
-    Console.WriteLine("Por eliminar expediente con ID: "+exp.Id);
-    EliminarExpediente.Ejecutar(exp.Id,1,listaDeTramites,EliminarTramite);
+    //Console.WriteLine("Por eliminar expediente con ID: "+exp.Id);
+    //EliminarExpediente.Ejecutar(exp.Id,1,listaDeTramites,EliminarTramite);
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);
+    tra1.Contenido="Cambio de contenido";
+    ModificarTramite.Ejecutar(tra1,1);
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por modificar expediente con ID: "+exp.Id);
+    exp.caratula="Este es un cambio";
+    ModificarExpediente.Ejecutar(exp,1);
+    
 }
 catch (System.Exception ex)
 {
