@@ -14,4 +14,8 @@ public class Tramite
     public DateTime fechaHoraUltimaModificacion{get; set; }
 
     public int IdUsuarioMod { get; set; }
+
+    public override string ToString(){
+        return $"Los datos del Tramite son: \nContenido: '{Contenido}' | Id:{Id}";
+    }
 }

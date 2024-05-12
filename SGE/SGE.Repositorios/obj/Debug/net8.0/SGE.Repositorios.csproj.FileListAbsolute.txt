@@ -1,0 +1,32 @@
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Repositorios.deps.json
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Repositorios.dll
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Repositorios.pdb
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Aplicacion.dll
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Aplicacion.pdb
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.csproj.AssemblyReference.cache
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.AssemblyInfoInputs.cache
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.AssemblyInfo.cs
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.csproj.CoreCompileInputs.cache
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.sourcelink.json
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repo.5B6658F4.Up2Date
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.dll
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\refint\SGE.Repositorios.dll
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.pdb
+C:\Users\sgabr\Documents\Facultad - UNLP\Taller .NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\ref\SGE.Repositorios.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Repositorios.deps.json
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Repositorios.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Repositorios.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Aplicacion.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\bin\Debug\net8.0\SGE.Aplicacion.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.csproj.AssemblyReference.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.GeneratedMSBuildEditorConfig.editorconfig
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.AssemblyInfoInputs.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.AssemblyInfo.cs
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.csproj.CoreCompileInputs.cache
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.sourcelink.json
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repo.5B6658F4.Up2Date
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\refint\SGE.Repositorios.dll
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\SGE.Repositorios.pdb
+E:\lucci\Desktop\.NET\.NET-TP1\SGE\SGE.Repositorios\obj\Debug\net8.0\ref\SGE.Repositorios.dll
