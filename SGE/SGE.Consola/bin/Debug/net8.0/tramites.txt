@@ -1,42 +1,35 @@
 id: 1
-expedienteID: 40
+expedienteID: 0
 etiqueta: Escrito_presentado
 contenido: Cambio de contenido
-fechaHoraCreacion: 12/5/2024 17:41:48
-fechaHoraUltimaModificacion: 12/5/2024 17:41:49
+fechaHoraCreacion: 12/5/2024 17:53:54
+fechaHoraUltimaModificacion: 12/5/2024 17:53:56
 idUsuarioMod: 0
 id: 3
-expedienteID: 42
+expedienteID: 0
 etiqueta: Escrito_presentado
-contenido: Res
-fechaHoraCreacion: 12/5/2024 17:41:48
+contenido: It's a Sin
+fechaHoraCreacion: 12/5/2024 17:53:54
 fechaHoraUltimaModificacion: 1/1/0001 00:00:00
 idUsuarioMod: 0
 id: 4
-expedienteID: 43
+expedienteID: 0
 etiqueta: Escrito_presentado
-contenido: Mes
-fechaHoraCreacion: 12/5/2024 17:41:48
+contenido: Johnny Guitar
+fechaHoraCreacion: 12/5/2024 17:53:54
 fechaHoraUltimaModificacion: 1/1/0001 00:00:00
 idUsuarioMod: 0
 id: 5
-expedienteID: 40
+expedienteID: 0
 etiqueta: Escrito_presentado
-contenido: Cambio de contenido
-fechaHoraCreacion: 12/5/2024 17:42:43
-fechaHoraUltimaModificacion: 12/5/2024 17:42:45
-idUsuarioMod: 0
-id: 7
-expedienteID: 42
-etiqueta: Escrito_presentado
-contenido: Res
-fechaHoraCreacion: 12/5/2024 17:42:43
+contenido: Saddle Tramp
+fechaHoraCreacion: 12/5/2024 17:53:54
 fechaHoraUltimaModificacion: 1/1/0001 00:00:00
 idUsuarioMod: 0
-id: 8
-expedienteID: 43
+id: 6
+expedienteID: 0
 etiqueta: Escrito_presentado
-contenido: Mes
-fechaHoraCreacion: 12/5/2024 17:42:43
+contenido: Atom Bomb Baby
+fechaHoraCreacion: 12/5/2024 17:53:55
 fechaHoraUltimaModificacion: 1/1/0001 00:00:00
 idUsuarioMod: 0

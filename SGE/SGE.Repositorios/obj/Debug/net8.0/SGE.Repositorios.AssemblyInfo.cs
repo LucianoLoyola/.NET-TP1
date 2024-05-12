@@ -14,6 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b94dc3d1a7ce362ef5c9751faeaa4ddad6a46c04")]
 =======
 <<<<<<< HEAD
@@ -22,6 +23,9 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+306cda4621d7cfaebe70757b3e8ab3d9f210c14b")]
 >>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
 >>>>>>> main
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97a268311f3f93b02ffae23f31aff18e37a709ba")]
+>>>>>>> 6371eb1262230615731438b86b5dd82e159d476c
 [assembly: System.Reflection.AssemblyProductAttribute("SGE.Repositorios")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SGE.Repositorios")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
