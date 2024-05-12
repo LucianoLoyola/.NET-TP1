@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "b4SSBrQDTRLdAisGB45k+KJ+l3t6l8hOroJEmlZu6//i0nkMbc1U0bqrygWMYJMKM1D6JSil5H4Xu4+Wn3e5pQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\joaqu\\Desktop\\Facultad\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+=======
+  "dgSpecHash": "Oke4mxL5wIgLVMwrDJ4f1QWGyKbQsDDIL2gJ5wNPk8Oapn1TjZrtTz/7wTgyrrjOaCLvQ15URrTR2ZwJbChpMQ==",
+  "success": true,
+  "projectFilePath": "E:\\lucci\\Desktop\\.NET\\.NET-TP1\\SGE\\SGE.Aplicacion\\SGE.Aplicacion.csproj",
+>>>>>>> 97a268311f3f93b02ffae23f31aff18e37a709ba
   "expectedPackageFiles": [],
   "logs": []
 }
