@@ -21,7 +21,9 @@ packages/
 *.sln.docstates
 # Ignorar todos los archivos llamados "desktop.ini"
 desktop.ini
-<<<<<<< HEAD
 
-=======
->>>>>>> main
+SGE/WebApplication1/WebApplication1.csproj
+SGE/SGE.Repositorios/obj/Debug/net8.0/SGE.Repositorios.csproj.AssemblyReference.cache
+SGE/SGE.Consola/obj/Debug/net8.0/SGE.Consola.csproj.AssemblyReference.cache
+SGE/SGE.sln
+SGE/SGE.Aplicacion/obj/Debug/net8.0/SGE.Aplicacion.AssemblyInfo.cs
