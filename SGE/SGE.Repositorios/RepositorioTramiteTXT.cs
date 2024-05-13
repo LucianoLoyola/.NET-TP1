@@ -74,6 +74,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
         int id=tramite.Id;
         try
         {
+            bool tramiteEncontrado = false; // Variable para indicar si se encontró el tramite          
             using (var sr = new StreamReader("tramites.txt"))
             using (var sw = new StreamWriter("tramitesTemp.txt"))
             {
@@ -88,6 +89,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                     var cond=line.Contains(id.ToString());
                     if (line.Contains("id: "+id.ToString()))
                     {
+                        tramiteEncontrado = true; // Se encontró el trámite
                         skipNext=true;
                         skip=7;
                         cant=6;
@@ -141,6 +143,10 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                 }
             }
 
+        if (!tramiteEncontrado)
+        {
+            throw new RepositorioException("El trámite a modificar no se encontró en el repositorio");
+        }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
         }
@@ -155,6 +161,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
     public void EliminarTramite(int id){
         try
         {
+            bool tramiteEncontrado = false; // Variable para indicar si se encontró el tramite 
             using (var sr = new StreamReader("tramites.txt"))
             using (var sw = new StreamWriter("tramitesTemp.txt"))
             {
@@ -177,6 +184,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                     var cond=line.Contains(id.ToString());
                     if (line.Contains("id: "+id.ToString()))
                     {
+                        tramiteEncontrado = true; // Se encontró el trámite
                         skipNext=true;
                         skip=6;
                         continue;
@@ -186,6 +194,10 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                 }
             }
 
+        if (!tramiteEncontrado)
+        {
+            throw new RepositorioException("El expediente a modificar no se encontró en el repositorio");
+        }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
         }

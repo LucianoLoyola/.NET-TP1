@@ -1,12 +1,13 @@
 namespace SGE.Aplicacion;
 
-class CambioEstadoExpediente(IExpedienteRepositorio repo) : ICambioEstadoExpediente 
+class ServicioActualizacionEstado(IExpedienteRepositorio repo) : IServicioActualizacionEstado 
 {
 
     public void actualizarExpediente(int idExpediente)
     {
         Expediente expediente = null;
         List<Expediente> lista = repo.ListarExpedientes();
+        //busca expediente por id
         foreach (Expediente exp in lista)
         {
             if(idExpediente == exp.Id)
@@ -14,11 +15,13 @@ class CambioEstadoExpediente(IExpedienteRepositorio repo) : ICambioEstadoExpedie
                 expediente = exp;
             }
         }
-
+        //si encuentra un expediente
         if(expediente != null)
         {
+            //si el expediente tiene tramite/s
             if (!(expediente.listaTramites.Count == 0))
             {
+                //modifica el estado del expediente, dependiendo de la etiqueta del último trámite
                 Tramite tramite = expediente.listaTramites.Last();
                 switch (tramite.etiqueta)
                 {

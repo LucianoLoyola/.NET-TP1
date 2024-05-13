@@ -1,6 +1,6 @@
 namespace SGE.Aplicacion;
 
-public interface ICambioEstadoExpediente
+public interface IServicioActualizacionEstado
 {
     void actualizarExpediente(int idExpediente);
 }

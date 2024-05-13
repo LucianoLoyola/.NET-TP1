@@ -222,9 +222,11 @@ public void EliminarExpediente(int id, List<Tramite> listaT, CasoDeUsoTramiteBaj
 
 
 public List<Expediente> ListarExpedientes(){
+    //lista de expedientes
     var resultado = new List<Expediente>();
     using var sr = new StreamReader(_nombreArch);
     while(!sr.EndOfStream){
+        //guarda los valores del texto en nuevos expedientes
         var expediente = new Expediente();
         expediente.Id = int.Parse((sr.ReadLine() ?? "").Substring(4).Trim());
         expediente.caratula = (sr.ReadLine() ?? "").Substring(10).Trim();
@@ -234,8 +236,6 @@ public List<Expediente> ListarExpedientes(){
         string estado = (sr.ReadLine() ?? "").Substring(8).Trim();
         expediente.estado=ConvertirAEstado(estado);
         resultado.Add(expediente);
-
-
     }
     return resultado;
 }
