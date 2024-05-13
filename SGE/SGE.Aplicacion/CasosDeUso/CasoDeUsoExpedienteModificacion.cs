@@ -9,9 +9,12 @@ public class CasoDeUsoExpedienteModificacion(IExpedienteRepositorio repo, Expedi
         else if(!validador.Validar(expediente,idUsuario, out string mensajeError)){//valida el expediente
                 throw new ValidacionException(mensajeError); 
             }
-            else {//realiza la modificacion
+            else try {//realiza la modificacion
                 expediente.fechaHoraUModificacion = DateTime.Now;
                 repo.ModificarExpediente(expediente);
+            }
+             catch(RepositorioException repoException) {
+                Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
             }
     }
 }
