@@ -1,11 +1,17 @@
 ﻿namespace SGE.Aplicacion;
-public class CasoDeUsoTramiteAlta(ITramiteRepositorio repo, TramiteValidador validador){
-    public void Ejecutar(Tramite tramite, int idExpediente, int idUsuario){
-        //validacion de permiso de usuario (idUsuario)
-        if(!validador.Validar(tramite,idUsuario, out string mensajeError)){
-           throw new Exception(mensajeError); 
+public class CasoDeUsoTramiteAlta(ITramiteRepositorio repo, TramiteValidador validador, IServicioAutorizacion servicioAuth){
+    public void Ejecutar(Tramite tramite, int idExpediente,int idUsuario, Permiso permiso){
+
+        if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
+        {
+            throw new AutorizacionException("El usuario no tiene permiso para realizar el alta");
         }
-        tramite.fechaHoraCreacion = DateTime.Now;
-        repo.AgregarTramite(tramite,idExpediente);
+        else if(!validador.Validar(tramite,idUsuario, out string mensajeError)){//valida el expediente
+                throw new Exception(mensajeError); 
+            }
+            else {//realiza el agregado
+                tramite.fechaHoraCreacion = DateTime.Now;
+                repo.AgregarTramite(tramite,idExpediente);
+            }
     }
 }

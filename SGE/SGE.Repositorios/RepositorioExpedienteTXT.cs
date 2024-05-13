@@ -145,6 +145,7 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
             File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
         }
     }
+
     public void EliminarExpediente(int id,List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite){
         Queue<int> idExpedientes = new Queue<int>();
         try
@@ -195,7 +196,7 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
             Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
             if (tramite.ExpedienteId == id)
             {
-                EliminarTramite.Ejecutar(tramite.Id,1);
+                EliminarTramite.Ejecutar(tramite.Id,1,Permiso.TramiteBaja);
                 Console.WriteLine("Elimine un tramite");
             }
         }

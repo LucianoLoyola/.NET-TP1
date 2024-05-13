@@ -4,16 +4,17 @@ using SGE.Repositorios;
 //configuro las dependencias 
 IExpedienteRepositorio repo = new RepositorioExpedienteTXT();
 ITramiteRepositorio repoT = new RepositorioTramiteTXT();
+IServicioAutorizacion servicioAuthProvisorio = new ServicioAutorizacionProvisiorio();
 //creo los casos de uso 
-var AgregarExpediente = new CasoDeUsoExpedienteAlta(repo, new ExpedienteValidador());
+var AgregarExpediente = new CasoDeUsoExpedienteAlta(repo, new ExpedienteValidador(),servicioAuthProvisorio);
 var ListarExpedientes = new CasoDeUsoListarExpedientes(repo);
-var EliminarExpediente=new CasoDeUsoExpedienteBaja(repo);
-var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repo);
+var EliminarExpediente=new CasoDeUsoExpedienteBaja(repo, servicioAuthProvisorio);
+var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repo, servicioAuthProvisorio);
 
-var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador());
+var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador(), servicioAuthProvisorio);
 var ListarTramites = new CasoDeUsoListarTramites(repoT);
-var EliminarTramite=new CasoDeUsoTramiteBaja(repoT);
-var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT);
+var EliminarTramite=new CasoDeUsoTramiteBaja(repoT, servicioAuthProvisorio);
+var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT, servicioAuthProvisorio);
 
 //creo los expedientes
 Expediente exp = new Expediente() {caratula="Expediente N° 1"};
@@ -38,19 +39,19 @@ listaDeTramites.Add(tra6);
 //ejecuto los casos de uso con validaciones 
 try
 {
-    //Los casos de uso deben recibir el ID del usuario. La validación provisoria dice que al recibir '1', lo valida como correcto. Leer 'IServicioAutorizacion' y provisorio
-    AgregarExpediente.Ejecutar(exp,exp.Id,1);
-    AgregarExpediente.Ejecutar(exp2,exp2.Id,1);
-    AgregarExpediente.Ejecutar(exp3,exp3.Id,1);
-    AgregarTramite.Ejecutar(tra1,exp.Id,1);
-    AgregarTramite.Ejecutar(tra2,exp2.Id,1);
-    AgregarTramite.Ejecutar(tra3,exp.Id,1);
-    AgregarTramite.Ejecutar(tra4,exp2.Id,1);
-    AgregarTramite.Ejecutar(tra5,exp3.Id,1);
-    AgregarTramite.Ejecutar(tra6,exp3.Id,1);
+    //Los casos de uso deben recibir el ID del usuario y un permiso. El enum Permiso no se utiliza realmente por ahora se asume id=1 permitido
+    AgregarExpediente.Ejecutar(exp,exp.Id,1,Permiso.ExpedienteAlta);
+    AgregarExpediente.Ejecutar(exp2,exp2.Id,1,Permiso.ExpedienteAlta);
+    AgregarExpediente.Ejecutar(exp3,exp3.Id,1,Permiso.ExpedienteAlta);
+    AgregarTramite.Ejecutar(tra1,exp.Id,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra2,exp2.Id,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra3,exp.Id,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra4,exp2.Id,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra5,exp3.Id,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra6,exp3.Id,1,Permiso.TramiteAlta);
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
-    EliminarTramite.Ejecutar(tra2.Id,1);
+    EliminarTramite.Ejecutar(tra2.Id,1,Permiso.TramiteBaja);
     var lista = ListarExpedientes.Ejecutar();
     var listaTramites = ListarTramites.Ejecutar();
 
@@ -67,19 +68,30 @@ try
 
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por eliminar expediente con ID: "+exp.Id);
-    EliminarExpediente.Ejecutar(exp.Id,1,listaDeTramites,EliminarTramite);
+    EliminarExpediente.Ejecutar(exp.Id,1,listaDeTramites,EliminarTramite,Permiso.ExpedienteBaja);
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);//ESTA FUNCIONANDO MAL
     tra1.Contenido="Cambio de contenido";
-    ModificarTramite.Ejecutar(tra1,1);
+    ModificarTramite.Ejecutar(tra1,1,Permiso.TramiteModificacion);
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por modificar expediente con ID: "+exp.Id);//ESTA FUNCIONANDO MAL
     exp.caratula="Este es un cambio";
-    ModificarExpediente.Ejecutar(exp,1);
+    ModificarExpediente.Ejecutar(exp,1,Permiso.ExpedienteModificacion);
     
+}
+catch(AutorizacionException authException) {
+Console.WriteLine($"Operación cancelada - Autorización Denegada\n{authException.Message}");
+}
+catch(ValidacionException validException) {
+Console.WriteLine($"Operación cancelada - Validación\n{validException.Message}");
+}
+catch(RepositorioException repoException) {
+Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
 }
 catch (System.Exception ex)
 {
     Console.WriteLine(ex.Message);
 }
+
+
 
