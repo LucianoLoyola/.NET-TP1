@@ -7,7 +7,7 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repo, TramiteValidador val
             throw new AutorizacionException("El usuario no tiene permiso para realizar el alta");
         }
         else if(!validador.Validar(tramite,idUsuario, out string mensajeError)){//valida el expediente
-                throw new Exception(mensajeError); 
+                throw new ValidacionException(mensajeError); 
             }
             else {//realiza el agregado
                 tramite.fechaHoraCreacion = DateTime.Now;
@@ -15,3 +15,4 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repo, TramiteValidador val
             }
     }
 }
+

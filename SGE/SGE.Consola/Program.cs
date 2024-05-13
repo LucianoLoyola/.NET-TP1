@@ -9,12 +9,12 @@ IServicioAutorizacion servicioAuthProvisorio = new ServicioAutorizacionProvisior
 var AgregarExpediente = new CasoDeUsoExpedienteAlta(repo, new ExpedienteValidador(),servicioAuthProvisorio);
 var ListarExpedientes = new CasoDeUsoListarExpedientes(repo);
 var EliminarExpediente=new CasoDeUsoExpedienteBaja(repo, servicioAuthProvisorio);
-var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repo, servicioAuthProvisorio);
+var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repo, new ExpedienteValidador(), servicioAuthProvisorio);
 
 var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador(), servicioAuthProvisorio);
 var ListarTramites = new CasoDeUsoListarTramites(repoT);
 var EliminarTramite=new CasoDeUsoTramiteBaja(repoT, servicioAuthProvisorio);
-var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT, servicioAuthProvisorio);
+var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT, new TramiteValidador(), servicioAuthProvisorio);
 
 //creo los expedientes
 Expediente exp = new Expediente() {caratula="Expediente N° 1"};
