@@ -2,10 +2,10 @@
 
 public class CasoDeUsoTramiteConsultaPorEtiqueta()
 {
-    public List<Tramite> Ejecutar(List<Tramite> lista, Etiqueta etiqueta)
+    public List<Tramite> Ejecutar(List<Tramite> listaTramites, Etiqueta etiqueta)
     {
         List<Tramite> listaNueva = new List<Tramite>();
-        foreach (Tramite tr in lista)
+        foreach (Tramite tr in listaTramites)
         {
             if (tr.etiqueta == etiqueta)
             {

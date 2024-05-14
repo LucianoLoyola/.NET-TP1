@@ -3,7 +3,7 @@ using SGE.Aplicacion;
 public class RepositorioExpedienteTXT : IExpedienteRepositorio
 {
     readonly string _nombreArch = "expedientes.txt";
-    int IDUnico = 0;
+    //int IDUnico = 0;
     int max=0;
 
     public void AgregarExpediente(Expediente expediente){
@@ -212,12 +212,12 @@ public void EliminarExpediente(int id, List<Tramite> listaT, CasoDeUsoTramiteBaj
         File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
     }
     // Debe borrar los tramites con ese expediente asociado
+    Console.WriteLine($"Procesando trámites ligados al expediente: {id}");
     foreach (Tramite tramite in listaT)
     {
-        Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
         if (tramite.ExpedienteId == id)
         {
-            EliminarTramite.Ejecutar(tramite.Id, tramite.ExpedienteId, 1, Permiso.TramiteBaja);
+            EliminarTramite.Ejecutar(tramite.Id, 1, Permiso.TramiteBaja);
         }
     }
 }

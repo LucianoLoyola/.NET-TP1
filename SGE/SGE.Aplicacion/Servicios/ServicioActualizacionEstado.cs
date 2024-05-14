@@ -3,7 +3,7 @@ namespace SGE.Aplicacion;
 public class ServicioActualizacionEstado : IServicioActualizacionEstado 
 {
 
-    public void actualizarEstadoExpediente(int idExpediente, IExpedienteRepositorio repo)
+    public void actualizarEstadoExpediente(int idExpediente, IExpedienteRepositorio repo, List<Tramite>? listaTramites)
     {
         Expediente? expediente = null;
         List<Expediente> lista = repo.ListarExpedientes();
@@ -19,10 +19,10 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
         if(expediente != null)
         {
             //si el expediente tiene tramite/s
-            if (expediente.listaTramites != null && expediente.listaTramites.Count > 0)
+            if (listaTramites != null && listaTramites.Count > 0)
             {
                 //modifica el estado del expediente, dependiendo de la etiqueta del último trámite
-                Tramite tramite = expediente.listaTramites.Last();
+                Tramite tramite = listaTramites.Last();
                 switch (tramite.etiqueta)
                 {
                     case Etiqueta.Resolución:

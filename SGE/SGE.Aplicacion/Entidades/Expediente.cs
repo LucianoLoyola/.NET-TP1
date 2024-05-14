@@ -11,8 +11,15 @@ public class Expediente
     public int IdUsuarioMod { get; set; }
     public Estado estado { get; set; }
     public List<Tramite>? listaTramites { get; set; }
-    public override string ToString(){
-        return $"Los datos del Expediente son: \nCaratula: '{caratula}' | Id:{Id}";
+    public override string ToString()
+    {
+        return $"Datos del expediente:\n" +
+            $"  - ID: {Id}\n" +
+            $"  - Carátula: {caratula}\n" +
+            $"  - Fecha y hora de creación: {fechaHoraCreacion}\n" +
+            $"  - Fecha y hora de última modificación: {fechaHoraUModificacion}\n" +
+            $"  - ID de usuario de modificación: {IdUsuarioMod}\n" +
+            $"  - Estado: {estado}\n";
     }
 
 }

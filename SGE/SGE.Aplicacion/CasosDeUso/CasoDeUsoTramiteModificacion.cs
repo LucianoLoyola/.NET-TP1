@@ -1,7 +1,7 @@
 ﻿namespace SGE.Aplicacion;
 
 public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repoT, IExpedienteRepositorio repoE, TramiteValidador validador, IServicioAutorizacion servicioAuth, IServicioActualizacionEstado servicioUpdate){
-    public void Ejecutar(Tramite tramite ,int idExpediente, int idUsuario, Permiso permiso){
+    public void Ejecutar(Tramite tramite ,Expediente expediente, int idUsuario, Permiso permiso){
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {
@@ -13,7 +13,7 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repoT, IExpediente
             else {//realiza la modificacion
                 tramite.fechaHoraUltimaModificacion = DateTime.Now;
                 repoT.ModificarTramite(tramite);
-                servicioUpdate.actualizarEstadoExpediente(idExpediente, repoE);
+                servicioUpdate.actualizarEstadoExpediente(expediente.Id, repoE, expediente.listaTramites);
             }
     }
 }

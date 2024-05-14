@@ -203,7 +203,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
         }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
-            Console.WriteLine("Tramite eliminado correctamente");
+            Console.WriteLine($"Tramite id:{id} eliminado correctamente");
         }
         catch (Exception ex)
         {

@@ -15,7 +15,16 @@ public class Tramite
 
     public int IdUsuarioMod { get; set; }
 
-    public override string ToString(){
-        return $"Los datos del Tramite son: \nContenido: '{Contenido}' | Id:{Id}";
+    public override string ToString()
+    {
+        return $"Datos del trámite:\n" +
+            $"  - ID: {Id}\n" +
+            $"  - IdExpediente: {ExpedienteId}\n" +
+            $"  - Etiqueta: {etiqueta}\n" +
+            $"  - Contenido: {Contenido ?? "Ningún contenido especificado"}\n" +
+            $"  - Fecha y hora de creación: {fechaHoraCreacion}\n" +
+            $"  - Fecha y hora de última modificación: {fechaHoraUltimaModificacion}\n" +
+            $"  - ID de usuario de modificación: {IdUsuarioMod}";
     }
+
 }

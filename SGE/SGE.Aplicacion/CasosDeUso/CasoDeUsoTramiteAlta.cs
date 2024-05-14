@@ -21,7 +21,7 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repoT,IExpedienteRepositor
                 //agrega el tramite al repositorio
                 repoT.AgregarTramite(tramite,expediente.Id);
                 //actualiza el estado del expediente
-                servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE);
+                servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE,expediente.listaTramites);
             }
     }
 }
