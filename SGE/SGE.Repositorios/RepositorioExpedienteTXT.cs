@@ -8,67 +8,68 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
 
     public void AgregarExpediente(Expediente expediente){
     // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
-    string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
-    
-    // Crear un FileStream con acceso de lectura y escritura.
-    using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
-    {
-        using (StreamReader sr = new StreamReader(fs))
-        using (StreamWriter sw = new StreamWriter(fs))
+        string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
+        
+        // Crear un FileStream con acceso de lectura y escritura.
+        using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
         {
-            // Leer el archivo para encontrar el máximo ID existente
-            string line;
-            bool skipNext = false;
-            int salida;
-            //int max = 1;
-            int skip=0;
-            int cant=0;
-
-            while ((line = sr.ReadLine()) != null)
+            using (StreamReader sr = new StreamReader(fs))
+            using (StreamWriter sw = new StreamWriter(fs))
             {
-                if (skipNext)
+                // Leer el archivo para encontrar el máximo ID existente
+                string line;
+                bool skipNext = false;
+                int salida;
+                //int max = 1;
+                int skip=0;
+                int cant=0;
+
+                while ((line = sr.ReadLine()) != null)
                 {
-                    cant++;
-                    if(cant==skip){
-                        cant=0;
-                        skipNext = false;
-                    }
-                    continue;
-                }
-                if (line.StartsWith("Id: "))
-                {
-                    skip=5;
-                    string numberPart = line.Substring(4).Trim();
-                    if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                    if (skipNext)
                     {
-                            max = idValue;
+                        cant++;
+                        if(cant==skip){
+                            cant=0;
+                            skipNext = false;
+                        }
+                        continue;
                     }
-                    skipNext = true; // Marcar para saltar la siguiente línea
-                    continue;
+                    if (line.StartsWith("Id: "))
+                    {
+                        skip=5;
+                        string numberPart = line.Substring(4).Trim();
+                        if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                        {
+                                max = idValue;
+                        }
+                        skipNext = true; // Marcar para saltar la siguiente línea
+                        continue;
+                    }
+                    else{
+                        skipNext=true;
+                    }
                 }
-                else{
-                    skipNext=true;
-                }
+
+                // Incrementar el ID máximo encontrado para asignar un nuevo ID único
+                max++;
+                expediente.Id = max; // Nos aseguramos que sea único e incremental
+
+                // Mover el puntero al final del archivo para escribir el nuevo trámite
+                fs.Seek(0, SeekOrigin.End);
+                sw.WriteLine("Id: "+expediente.Id);
+                sw.WriteLine("caratula: "+expediente.caratula);
+                sw.WriteLine("fechaHoraCreacion: "+expediente.fechaHoraCreacion);
+                sw.WriteLine("fechaHoraUModificacion: "+expediente.fechaHoraUModificacion);
+                sw.WriteLine("IdUsuarioMod: "+expediente.IdUsuarioMod);
+                sw.WriteLine("estado: "+expediente.estado);
+                //+5
+
             }
-
-            // Incrementar el ID máximo encontrado para asignar un nuevo ID único
-            max++;
-            expediente.Id = max; // Nos aseguramos que sea único e incremental
-
-            // Mover el puntero al final del archivo para escribir el nuevo trámite
-            fs.Seek(0, SeekOrigin.End);
-            sw.WriteLine("Id: "+expediente.Id);
-            sw.WriteLine("caratula: "+expediente.caratula);
-            sw.WriteLine("fechaHoraCreacion: "+expediente.fechaHoraCreacion);
-            sw.WriteLine("fechaHoraUModificacion: "+expediente.fechaHoraUModificacion);
-            sw.WriteLine("IdUsuarioMod: "+expediente.IdUsuarioMod);
-            sw.WriteLine("estado: "+expediente.estado);
-            //+5
         }
-
-
+        Console.WriteLine($"Expediente {expediente.Id} agregado correctamente");
     }
-    }
+
     public void ModificarExpediente(Expediente expediente){
         int id=expediente.Id;
         try
@@ -143,8 +144,9 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
             throw new RepositorioException("El expediente a modificar no se encontró en el repositorio");
         }
 
-            File.Delete("expedientes.txt"); // Eliminar el archivo original
-            File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        File.Delete("expedientes.txt"); // Eliminar el archivo original
+        File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        Console.WriteLine($"Expediente {expediente.Id} modificado correctamente");
         }
         catch (Exception ex)
         {
@@ -202,6 +204,7 @@ public void EliminarExpediente(int id, List<Tramite> listaT, CasoDeUsoTramiteBaj
 
         File.Delete("expedientes.txt"); // Eliminar el archivo original
         File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        Console.WriteLine($"Expediente {id} eliminado correctamente");
     }
     catch (Exception ex)
     {
@@ -214,8 +217,7 @@ public void EliminarExpediente(int id, List<Tramite> listaT, CasoDeUsoTramiteBaj
         Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
         if (tramite.ExpedienteId == id)
         {
-            EliminarTramite.Ejecutar(tramite.Id, 1, Permiso.TramiteBaja);
-            Console.WriteLine("Elimine un tramite");
+            EliminarTramite.Ejecutar(tramite.Id, tramite.ExpedienteId, 1, Permiso.TramiteBaja);
         }
     }
 }

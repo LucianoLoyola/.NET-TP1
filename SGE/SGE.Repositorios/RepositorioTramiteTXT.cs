@@ -69,6 +69,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
             //+7
         }
     }
+    Console.WriteLine($"Tramite {tramite.Id} agregado correctamente");
     }
     public void ModificarTramite(Tramite tramite){
         int id=tramite.Id;
@@ -149,6 +150,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
         }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
+            Console.WriteLine("Tramite modificado correctamente");
         }
         catch (Exception ex)
         {
@@ -196,10 +198,11 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
 
         if (!tramiteEncontrado)
         {
-            throw new RepositorioException("El expediente a modificar no se encontró en el repositorio");
+            throw new RepositorioException("El expediente a eliminar no se encontró en el repositorio");
         }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
+            Console.WriteLine("Tramite eliminado correctamente");
         }
         catch (Exception ex)
         {
