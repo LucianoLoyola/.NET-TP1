@@ -4,7 +4,7 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repoT,IExpedienteRepositor
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {
-            throw new AutorizacionException("El usuario no tiene permiso para realizar el alta");
+            throw new AutorizacionException("El usuario no tiene permiso para realizar el alta de un Trámite");
         }
         else if(!validador.Validar(tramite,idUsuario, out string mensajeError)){//valida el expediente
                 throw new ValidacionException(mensajeError); 
