@@ -48,8 +48,8 @@ try
     AgregarExpediente.Ejecutar(exp3,1,Permiso.ExpedienteAlta);
     //necesitan recibir el expediente, para agregar los tramites a las listas de los mismos
     AgregarTramite.Ejecutar(tra1,exp1,1,Permiso.TramiteAlta);
-    AgregarTramite.Ejecutar(tra3,exp1,1,Permiso.TramiteAlta);
-    AgregarTramite.Ejecutar(tra2,exp2,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra3,exp2,1,Permiso.TramiteAlta);
     AgregarTramite.Ejecutar(tra4,exp2,1,Permiso.TramiteAlta);
     AgregarTramite.Ejecutar(tra5,exp3,1,Permiso.TramiteAlta);
     AgregarTramite.Ejecutar(tra6,exp3,1,Permiso.TramiteAlta);
@@ -72,15 +72,12 @@ try
 
     //Caso de Uso Tramite Modificacion
     Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por modificar tramite con ID: "+tra3.Id);
-    tra3.Contenido="Cambio de contenido";
-    tra3.etiqueta=Etiqueta.Resolución;
-    ModificarTramite.Ejecutar(tra1,exp1,1,Permiso.TramiteModificacion);
+    Console.WriteLine("Por modificar tramite con ID: "+tra2.Id);
+    ModificarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteModificacion);
 
     //Caso de Uso Expediente Modificacion
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
-    exp1.caratula="Este es un cambio";
     ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
 
     //Caso de Uso Tramite Baja
