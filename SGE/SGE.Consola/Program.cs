@@ -43,18 +43,18 @@ try
     //el Permiso no está implementado realmente en esta entrega
 
 
-    //Casos de Uso Expediente y Tramite Alta
-    //no se recibe el expediente id por parametro, ya que este se setea por los repositorios
-    AgregarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteAlta);
+    // //Casos de Uso Expediente y Tramite Alta
+    // // no se recibe el expediente id por parametro, ya que este se setea por los repositorios
+    // AgregarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteAlta);
     // //AgregarExpediente.Ejecutar(exp1,0,Permiso.ExpedienteAlta);//prueba autorización
-    AgregarExpediente.Ejecutar(exp2,1,Permiso.ExpedienteAlta);
+    // AgregarExpediente.Ejecutar(exp2,1,Permiso.ExpedienteAlta);
     // AgregarExpediente.Ejecutar(exp3,1,Permiso.ExpedienteAlta);
     // //necesitan recibir el expediente, para agregar los tramites a las listas de los mismos
-    AgregarTramite.Ejecutar(tra1,exp1,1,Permiso.TramiteAlta);
+    // AgregarTramite.Ejecutar(tra1,exp1,1,Permiso.TramiteAlta);
     // //AgregarTramite.Ejecutar(tra1,exp1,0,Permiso.TramiteAlta);//prueba autorización
-    AgregarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteAlta);
-    AgregarTramite.Ejecutar(tra3,exp2,1,Permiso.TramiteAlta);
-    AgregarTramite.Ejecutar(tra4,exp2,1,Permiso.TramiteAlta);
+    // AgregarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteAlta);
+    // AgregarTramite.Ejecutar(tra3,exp2,1,Permiso.TramiteAlta);
+    // AgregarTramite.Ejecutar(tra4,exp2,1,Permiso.TramiteAlta);
     // AgregarTramite.Ejecutar(tra5,exp3,1,Permiso.TramiteAlta);
     // AgregarTramite.Ejecutar(tra6,exp3,1,Permiso.TramiteAlta);
     
@@ -82,12 +82,12 @@ try
     // // tra2.etiqueta=Etiqueta.Resolución;
     // ModificarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteModificacion);
 
-    //Caso de Uso Expediente Modificacion
-    Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
-    // exp1.caratula="Este es un cambio";
-    exp1.caratula="";//prueba expediente no valido
-    ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
+    // //Caso de Uso Expediente Modificacion
+    // Console.WriteLine("------------------------------------------");
+    // Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
+    // // exp1.caratula="Este es un cambio";
+    // exp1.caratula="";//prueba expediente no valido
+    // ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
 
     // //Caso de Uso Tramite Baja
     // Console.WriteLine("------------------------------------------");
