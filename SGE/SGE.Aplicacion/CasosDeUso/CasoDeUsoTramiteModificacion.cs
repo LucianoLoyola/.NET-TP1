@@ -11,8 +11,6 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repoT, IExpediente
             }
             else {//realiza la modificacion
                 tramite.fechaHoraUltimaModificacion = DateTime.Now;
-                tramite.Contenido="Cambio de contenido";
-                tramite.etiqueta=Etiqueta.Resolución;
                 expediente.ModificarTramiteDeLista(expediente,tramite);
                 repoT.ModificarTramite(tramite);
                 servicioUpdate.actualizarEstadoExpediente(expediente.Id, repoE, expediente.listaTramites);

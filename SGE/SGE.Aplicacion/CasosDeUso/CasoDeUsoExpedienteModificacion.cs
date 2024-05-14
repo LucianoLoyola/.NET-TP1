@@ -11,7 +11,6 @@ public class CasoDeUsoExpedienteModificacion(IExpedienteRepositorio repo, Expedi
             }
             else try {//realiza la modificacion
                 expediente.fechaHoraUModificacion = DateTime.Now;
-                expediente.caratula="Este es un cambio";
                 repo.ModificarExpediente(expediente);
             }
              catch(RepositorioException repoException) {
