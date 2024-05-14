@@ -1,5 +1,9 @@
 ﻿using SGE.Aplicacion;
 using SGE.Repositorios;
+
+//-----Se encuentran comentados los Casos de Uso para realizar las pruebas documentadas----
+
+
 //se crean los repositorios
 IExpedienteRepositorio repoE = new RepositorioExpedienteTXT();
 ITramiteRepositorio repoT = new RepositorioTramiteTXT();
@@ -43,86 +47,108 @@ try
     //el Permiso no está implementado realmente en esta entrega
 
 
-    // //Casos de Uso Expediente y Tramite Alta
-    // // no se recibe el expediente id por parametro, ya que este se setea por los repositorios
-    // AgregarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteAlta);
-    // //AgregarExpediente.Ejecutar(exp1,0,Permiso.ExpedienteAlta);//prueba autorización
-    // AgregarExpediente.Ejecutar(exp2,1,Permiso.ExpedienteAlta);
-    // AgregarExpediente.Ejecutar(exp3,1,Permiso.ExpedienteAlta);
-    // //necesitan recibir el expediente, para agregar los tramites a las listas de los mismos
-    // AgregarTramite.Ejecutar(tra1,exp1,1,Permiso.TramiteAlta);
-    // //AgregarTramite.Ejecutar(tra1,exp1,0,Permiso.TramiteAlta);//prueba autorización
-    // AgregarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteAlta);
-    // AgregarTramite.Ejecutar(tra3,exp2,1,Permiso.TramiteAlta);
-    // AgregarTramite.Ejecutar(tra4,exp2,1,Permiso.TramiteAlta);
-    // AgregarTramite.Ejecutar(tra5,exp3,1,Permiso.TramiteAlta);
-    // AgregarTramite.Ejecutar(tra6,exp3,1,Permiso.TramiteAlta);
+    // Casos de Uso Expediente y Tramite Alta
+    // no se recibe el expediente id por parametro, ya que este se setea por los repositorios
+    AgregarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteAlta);
+    // AgregarExpediente.Ejecutar(exp1,0,Permiso.ExpedienteAlta);//prueba autorización
+    AgregarExpediente.Ejecutar(exp2,1,Permiso.ExpedienteAlta);
+    AgregarExpediente.Ejecutar(exp3,1,Permiso.ExpedienteAlta);
+    // necesitan recibir el expediente, para agregar los tramites a las listas de los mismos
+    AgregarTramite.Ejecutar(tra1,exp1,1,Permiso.TramiteAlta);
+    // AgregarTramite.Ejecutar(tra1,exp1,0,Permiso.TramiteAlta);//prueba autorización
+    AgregarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra3,exp2,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra4,exp2,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra5,exp3,1,Permiso.TramiteAlta);
+    AgregarTramite.Ejecutar(tra6,exp3,1,Permiso.TramiteAlta);
     
 
     // //Casos de Uso Listado Expedientes y Tramites
     var listaExpedientes = ListarExpedientes.Ejecutar();
     var listaTramites = ListarTramites.Ejecutar();
 
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Listado de expedientes:");
-    // foreach(Expediente e in listaExpedientes){
-    //     Console.WriteLine(e);
-    // }
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Listado de tramites:");
-    // foreach(Tramite t in listaTramites){
-    //     Console.WriteLine(t);
-    // }
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Listado de expedientes:");
+    foreach(Expediente e in listaExpedientes){
+        Console.WriteLine(e);
+    }
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Listado de tramites:");
+    foreach(Tramite t in listaTramites){
+        Console.WriteLine(t);
+    }
 
-    // //Caso de Uso Tramite Modificacion
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Por modificar tramite con ID: "+tra2.Id);
-    // // tra2.Contenido="Cambio de contenido";
-    // tra2.Contenido="";//prueba modificación no permitida
-    // // tra2.etiqueta=Etiqueta.Resolución;
-    // ModificarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteModificacion);
+    //Caso de Uso Tramite Modificacion
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por modificar tramite con ID: "+tra2.Id);
+    tra2.Contenido="Cambio de contenido";
+    //tra2.Contenido="";//prueba modificación no permitida
+    tra2.etiqueta=Etiqueta.Resolución;
+    ModificarTramite.Ejecutar(tra2,exp1,1,Permiso.TramiteModificacion);
 
-    // //Caso de Uso Expediente Modificacion
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
-    // // exp1.caratula="Este es un cambio";
+    //Caso de Uso Expediente Modificacion
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
+    exp1.caratula="Este es un cambio";
     // exp1.caratula="";//prueba expediente no valido
-    // ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
+    ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
 
-    // //Caso de Uso Tramite Baja
-    // Console.WriteLine("------------------------------------------");
-    // // Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
-    // // EliminarTramite.Ejecutar(tra2.Id,exp2,1,Permiso.TramiteBaja);
+    //Caso de Uso Tramite Baja
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
+    EliminarTramite.Ejecutar(tra2.Id,exp2,1,Permiso.TramiteBaja);
     // Console.WriteLine("Por eliminar tramite con ID: "+187);//prueba tramite inexistente
     // EliminarTramite.Ejecutar(187,exp2,1,Permiso.TramiteBaja);//prueba tramite inexistente
 
-    // //Caso de Uso Expediente Baja
-    // Console.WriteLine("------------------------------------------");
-    // // Console.WriteLine("Por eliminar expediente con ID: "+exp1.Id);
-    // // EliminarExpediente.Ejecutar(exp1.Id,1,listaTramites,EliminarTramite,Permiso.ExpedienteBaja);
+    //Caso de Uso Expediente Baja
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por eliminar expediente con ID: "+exp1.Id);
+    EliminarExpediente.Ejecutar(exp1.Id,1,listaTramites,EliminarTramite,Permiso.ExpedienteBaja);
     // Console.WriteLine("Por eliminar expediente con ID: "+187);//prueba expediente inexistente
     // EliminarExpediente.Ejecutar(187,1,listaTramites,EliminarTramite,Permiso.ExpedienteBaja);//prueba expediente inexistente
 
 
-    // //Caso de Uso Consulta Expediente por ID
+    //Caso de Uso Consulta Expediente por ID
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine($"Consulta de Expediente {exp1.Id}: ");
+    Expediente expConsulta = ConsultarExpedientePorId.Ejecutar(exp1.Id,listaExpedientes,listaTramites);
+    if (expConsulta != null){
+        Console.WriteLine(expConsulta);
+        Console.WriteLine($"Trámites ligados al expediente id: {exp1.Id}-------------");
+        if (expConsulta.listaTramites == null || expConsulta.listaTramites.Count == 0){
+            Console.WriteLine("El expediente no tiene trámites");
+        }
+        else{
+            foreach (Tramite tramiteExp in expConsulta.listaTramites){
+                Console.WriteLine(tramiteExp);
+            }
+        }
+    }
+    // // //Caso de Uso Consulta Expediente por ID - prueba ID inexistente
     // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine($"Consulta de Expediente {exp1.Id}: ");
-    // Expediente expConsulta = ConsultarExpedientePorId.Ejecutar(exp1.Id,listaExpedientes,listaTramites);
-    // Console.WriteLine(expConsulta);
-    // Console.WriteLine($"Trámites ligados al expediente id: {exp1.Id}-------------");
-    // foreach (Tramite tramiteExp in expConsulta.listaTramites)
-    // {
-    //     Console.WriteLine(tramiteExp);
+    // Console.WriteLine($"Consulta de Expediente {187}: ");
+    // Expediente expConsulta = ConsultarExpedientePorId.Ejecutar(187,listaExpedientes,listaTramites);
+    // if (expConsulta != null){
+    //     Console.WriteLine(expConsulta);
+    //     Console.WriteLine($"Trámites ligados al expediente id: {exp1.Id}-------------");
+    //     if (expConsulta.listaTramites == null || expConsulta.listaTramites.Count == 0){
+    //         Console.WriteLine("El expediente no tiene trámites");
+    //     }
+    //     else{
+    //         foreach (Tramite tramiteExp in expConsulta.listaTramites){
+    //             Console.WriteLine(tramiteExp);
+    //         }
+    //     }
     // }
-    
-    // //Caso de Uso Consulta de Trámites por Etiqueta
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Consulta de Trámites por Etiqueta: "+Etiqueta.Escrito_presentado);
-    // List<Tramite>? listaConsulta = ConsultarTramitesPorEtiqueta.Ejecutar(listaTramites,Etiqueta.Escrito_presentado);
-    // foreach (Tramite tramite in listaConsulta)
-    // {
-    //     Console.WriteLine(tramite);
-    // }
+
+    //Caso de Uso Consulta de Trámites por Etiqueta
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Consulta de Trámites por Etiqueta: "+Etiqueta.Escrito_presentado);
+    List<Tramite>? listaConsulta = ConsultarTramitesPorEtiqueta.Ejecutar(listaTramites,Etiqueta.Escrito_presentado);
+    foreach (Tramite tramite in listaConsulta)
+    {
+        Console.WriteLine(tramite);
+    }
 
 }
 catch(AutorizacionException authException) {
