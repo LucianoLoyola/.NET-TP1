@@ -5,7 +5,7 @@ using SGE.Repositorios;
 IExpedienteRepositorio repoE = new RepositorioExpedienteTXT();
 ITramiteRepositorio repoT = new RepositorioTramiteTXT();
 //se crean los servicios de autorización provisoria y actualización automatica de expediente
-IServicioAutorizacion servicioAuthProvisorio = new ServicioAutorizacionProvisiorio();
+IServicioAutorizacion servicioAuthProvisorio = new ServicioAutorizacionProvisorio();
 IServicioActualizacionEstado servicioActualizacionEstado = new ServicioActualizacionEstado();
 //se crean los casos de uso
 var AgregarExpediente = new CasoDeUsoExpedienteAlta(repoE, new ExpedienteValidador(),servicioAuthProvisorio);
