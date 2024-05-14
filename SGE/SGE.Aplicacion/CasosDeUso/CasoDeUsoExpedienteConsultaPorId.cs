@@ -5,7 +5,7 @@
         public Expediente Ejecutar(int id, List<Expediente> listaE, List<Tramite> listaT)
         {
             List<Tramite> nuevaLista = new List<Tramite>();
-            Expediente expediente = null; // Inicializamos a null para verificar si se encontró algún expediente
+            Expediente? expediente = null; // Inicializamos a null para verificar si se encontró algún expediente
             foreach (Expediente exp in listaE)
             {
                 if (exp.Id == id)

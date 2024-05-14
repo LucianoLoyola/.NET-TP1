@@ -5,7 +5,7 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
 
     public void actualizarExpediente(int idExpediente, IExpedienteRepositorio repo)
     {
-        Expediente expediente = null;
+        Expediente? expediente = null;
         List<Expediente> lista = repo.ListarExpedientes();
         //busca expediente por id
         foreach (Expediente exp in lista)

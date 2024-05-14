@@ -5,7 +5,7 @@ using SGE.Aplicacion;
 public class RepositorioTramiteTXT : ITramiteRepositorio
 {
     readonly string _nombreArch = "tramites.txt";
-    int IDUnico = 0;
+    //int IDUnico = 0;
     int max=0;
 
     public void AgregarTramite(Tramite tramite, int idExpediente){
@@ -19,9 +19,9 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
         using (StreamWriter sw = new StreamWriter(fs))
         {
             // Leer el archivo para encontrar el máximo ID existente
-            string line;
+            string? line;
             bool skipNext = false;
-            int salida;
+            //int salida;
             //int max = 1;
             int skip=0;
             int cant=0;
@@ -79,7 +79,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
             using (var sr = new StreamReader("tramites.txt"))
             using (var sw = new StreamWriter("tramitesTemp.txt"))
             {
-                string line;
+                string? line;
                 bool skipNext = false;
                 skipNext=false;
                 int skip=0;
@@ -167,7 +167,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
             using (var sr = new StreamReader("tramites.txt"))
             using (var sw = new StreamWriter("tramitesTemp.txt"))
             {
-                string line;
+                string? line;
                 bool skipNext = false;
                 skipNext=false;
                 int skip=0;
