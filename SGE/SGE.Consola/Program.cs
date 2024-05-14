@@ -48,11 +48,6 @@ try
     AgregarTramite.Ejecutar(tra5,exp3.Id,1,Permiso.TramiteAlta);
     AgregarTramite.Ejecutar(tra6,exp3.Id,1,Permiso.TramiteAlta);
 
-    //Caso de Uso Tramite Baja
-    Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
-    EliminarTramite.Ejecutar(tra2.Id,tra2.ExpedienteId,1,Permiso.TramiteBaja);
-
     //Casos de Uso Listado Expedientes y Tramites
     var lista = ListarExpedientes.Ejecutar();
     var listaTramites = ListarTramites.Ejecutar();
@@ -68,11 +63,6 @@ try
         Console.WriteLine(t);
     }
 
-    //Caso de Uso Expediente Baja
-    Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por eliminar expediente con ID: "+exp1.Id);
-    EliminarExpediente.Ejecutar(exp1.Id,1,listaTramites,EliminarTramite,Permiso.ExpedienteBaja);
-
     //Caso de Uso Tramite Modificacion
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);
@@ -85,17 +75,15 @@ try
     exp1.caratula="Este es un cambio";
     ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
 
-    //Caso de Uso Expediente Modificacion
+    //Caso de Uso Tramite Baja
     Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
-    exp1.caratula="Este es un cambio";
-    ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
+    Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
+    EliminarTramite.Ejecutar(tra2.Id,tra2.ExpedienteId,1,Permiso.TramiteBaja);
 
-    //Caso de Uso Expediente Modificacion
+    //Caso de Uso Expediente Baja
     Console.WriteLine("------------------------------------------");
-    Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);
-    exp1.caratula="Este es un cambio";
-    ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
+    Console.WriteLine("Por eliminar expediente con ID: "+exp1.Id);
+    EliminarExpediente.Ejecutar(exp1.Id,1,listaTramites,EliminarTramite,Permiso.ExpedienteBaja);
 
     //Faltan agregar los casos de uso Consulta por ID y Consulta por Etiqueta (ya estan implementados)
     
