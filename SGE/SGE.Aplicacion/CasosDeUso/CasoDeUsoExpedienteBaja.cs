@@ -6,7 +6,7 @@ public class CasoDeUsoExpedienteBaja(IExpedienteRepositorio repo, IServicioAutor
         {
             throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");
         }
-        else try{//realiza el agregado
+        else try{//realiza la eliminación
             repo.EliminarExpediente(idExpediente,listaT,EliminarTramite);
             //eliminar tambien los tramites
         }

@@ -1,9 +1,9 @@
 namespace SGE.Aplicacion;
 
-class ServicioActualizacionEstado(IExpedienteRepositorio repo) : IServicioActualizacionEstado 
+public class ServicioActualizacionEstado : IServicioActualizacionEstado 
 {
 
-    public void actualizarExpediente(int idExpediente)
+    public void actualizarExpediente(int idExpediente, IExpedienteRepositorio repo)
     {
         Expediente expediente = null;
         List<Expediente> lista = repo.ListarExpedientes();

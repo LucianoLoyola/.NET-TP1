@@ -1,5 +1,5 @@
 ﻿namespace SGE.Aplicacion;
-public class CasoDeUsoTramiteAlta(ITramiteRepositorio repo, TramiteValidador validador, IServicioAutorizacion servicioAuth){
+public class CasoDeUsoTramiteAlta(ITramiteRepositorio repoT,IExpedienteRepositorio repoE, TramiteValidador validador, IServicioAutorizacion servicioAuth, IServicioActualizacionEstado servicioUpdate){
     public void Ejecutar(Tramite tramite, int idExpediente,int idUsuario, Permiso permiso){
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
@@ -11,7 +11,8 @@ public class CasoDeUsoTramiteAlta(ITramiteRepositorio repo, TramiteValidador val
             }
             else {//realiza el agregado
                 tramite.fechaHoraCreacion = DateTime.Now;
-                repo.AgregarTramite(tramite,idExpediente);
+                repoT.AgregarTramite(tramite,idExpediente);
+                servicioUpdate.actualizarExpediente(idExpediente,repoE);
             }
     }
 }

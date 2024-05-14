@@ -2,19 +2,20 @@
 using SGE.Repositorios;
 
 //configuro las dependencias 
-IExpedienteRepositorio repo = new RepositorioExpedienteTXT();
+IExpedienteRepositorio repoE = new RepositorioExpedienteTXT();
 ITramiteRepositorio repoT = new RepositorioTramiteTXT();
 IServicioAutorizacion servicioAuthProvisorio = new ServicioAutorizacionProvisiorio();
+IServicioActualizacionEstado servicioActualizacionEstado = new ServicioActualizacionEstado();
 //creo los casos de uso 
-var AgregarExpediente = new CasoDeUsoExpedienteAlta(repo, new ExpedienteValidador(),servicioAuthProvisorio);
-var ListarExpedientes = new CasoDeUsoListarExpedientes(repo);
-var EliminarExpediente=new CasoDeUsoExpedienteBaja(repo, servicioAuthProvisorio);
-var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repo, new ExpedienteValidador(), servicioAuthProvisorio);
+var AgregarExpediente = new CasoDeUsoExpedienteAlta(repoE, new ExpedienteValidador(),servicioAuthProvisorio);
+var ListarExpedientes = new CasoDeUsoListarExpedientes(repoE);
+var EliminarExpediente=new CasoDeUsoExpedienteBaja(repoE, servicioAuthProvisorio);
+var ModificarExpediente=new CasoDeUsoExpedienteModificacion(repoE, new ExpedienteValidador(), servicioAuthProvisorio);
 
-var AgregarTramite = new CasoDeUsoTramiteAlta(repoT, new TramiteValidador(), servicioAuthProvisorio);
+var AgregarTramite = new CasoDeUsoTramiteAlta(repoT,repoE, new TramiteValidador(), servicioAuthProvisorio,servicioActualizacionEstado);
 var ListarTramites = new CasoDeUsoListarTramites(repoT);
-var EliminarTramite=new CasoDeUsoTramiteBaja(repoT, servicioAuthProvisorio);
-var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT, new TramiteValidador(), servicioAuthProvisorio);
+var EliminarTramite=new CasoDeUsoTramiteBaja(repoT,repoE, servicioAuthProvisorio,servicioActualizacionEstado);
+var ModificarTramite=new CasoDeUsoTramiteModificacion(repoT,repoE, new TramiteValidador(), servicioAuthProvisorio,servicioActualizacionEstado);
 
 //creo los expedientes
 Expediente exp = new Expediente() {caratula="Expediente N° 1"};
@@ -51,7 +52,7 @@ try
     AgregarTramite.Ejecutar(tra6,exp3.Id,1,Permiso.TramiteAlta);
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
-    EliminarTramite.Ejecutar(tra2.Id,1,Permiso.TramiteBaja);
+    EliminarTramite.Ejecutar(tra2.Id,tra2.ExpedienteId,1,Permiso.TramiteBaja);
     var lista = ListarExpedientes.Ejecutar();
     var listaTramites = ListarTramites.Ejecutar();
 
@@ -72,7 +73,7 @@ try
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);//ESTA FUNCIONANDO MAL
     tra1.Contenido="Cambio de contenido";
-    ModificarTramite.Ejecutar(tra1,1,Permiso.TramiteModificacion);
+    ModificarTramite.Ejecutar(tra1,tra1.ExpedienteId,1,Permiso.TramiteModificacion);
     Console.WriteLine("------------------------------------------");
     Console.WriteLine("Por modificar expediente con ID: "+exp.Id);//ESTA FUNCIONANDO MAL
     exp.caratula="Este es un cambio";
