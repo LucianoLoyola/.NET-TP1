@@ -1,6 +1,6 @@
 ﻿namespace SGE.Aplicacion;
 public class CasoDeUsoExpedienteAlta(IExpedienteRepositorio repo, ExpedienteValidador validador, IServicioAutorizacion servicioAuth){
-    public void Ejecutar(Expediente expediente, int idExpediente,int idUsuario, Permiso permiso){
+    public void Ejecutar(Expediente expediente,int idUsuario, Permiso permiso){
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {

@@ -10,7 +10,7 @@
             {
                 if (exp.Id == id)
                 {
-                    Console.WriteLine("Encontré expediente");
+                    Console.WriteLine("Se encontró el expediente");
                     expediente = exp;
                     break; // Si encontramos el expediente, salimos del bucle
                 }
@@ -21,12 +21,12 @@
                 throw new RepositorioException($"No se encontró un expediente con el ID {id}");
             }
 
+            Console.WriteLine($"Procesando trámites con expediente id: {id}");
             foreach (Tramite tramite in listaT)
             {
-                Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
                 if (tramite.ExpedienteId == id)
                 {
-                    Console.WriteLine("Encontré un trámite");
+                    Console.WriteLine($"Se encontró trámite id: {tramite.Id}");
                     nuevaLista.Add(tramite);
                 }
             }

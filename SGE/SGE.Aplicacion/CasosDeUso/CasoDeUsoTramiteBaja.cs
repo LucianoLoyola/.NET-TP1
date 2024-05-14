@@ -10,7 +10,7 @@ public class CasoDeUsoTramiteBaja(ITramiteRepositorio repoT, IExpedienteReposito
         }
         else {//realiza el agregado
                 repoT.EliminarTramite(idTramite);
-                servicioUpdate.actualizarExpediente(idExpediente,repoE);
+                servicioUpdate.actualizarEstadoExpediente(idExpediente,repoE);
         }
     }
 }

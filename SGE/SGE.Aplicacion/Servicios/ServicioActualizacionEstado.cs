@@ -3,7 +3,7 @@ namespace SGE.Aplicacion;
 public class ServicioActualizacionEstado : IServicioActualizacionEstado 
 {
 
-    public void actualizarExpediente(int idExpediente, IExpedienteRepositorio repo)
+    public void actualizarEstadoExpediente(int idExpediente, IExpedienteRepositorio repo)
     {
         Expediente? expediente = null;
         List<Expediente> lista = repo.ListarExpedientes();

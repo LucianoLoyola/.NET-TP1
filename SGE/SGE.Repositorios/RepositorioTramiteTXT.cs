@@ -5,72 +5,73 @@ using SGE.Aplicacion;
 public class RepositorioTramiteTXT : ITramiteRepositorio
 {
     readonly string _nombreArch = "tramites.txt";
-    //int IDUnico = 0;
+    int IDUnico = 0;
     int max=0;
 
     public void AgregarTramite(Tramite tramite, int idExpediente){
+        tramite.ExpedienteId = idExpediente;
         // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
-    string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
-    
-    // Crear un FileStream con acceso de lectura y escritura.
-    using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
-    {
-        using (StreamReader sr = new StreamReader(fs))
-        using (StreamWriter sw = new StreamWriter(fs))
+        string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
+        // Crear un FileStream con acceso de lectura y escritura.
+        using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
         {
-            // Leer el archivo para encontrar el máximo ID existente
-            string? line;
-            bool skipNext = false;
-            //int salida;
-            //int max = 1;
-            int skip=0;
-            int cant=0;
-
-            while ((line = sr.ReadLine()) != null)
+            using (StreamReader sr = new StreamReader(fs))
+            using (StreamWriter sw = new StreamWriter(fs))
             {
-                if (skipNext)
+                // Leer el archivo para encontrar el máximo ID existente
+                string? line;
+                bool skipNext = false;
+                int salida;
+                //int max = 1;
+                int skip=0;
+                int cant=0;
+
+                while ((line = sr.ReadLine()) != null)
                 {
-                    cant++;
-                    if(cant==skip){
-                        cant=0;
-                        skipNext = false;
-                    }
-                    continue;
-                }
-                if (line.StartsWith("id: "))
-                {
-                    skip=6;
-                    string numberPart = line.Substring(4).Trim();
-                    if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                    if (skipNext)
                     {
-                            max = idValue;
+                        cant++;
+                        if(cant==skip){
+                            cant=0;
+                            skipNext = false;
+                        }
+                        continue;
                     }
-                    skipNext = true; // Marcar para saltar la siguiente línea
-                    continue;
+                    if (line.StartsWith("id: "))
+                    {
+                        skip=6;
+                        string numberPart = line.Substring(4).Trim();
+                        if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                        {
+                                max = idValue;
+                        }
+                        skipNext = true; // Marcar para saltar la siguiente línea
+                        continue;
+                    }
+                    else{
+                        skipNext=true;
+                    }
                 }
-                else{
-                    skipNext=true;
-                }
+                // Incrementar el ID máximo encontrado para asignar un nuevo ID único
+                max++;
+                tramite.Id = max; // Nos aseguramos que sea único e incremental
+
+                // Mover el puntero al final del archivo para escribir el nuevo trámite
+                fs.Seek(0, SeekOrigin.End);
+                sw.WriteLine("id: "+tramite.Id);
+                sw.WriteLine("expedienteID: "+tramite.ExpedienteId);
+                sw.WriteLine("etiqueta: "+tramite.etiqueta);
+                sw.WriteLine("contenido: "+tramite.Contenido);
+                sw.WriteLine("fechaHoraCreacion: "+tramite.fechaHoraCreacion);
+                sw.WriteLine("fechaHoraUltimaModificacion: "+tramite.fechaHoraUltimaModificacion);
+                sw.WriteLine("idUsuarioMod: "+tramite.IdUsuarioMod);
+                //+7
             }
-
-            // Incrementar el ID máximo encontrado para asignar un nuevo ID único
-            max++;
-            tramite.Id = max; // Nos aseguramos que sea único e incremental
-
-            // Mover el puntero al final del archivo para escribir el nuevo trámite
-            fs.Seek(0, SeekOrigin.End);
-            sw.WriteLine("id: "+tramite.Id);
-            sw.WriteLine("expedienteID: "+tramite.ExpedienteId);
-            sw.WriteLine("etiqueta: "+tramite.etiqueta);
-            sw.WriteLine("contenido: "+tramite.Contenido);
-            sw.WriteLine("fechaHoraCreacion: "+tramite.fechaHoraCreacion);
-            sw.WriteLine("fechaHoraUltimaModificacion: "+tramite.fechaHoraUltimaModificacion);
-            sw.WriteLine("idUsuarioMod: "+tramite.IdUsuarioMod);
-            //+7
         }
-    }
-    Console.WriteLine($"Tramite {tramite.Id} agregado correctamente");
-    }
+        Console.WriteLine($"Tramite {tramite.Id} agregado correctamente");
+        }
+
+
     public void ModificarTramite(Tramite tramite){
         int id=tramite.Id;
         try

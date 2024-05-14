@@ -3,13 +3,12 @@ using SGE.Aplicacion;
 public class RepositorioExpedienteTXT : IExpedienteRepositorio
 {
     readonly string _nombreArch = "expedientes.txt";
-    //int IDUnico = 0;
+    int IDUnico = 0;
     int max=0;
 
     public void AgregarExpediente(Expediente expediente){
     // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
         string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
-        Console.WriteLine("Ruta completa del archivo: " + fullPath);
         
         // Crear un FileStream con acceso de lectura y escritura.
         using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
@@ -20,7 +19,7 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
                 // Leer el archivo para encontrar el máximo ID existente
                 string? line;
                 bool skipNext = false;
-                //int salida;
+                int salida;
                 //int max = 1;
                 int skip=0;
                 int cant=0;

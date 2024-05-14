@@ -13,7 +13,7 @@ public class CasoDeUsoTramiteModificacion(ITramiteRepositorio repoT, IExpediente
             else {//realiza la modificacion
                 tramite.fechaHoraUltimaModificacion = DateTime.Now;
                 repoT.ModificarTramite(tramite);
-                servicioUpdate.actualizarExpediente(idExpediente, repoE);
+                servicioUpdate.actualizarEstadoExpediente(idExpediente, repoE);
             }
     }
 }
