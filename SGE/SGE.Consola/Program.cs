@@ -58,34 +58,35 @@ try
     AgregarTramite.Ejecutar(tra4,exp2.Id,1,Permiso.TramiteAlta);
     AgregarTramite.Ejecutar(tra5,exp3.Id,1,Permiso.TramiteAlta);
     AgregarTramite.Ejecutar(tra6,exp3.Id,1,Permiso.TramiteAlta);
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
-    // EliminarTramite.Ejecutar(tra2.Id,tra2.ExpedienteId,1,Permiso.TramiteBaja);
-    // var lista = ListarExpedientes.Ejecutar();
-    // var listaTramites = ListarTramites.Ejecutar();
 
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Listado de expedientes:");
-    // foreach(Expediente e in lista){
-    //     Console.WriteLine(e);
-    // }
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Listado de tramites:");
-    // foreach(Tramite t in listaTramites){
-    //     Console.WriteLine(t);
-    // }
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por eliminar tramite con ID: "+tra2.Id);
+    EliminarTramite.Ejecutar(tra2.Id,tra2.ExpedienteId,1,Permiso.TramiteBaja);
+    var lista = ListarExpedientes.Ejecutar();
+    var listaTramites = ListarTramites.Ejecutar();
 
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Por eliminar expediente con ID: "+exp1.Id);
-    // EliminarExpediente.Ejecutar(exp1.Id,1,listaDeTramites,EliminarTramite,Permiso.ExpedienteBaja);
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);//ESTA FUNCIONANDO MAL
-    // tra1.Contenido="Cambio de contenido";
-    // ModificarTramite.Ejecutar(tra1,tra1.ExpedienteId,1,Permiso.TramiteModificacion);
-    // Console.WriteLine("------------------------------------------");
-    // Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);//ESTA FUNCIONANDO MAL
-    // exp1.caratula="Este es un cambio";
-    // ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Listado de expedientes:");
+    foreach(Expediente e in lista){
+        Console.WriteLine(e);
+    }
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Listado de tramites:");
+    foreach(Tramite t in listaTramites){
+        Console.WriteLine(t);
+    }
+
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por eliminar expediente con ID: "+exp1.Id);
+    EliminarExpediente.Ejecutar(exp1.Id,1,listaDeTramites,EliminarTramite,Permiso.ExpedienteBaja);
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por modificar tramite con ID: "+tra1.Id);//ESTA FUNCIONANDO MAL
+    tra1.Contenido="Cambio de contenido";
+    ModificarTramite.Ejecutar(tra1,tra1.ExpedienteId,1,Permiso.TramiteModificacion);
+    Console.WriteLine("------------------------------------------");
+    Console.WriteLine("Por modificar expediente con ID: "+exp1.Id);//ESTA FUNCIONANDO MAL
+    exp1.caratula="Este es un cambio";
+    ModificarExpediente.Ejecutar(exp1,1,Permiso.ExpedienteModificacion);
     
 }
 catch(AutorizacionException authException) {

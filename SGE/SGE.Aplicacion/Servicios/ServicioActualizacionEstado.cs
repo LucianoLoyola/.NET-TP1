@@ -19,7 +19,7 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
         if(expediente != null)
         {
             //si el expediente tiene tramite/s
-            if (!(expediente.listaTramites.Count == 0))
+            if (expediente.listaTramites != null && expediente.listaTramites.Count > 0)
             {
                 //modifica el estado del expediente, dependiendo de la etiqueta del último trámite
                 Tramite tramite = expediente.listaTramites.Last();
@@ -40,6 +40,7 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
                     default:
                         break;
                 }
+                Console.WriteLine("Estado de expediente actualizado");
             }
             else
             {
@@ -48,7 +49,7 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
         }
         else
         {
-            Console.WriteLine("No se encontró un expediente con este id");
+            Console.WriteLine("No se encontró un expediente asociado al tramite");
         }
     }
 
