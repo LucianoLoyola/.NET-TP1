@@ -49,5 +49,10 @@ public class Expediente
         expediente.listaTramites.Add(nuevoTramite);
     }
 
+    public void EliminarTodosLosTramites(){
+        if (listaTramites != null){
+            listaTramites.Clear(); // Elimina todos los trámites de la lista
+        }
+    }
 
 }

@@ -1,6 +1,5 @@
 ﻿using SGE.Aplicacion;
 using SGE.Repositorios;
-
 //se crean los repositorios
 IExpedienteRepositorio repoE = new RepositorioExpedienteTXT();
 ITramiteRepositorio repoT = new RepositorioTramiteTXT();
