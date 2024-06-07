@@ -33,5 +33,25 @@
             expediente.listaTramites = nuevaLista;
             return expediente;
         }
+
+
+        public Expediente EjecutarCorreg(int idExpediente, List<Expediente> listaE)
+        {
+            List<Tramite> nuevaLista = new List<Tramite>();
+            Expediente? expediente = null; // Inicializamos a null para verificar si se encontró algún expediente
+            foreach (Expediente exp in listaE){
+                if (exp.Id == idExpediente){
+                    Console.WriteLine("Se encontró el expediente");
+                    expediente = exp;
+                    expediente.listaTramites = exp.listaTramites;
+                    break; // Si encontramos el expediente, salimos del bucle
+                }
+            }
+            if (expediente == null){//si no se encontró expediente, excepción
+                throw new RepositorioException($"No se encontró un expediente con el ID {idExpediente}");
+            }
+
+            return expediente;//devuelve el expediente con su lista de tramites
+        }
     }
 }

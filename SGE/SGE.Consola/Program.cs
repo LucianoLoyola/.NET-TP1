@@ -98,7 +98,8 @@ try
     //Caso de Uso Consulta Expediente por ID
     Console.WriteLine("------------------------------------------");
     Console.WriteLine($"Consulta de Expediente {exp1.Id}: ");
-    Expediente expConsulta = ConsultarExpedientePorId.Ejecutar(exp1.Id,listaExpedientes,listaTramites);
+    // Expediente expConsulta = ConsultarExpedientePorId.Ejecutar(exp1.Id,listaExpedientes,listaTramites);
+    Expediente expConsulta = ConsultarExpedientePorId.EjecutarCorreg(exp1.Id,listaExpedientes);
     Console.WriteLine(expConsulta);
     Console.WriteLine($"Trámites ligados al expediente id: {exp1.Id}-------------");
     foreach (Tramite tramiteExp in expConsulta.listaTramites)
