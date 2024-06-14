@@ -9,75 +9,78 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
     int max=0;
 
     public void AgregarTramite(Tramite tramite, int idExpediente){
+        tramite.ExpedienteId = idExpediente;
         // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
-    string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
-    
-    // Crear un FileStream con acceso de lectura y escritura.
-    using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
-    {
-        using (StreamReader sr = new StreamReader(fs))
-        using (StreamWriter sw = new StreamWriter(fs))
+        string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
+        // Crear un FileStream con acceso de lectura y escritura.
+        using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
         {
-            // Leer el archivo para encontrar el máximo ID existente
-            string line;
-            bool skipNext = false;
-            int salida;
-            //int max = 1;
-            int skip=0;
-            int cant=0;
-
-            while ((line = sr.ReadLine()) != null)
+            using (StreamReader sr = new StreamReader(fs))
+            using (StreamWriter sw = new StreamWriter(fs))
             {
-                if (skipNext)
+                // Leer el archivo para encontrar el máximo ID existente
+                string? line;
+                bool skipNext = false;
+                int salida;
+                //int max = 1;
+                int skip=0;
+                int cant=0;
+
+                while ((line = sr.ReadLine()) != null)
                 {
-                    cant++;
-                    if(cant==skip){
-                        cant=0;
-                        skipNext = false;
-                    }
-                    continue;
-                }
-                if (line.StartsWith("id: "))
-                {
-                    skip=6;
-                    string numberPart = line.Substring(4).Trim();
-                    if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                    if (skipNext)
                     {
-                            max = idValue;
+                        cant++;
+                        if(cant==skip){
+                            cant=0;
+                            skipNext = false;
+                        }
+                        continue;
                     }
-                    skipNext = true; // Marcar para saltar la siguiente línea
-                    continue;
+                    if (line.StartsWith("id: "))
+                    {
+                        skip=6;
+                        string numberPart = line.Substring(4).Trim();
+                        if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                        {
+                                max = idValue;
+                        }
+                        skipNext = true; // Marcar para saltar la siguiente línea
+                        continue;
+                    }
+                    else{
+                        skipNext=true;
+                    }
                 }
-                else{
-                    skipNext=true;
-                }
+                // Incrementar el ID máximo encontrado para asignar un nuevo ID único
+                max++;
+                tramite.Id = max; // Nos aseguramos que sea único e incremental
+
+                // Mover el puntero al final del archivo para escribir el nuevo trámite
+                fs.Seek(0, SeekOrigin.End);
+                sw.WriteLine("id: "+tramite.Id);
+                sw.WriteLine("expedienteID: "+tramite.ExpedienteId);
+                sw.WriteLine("etiqueta: "+tramite.etiqueta);
+                sw.WriteLine("contenido: "+tramite.Contenido);
+                sw.WriteLine("fechaHoraCreacion: "+tramite.fechaHoraCreacion);
+                sw.WriteLine("fechaHoraUltimaModificacion: "+tramite.fechaHoraUltimaModificacion);
+                sw.WriteLine("idUsuarioMod: "+tramite.IdUsuarioMod);
+                //+7
             }
-
-            // Incrementar el ID máximo encontrado para asignar un nuevo ID único
-            max++;
-            tramite.Id = max; // Nos aseguramos que sea único e incremental
-
-            // Mover el puntero al final del archivo para escribir el nuevo trámite
-            fs.Seek(0, SeekOrigin.End);
-            sw.WriteLine("id: "+tramite.Id);
-            sw.WriteLine("expedienteID: "+tramite.ExpedienteId);
-            sw.WriteLine("etiqueta: "+tramite.etiqueta);
-            sw.WriteLine("contenido: "+tramite.Contenido);
-            sw.WriteLine("fechaHoraCreacion: "+tramite.fechaHoraCreacion);
-            sw.WriteLine("fechaHoraUltimaModificacion: "+tramite.fechaHoraUltimaModificacion);
-            sw.WriteLine("idUsuarioMod: "+tramite.IdUsuarioMod);
-            //+7
         }
-    }
-    }
+        Console.WriteLine($"Tramite {tramite.Id} agregado correctamente");
+        }
+
+
     public void ModificarTramite(Tramite tramite){
         int id=tramite.Id;
         try
         {
+            bool tramiteEncontrado = false; // Variable para indicar si se encontró el tramite          
             using (var sr = new StreamReader("tramites.txt"))
             using (var sw = new StreamWriter("tramitesTemp.txt"))
             {
-                string line;
+                string? line;
                 bool skipNext = false;
                 skipNext=false;
                 int skip=0;
@@ -88,6 +91,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                     var cond=line.Contains(id.ToString());
                     if (line.Contains("id: "+id.ToString()))
                     {
+                        tramiteEncontrado = true; // Se encontró el trámite
                         skipNext=true;
                         skip=7;
                         cant=6;
@@ -141,8 +145,13 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                 }
             }
 
+        if (!tramiteEncontrado)
+        {
+            throw new RepositorioException("El trámite a modificar no se encontró en el repositorio");
+        }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
+            Console.WriteLine("Tramite modificado correctamente");
         }
         catch (Exception ex)
         {
@@ -155,10 +164,11 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
     public void EliminarTramite(int id){
         try
         {
+            bool tramiteEncontrado = false; // Variable para indicar si se encontró el tramite 
             using (var sr = new StreamReader("tramites.txt"))
             using (var sw = new StreamWriter("tramitesTemp.txt"))
             {
-                string line;
+                string? line;
                 bool skipNext = false;
                 skipNext=false;
                 int skip=0;
@@ -177,6 +187,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                     var cond=line.Contains(id.ToString());
                     if (line.Contains("id: "+id.ToString()))
                     {
+                        tramiteEncontrado = true; // Se encontró el trámite
                         skipNext=true;
                         skip=6;
                         continue;
@@ -186,13 +197,19 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
                 }
             }
 
+        if (!tramiteEncontrado)
+        {
+            throw new RepositorioException("El trámite a eliminar no se encontró en el repositorio");
+        }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
+            Console.WriteLine($"Tramite id:{id} eliminado correctamente");
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Ocurrió un error: " + ex.Message);
+            Console.WriteLine("Ocurrió un error: ");
             File.Delete("tramitesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
+            throw; //propaga la excepción
         }
 
 

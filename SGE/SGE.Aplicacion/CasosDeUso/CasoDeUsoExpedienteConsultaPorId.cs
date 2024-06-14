@@ -1,30 +1,28 @@
-﻿namespace SGE.Aplicacion;
-
-public class CasoDeUsoExpedienteConsultaPorId()
+﻿namespace SGE.Aplicacion
 {
-    public Expediente Ejecutar(int id, List<Expediente> listaE,List<Tramite> listaT)
+    public class CasoDeUsoExpedienteConsultaPorId
     {
-        List<Tramite> nuevaLista = new List<Tramite>();
-        Expediente expediente = new Expediente();
-        foreach (Expediente exp in listaE)  
+        public Expediente Ejecutar(int idExpediente, List<Expediente> listaE, List<Tramite> listaT)
         {
-            if (exp.Id == id)
-            {
-                Console.WriteLine("Encontre expediente");
-                expediente = exp;
+            List<Tramite> nuevaLista = new List<Tramite>();
+            Expediente? expediente = null; // Inicializamos a null para verificar si se encontró algún expediente
+            foreach (Expediente exp in listaE){
+                if (exp.Id == idExpediente){
+                    Console.WriteLine("Se encontró el expediente");
+                    expediente = exp;
+                    break; // Si encontramos el expediente, salimos del bucle
+                }
             }
-        }
-        foreach (Tramite tramite in listaT)
-        {
-            Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
-            if (tramite.ExpedienteId == id)
-            {
-                Console.WriteLine("Encontre un tramite");
-                
-                nuevaLista.Add(tramite);
+            if (expediente == null){//si no se encontró expediente, excepción
+                throw new RepositorioException($"No se encontró un expediente con el ID {idExpediente}");
             }
+            foreach (Tramite tramite in listaT){//si se encontró expediente, agregar tramites asociados al expediente
+                if (tramite.ExpedienteId == idExpediente){
+                    nuevaLista.Add(tramite);
+                }
+            }
+            expediente.listaTramites = nuevaLista;
+            return expediente;//devuelve el expediente con su lista de tramites
         }
-        expediente.listaTramites = nuevaLista;
-        return expediente;
     }
 }

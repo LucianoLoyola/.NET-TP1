@@ -3,80 +3,82 @@ using SGE.Aplicacion;
 public class RepositorioExpedienteTXT : IExpedienteRepositorio
 {
     readonly string _nombreArch = "expedientes.txt";
-    int IDUnico = 0;
+    //int IDUnico = 0;
     int max=0;
 
     public void AgregarExpediente(Expediente expediente){
     // Obtener la ruta completa del archivo si _nombreArch es una ruta relativa
-    string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
-    
-    // Crear un FileStream con acceso de lectura y escritura.
-    using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
-    {
-        using (StreamReader sr = new StreamReader(fs))
-        using (StreamWriter sw = new StreamWriter(fs))
+        string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _nombreArch);
+        
+        // Crear un FileStream con acceso de lectura y escritura.
+        using (FileStream fs = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
         {
-            // Leer el archivo para encontrar el máximo ID existente
-            string line;
-            bool skipNext = false;
-            int salida;
-            //int max = 1;
-            int skip=0;
-            int cant=0;
-
-            while ((line = sr.ReadLine()) != null)
+            using (StreamReader sr = new StreamReader(fs))
+            using (StreamWriter sw = new StreamWriter(fs))
             {
-                if (skipNext)
+                // Leer el archivo para encontrar el máximo ID existente
+                string? line;
+                bool skipNext = false;
+                int salida;
+                //int max = 1;
+                int skip=0;
+                int cant=0;
+
+                while ((line = sr.ReadLine()) != null)
                 {
-                    cant++;
-                    if(cant==skip){
-                        cant=0;
-                        skipNext = false;
-                    }
-                    continue;
-                }
-                if (line.StartsWith("Id: "))
-                {
-                    skip=5;
-                    string numberPart = line.Substring(4).Trim();
-                    if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                    if (skipNext)
                     {
-                            max = idValue;
+                        cant++;
+                        if(cant==skip){
+                            cant=0;
+                            skipNext = false;
+                        }
+                        continue;
                     }
-                    skipNext = true; // Marcar para saltar la siguiente línea
-                    continue;
+                    if (line.StartsWith("Id: "))
+                    {
+                        skip=5;
+                        string numberPart = line.Substring(4).Trim();
+                        if (int.TryParse(numberPart, out int idValue) && idValue > max)
+                        {
+                                max = idValue;
+                        }
+                        skipNext = true; // Marcar para saltar la siguiente línea
+                        continue;
+                    }
+                    else{
+                        skipNext=true;
+                    }
                 }
-                else{
-                    skipNext=true;
-                }
+
+                // Incrementar el ID máximo encontrado para asignar un nuevo ID único
+                max++;
+                expediente.Id = max; // Nos aseguramos que sea único e incremental
+
+                // Mover el puntero al final del archivo para escribir el nuevo trámite
+                fs.Seek(0, SeekOrigin.End);
+                sw.WriteLine("Id: "+expediente.Id);
+                sw.WriteLine("caratula: "+expediente.caratula);
+                sw.WriteLine("fechaHoraCreacion: "+expediente.fechaHoraCreacion);
+                sw.WriteLine("fechaHoraUModificacion: "+expediente.fechaHoraUModificacion);
+                sw.WriteLine("IdUsuarioMod: "+expediente.IdUsuarioMod);
+                sw.WriteLine("estado: "+expediente.estado);
+                //+5
+
             }
-
-            // Incrementar el ID máximo encontrado para asignar un nuevo ID único
-            max++;
-            expediente.Id = max; // Nos aseguramos que sea único e incremental
-
-            // Mover el puntero al final del archivo para escribir el nuevo trámite
-            fs.Seek(0, SeekOrigin.End);
-            sw.WriteLine("Id: "+expediente.Id);
-            sw.WriteLine("caratula: "+expediente.caratula);
-            sw.WriteLine("fechaHoraCreacion: "+expediente.fechaHoraCreacion);
-            sw.WriteLine("fechaHoraUModificacion: "+expediente.fechaHoraUModificacion);
-            sw.WriteLine("IdUsuarioMod: "+expediente.IdUsuarioMod);
-            sw.WriteLine("estado: "+expediente.estado);
-            //+5
         }
-
-
+        Console.WriteLine($"Expediente {expediente.Id} agregado correctamente");
     }
-    }
+
     public void ModificarExpediente(Expediente expediente){
         int id=expediente.Id;
         try
         {
+            bool expedienteEncontrado = false; // Variable para indicar si se encontró el expediente
             using (var sr = new StreamReader("expedientes.txt"))
             using (var sw = new StreamWriter("expedientesTemp.txt"))
             {
-                string line;
+                string? line;
                 bool skipNext = false;
                 skipNext=false;
                 int skip=0;
@@ -87,6 +89,7 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
                     var cond=line.Contains(id.ToString());
                     if (line.Contains("Id: "+id.ToString()))
                     {
+                        expedienteEncontrado = true; // Se encontró el expediente
                         skipNext=true;
                         skip=6;
                         cant=5;
@@ -136,8 +139,14 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
                 }
             }
 
-            File.Delete("expedientes.txt"); // Eliminar el archivo original
-            File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        if (!expedienteEncontrado)
+        {
+            throw new RepositorioException("El expediente a modificar no se encontró en el repositorio");
+        }
+
+        File.Delete("expedientes.txt"); // Eliminar el archivo original
+        File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        Console.WriteLine($"Expediente {expediente.Id} modificado correctamente");
         }
         catch (Exception ex)
         {
@@ -145,98 +154,113 @@ public class RepositorioExpedienteTXT : IExpedienteRepositorio
             File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
         }
     }
-    public void EliminarExpediente(int id,List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite){
-        Queue<int> idExpedientes = new Queue<int>();
-        try
+
+
+public void EliminarExpediente(int id, List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite)
+{
+    Queue<int> idExpedientes = new Queue<int>();
+    try
+    {
+        bool expedienteEncontrado = false; // Variable para indicar si se encontró el expediente
+        using (var sr = new StreamReader("expedientes.txt"))
+        using (var sw = new StreamWriter("expedientesTemp.txt"))
         {
-            using (var sr = new StreamReader("expedientes.txt"))
-            using (var sw = new StreamWriter("expedientesTemp.txt"))
+            string? line;
+            bool skipNext = false;
+            skipNext = false;
+            int skip = 0;
+            int cant = 0;
+            while ((line = sr.ReadLine()) != null)
             {
-                string line;
-                bool skipNext = false;
-                skipNext=false;
-                int skip=0;
-                int cant=0;
-                while ((line = sr.ReadLine()) != null)
+                if (skipNext)
                 {
-                    if(skipNext){
-                        cant++;
-                        if(cant==skip){
-                            cant=0;
-                            skipNext=false;
-                        }
-                        continue;
-                    }
-                    var test=id.ToString();
-                    var cond=line.Contains(id.ToString());
-                    if (line.Contains("Id: "+id.ToString()))
+                    cant++;
+                    if (cant == skip)
                     {
-                        skipNext=true;
-                        idExpedientes.Enqueue(id);
-                        skip=5;
-                        continue;
+                        cant = 0;
+                        skipNext = false;
                     }
-
-                    sw.WriteLine(line); // Escribir la línea al archivo temporal
+                    continue;
                 }
-            }
+                var test = id.ToString();
+                var cond = line.Contains(id.ToString());
+                if (line.Contains("Id: " + id.ToString()))
+                {
+                    expedienteEncontrado = true; // Se encontró el expediente
+                    skipNext = true;
+                    idExpedientes.Enqueue(id);
+                    skip = 5;
+                    continue;
+                }
 
-            File.Delete("expedientes.txt"); // Eliminar el archivo original
-            File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+                sw.WriteLine(line); // Escribir la línea al archivo temporal
+            }
         }
-        catch (Exception ex)
+
+        if (!expedienteEncontrado)
         {
-            Console.WriteLine("Ocurrió un error: " + ex.Message);
             File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
+            throw new RepositorioException("El expediente a eliminar no se encontró en el repositorio");
         }
-        //Debe borrar los tramites con ese expediente asociado
-         foreach (Tramite tramite in listaT)
+
+        File.Delete("expedientes.txt"); // Eliminar el archivo original
+        File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
+        Console.WriteLine($"Expediente {id} eliminado correctamente");
+
+        // Debe borrar los tramites con ese expediente asociado
+        Console.WriteLine($"Procesando trámites ligados al expediente: {id}");
+        foreach (Tramite tramite in listaT)
         {
-            Console.WriteLine($"Procesando trámite con expediente id: {tramite.ExpedienteId}");
             if (tramite.ExpedienteId == id)
             {
-                EliminarTramite.Ejecutar(tramite.Id,1);
-                Console.WriteLine("Elimine un tramite");
+                EliminarTramite.Ejecutar(tramite.Id, 1, Permiso.TramiteBaja);
             }
         }
 
-
     }
-    public List<Expediente> ListarExpedientes(){
-        var resultado = new List<Expediente>();
-        using var sr = new StreamReader(_nombreArch);
-        while(!sr.EndOfStream){
-            var expediente = new Expediente();
-            expediente.Id = int.Parse((sr.ReadLine() ?? "").Substring(4).Trim());
-            expediente.caratula = (sr.ReadLine() ?? "").Substring(10).Trim();
-            expediente.fechaHoraCreacion = DateTime.Parse((sr.ReadLine() ?? "").Substring(19).Trim());
-            expediente.fechaHoraUModificacion = DateTime.Parse((sr.ReadLine() ?? "").Substring(24).Trim());
-            expediente.IdUsuarioMod = int.Parse((sr.ReadLine() ?? "").Substring(14).Trim());
-            string estado = (sr.ReadLine() ?? "").Substring(8).Trim();
-            expediente.estado=ConvertirAEstado(estado);
-            resultado.Add(expediente);
-
-
-        }
-        return resultado;
-    }
-
-    static Estado ConvertirAEstado(string input)
+    catch (Exception ex)
     {
-            switch (input)
-            {
-                case "Recien_iniciado":
-                    return Estado.Recien_iniciado;
-                case "Para_resolver":
-                    return Estado.Para_resolver;
-                case "Con_resolucion":
-                    return Estado.Con_resolucion;
-                case "En_notificacion":
-                    return Estado.En_notificacion;
-                case "Finalizado":
-                    return Estado.Finalizado;
-                default:
-                    throw new ArgumentException("Valor de entrada no válido para Estado");
-            }
+        Console.WriteLine("Ocurrió un error: " + ex.Message);
+        File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
     }
+}
+
+
+public List<Expediente> ListarExpedientes(){
+    //lista de expedientes
+    var resultado = new List<Expediente>();
+    using var sr = new StreamReader(_nombreArch);
+    while(!sr.EndOfStream){
+        //guarda los valores del texto en nuevos expedientes
+        var expediente = new Expediente();
+        expediente.Id = int.Parse((sr.ReadLine() ?? "").Substring(4).Trim());
+        expediente.caratula = (sr.ReadLine() ?? "").Substring(10).Trim();
+        expediente.fechaHoraCreacion = DateTime.Parse((sr.ReadLine() ?? "").Substring(19).Trim());
+        expediente.fechaHoraUModificacion = DateTime.Parse((sr.ReadLine() ?? "").Substring(24).Trim());
+        expediente.IdUsuarioMod = int.Parse((sr.ReadLine() ?? "").Substring(14).Trim());
+        string estado = (sr.ReadLine() ?? "").Substring(8).Trim();
+        expediente.estado=ConvertirAEstado(estado);
+        resultado.Add(expediente);
+    }
+    return resultado;
+}
+
+static Estado ConvertirAEstado(string input)
+{
+        switch (input)
+        {
+            case "Recien_iniciado":
+                return Estado.Recien_iniciado;
+            case "Para_resolver":
+                return Estado.Para_resolver;
+            case "Con_resolucion":
+                return Estado.Con_resolucion;
+            case "En_notificacion":
+                return Estado.En_notificacion;
+            case "Finalizado":
+                return Estado.Finalizado;
+            default:
+                throw new ArgumentException("Valor de entrada no válido para Estado");
+        }
+}
 }
