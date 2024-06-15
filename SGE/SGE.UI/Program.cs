@@ -1,8 +1,21 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SGE.UI.Components;
+
 using SGE.Repositorios;
 using SGE.Aplicacion;
 
+ProyectoSqlite bd = new ProyectoSqlite();
+ITramiteRepositorio repoT = new RepositorioTramiteTXT();
+
+ProyectoSqlite.Inicializar();
+using (var context = new UserAccountContext())
+{
+    Console.WriteLine("-- Tabla UserAccount --");
+    foreach (var a in context.UserAccount)
+    {
+    Console.WriteLine($"{a.Id} {a.UserName}");
+    }
+}
 
 
 var builder = WebApplication.CreateBuilder(args);

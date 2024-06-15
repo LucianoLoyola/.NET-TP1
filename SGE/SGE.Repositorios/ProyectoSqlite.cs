@@ -1,5 +1,6 @@
-namespace Repositorios;
-
+namespace SGE.Repositorios;
+using Microsoft.EntityFrameworkCore;
+using SGE.Aplicacion;
 public class ProyectoSqlite{
 
     public static void Inicializar(){

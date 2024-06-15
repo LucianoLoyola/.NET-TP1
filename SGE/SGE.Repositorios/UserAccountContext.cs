@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-namespace Repositorios;
+namespace SGE.Repositorios;
 using SGE.Aplicacion;
 public class UserAccountContext:DbContext{
+
     #nullable disable
     public DbSet<UserAccount> UserAccount {get;set;}
     #nullable restore
