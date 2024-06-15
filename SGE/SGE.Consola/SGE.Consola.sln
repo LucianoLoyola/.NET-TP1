@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SGE.Consola", "SGE.Consola.csproj", "{50B5174E-7E0E-4711-816C-FBF5D357D02E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGE.UI", "..\SGE.UI\SGE.UI.csproj", "{AB410E83-FD6C-48CA-BDE6-47E40EA7492D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{50B5174E-7E0E-4711-816C-FBF5D357D02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50B5174E-7E0E-4711-816C-FBF5D357D02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50B5174E-7E0E-4711-816C-FBF5D357D02E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB410E83-FD6C-48CA-BDE6-47E40EA7492D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB410E83-FD6C-48CA-BDE6-47E40EA7492D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB410E83-FD6C-48CA-BDE6-47E40EA7492D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB410E83-FD6C-48CA-BDE6-47E40EA7492D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
