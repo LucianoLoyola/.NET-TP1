@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SGE.UI.Components;
+using SGE.Repositorios;
+
+ProyectoSqlite.Inicializar();
 
 var builder = WebApplication.CreateBuilder(args);
 

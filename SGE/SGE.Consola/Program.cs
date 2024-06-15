@@ -40,9 +40,30 @@ Tramite tra4=new Tramite() {Contenido="Johnny Guitar"};
 Tramite tra5=new Tramite() {Contenido="Saddle Tramp"};
 Tramite tra6=new Tramite() {Contenido="Atom Bomb Baby"};
 
+
+
 //Casos de uso
 try
 {
+    
+    
+    
+    
+    
+    
+    
+    /*BORRAR TODO EL CÓDIGO DE ABAJO*/
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //Para los casos de uso de agregar, modificar, eliminar, se asume id=1 como permiso=permitido.
     //el Permiso no está implementado realmente en esta entrega
 
