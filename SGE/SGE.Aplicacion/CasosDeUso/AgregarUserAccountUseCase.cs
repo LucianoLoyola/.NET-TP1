@@ -1,7 +1,6 @@
-using SGE.Aplicacion.Entidades;
-using SGE.Aplicacion.Interfaces;
 
-namespace UseCases;
+
+namespace SGE.Aplicacion;
 
 public class AgregarUserAccountUseCase(IRepositorioUserAccount repositorio):UserAccountUseCase(repositorio)
 {

@@ -1,7 +1,5 @@
-using SGE.Aplicacion.Entidades;
-using SGE.Aplicacion.Interfaces;
 
-namespace UseCases;
+namespace SGE.Aplicacion;
 
 public class ObtenerUserAccountUseCase(IRepositorioUserAccount repositorio):UserAccountUseCase(repositorio)
 {

@@ -2,8 +2,8 @@ using SGE.Aplicacion;
 
 public interface IRepositorioUserAccount{
     List<UserAccount> GetUserAccounts();
-    IRepositorioUserAccount? GetUserAccount(int id);
+    UserAccount? GetUserAccount(int id);
     void ModificarUserAccount(UserAccount user);
     void EliminarUserAccount(int id);
-    void AgregarUserAccount(IRepositorioUserAccount user);
+    void AgregarUserAccount(UserAccount user);
 }

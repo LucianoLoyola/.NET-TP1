@@ -1,6 +1,5 @@
-using SGE.Aplicacion.Interfaces;
 
-namespace CasosDeUso;
+namespace SGE.Aplicacion;
 
 public abstract class UserAccountUseCase(IRepositorioUserAccount repositorio)
 {
