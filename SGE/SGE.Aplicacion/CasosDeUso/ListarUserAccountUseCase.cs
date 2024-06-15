@@ -7,6 +7,6 @@ public class ListarUserAccountUseCase(IRepositorioUserAccount repositorio):UserA
     {
     //aquí podríamos insertar código de validación de cliente
 
-        return Repositorio.ListarUserAccount();
+        return Repositorio.GetUserAccounts();
     }
 }

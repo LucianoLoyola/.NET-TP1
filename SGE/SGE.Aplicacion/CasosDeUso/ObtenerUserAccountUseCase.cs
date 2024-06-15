@@ -7,6 +7,6 @@ public class ObtenerUserAccountUseCase(IRepositorioUserAccount repositorio):User
     {
     //aquí podríamos insertar código de validación de cliente
 
-        return Repositorio.GetCliente(id);
+        return Repositorio.GetUserAccount(id);
     }
 }
