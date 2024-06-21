@@ -199,26 +199,29 @@ public void EliminarExpediente(int id, List<Tramite> listaT, CasoDeUsoTramiteBaj
 
         if (!expedienteEncontrado)
         {
+            File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
             throw new RepositorioException("El expediente a eliminar no se encontró en el repositorio");
         }
 
         File.Delete("expedientes.txt"); // Eliminar el archivo original
         File.Move("expedientesTemp.txt", "expedientes.txt"); // Renombrar el archivo temporal al original
         Console.WriteLine($"Expediente {id} eliminado correctamente");
+
+        // Debe borrar los tramites con ese expediente asociado
+        Console.WriteLine($"Procesando trámites ligados al expediente: {id}");
+        foreach (Tramite tramite in listaT)
+        {
+            if (tramite.ExpedienteId == id)
+            {
+                EliminarTramite.Ejecutar(tramite.Id, 1, Permiso.TramiteBaja);
+            }
+        }
+
     }
     catch (Exception ex)
     {
         Console.WriteLine("Ocurrió un error: " + ex.Message);
         File.Delete("expedientesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
-    }
-    // Debe borrar los tramites con ese expediente asociado
-    Console.WriteLine($"Procesando trámites ligados al expediente: {id}");
-    foreach (Tramite tramite in listaT)
-    {
-        if (tramite.ExpedienteId == id)
-        {
-            EliminarTramite.Ejecutar(tramite.Id, 1, Permiso.TramiteBaja);
-        }
     }
 }
 

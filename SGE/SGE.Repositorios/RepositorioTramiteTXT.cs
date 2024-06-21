@@ -199,7 +199,7 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
 
         if (!tramiteEncontrado)
         {
-            throw new RepositorioException("El expediente a eliminar no se encontró en el repositorio");
+            throw new RepositorioException("El trámite a eliminar no se encontró en el repositorio");
         }
             File.Delete("tramites.txt"); // Eliminar el archivo original
             File.Move("tramitesTemp.txt", "tramites.txt"); // Renombrar el archivo temporal al original
@@ -207,8 +207,9 @@ public class RepositorioTramiteTXT : ITramiteRepositorio
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Ocurrió un error: " + ex.Message);
+            Console.WriteLine("Ocurrió un error: ");
             File.Delete("tramitesTemp.txt"); // Asegurarse de eliminar el archivo temporal si ocurre un error
+            throw; //propaga la excepción
         }
 
 
