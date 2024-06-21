@@ -1,13 +1,22 @@
 using Microsoft.EntityFrameworkCore;
-namespace SGE.Repositorios;
 using SGE.Aplicacion;
-public class UserAccountContext:DbContext{
 
-    #nullable disable
-    public DbSet<UserAccount> UserAccount {get;set;}
-    #nullable restore
+namespace SGE.Repositorios
+{
+    public class UserAccountContext : DbContext
+    {
+        public DbSet<UserAccount> UserAccount { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
-        optionsBuilder.UseSqlite("data source=UserAccount.sqlite");
+        public UserAccountContext(DbContextOptions<UserAccountContext> options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=UserAccount.sqlite");
+            }
+        }
     }
 }
