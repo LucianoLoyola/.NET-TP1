@@ -1,4 +1,8 @@
 ﻿@inherits LayoutComponentBase
+@using System.Security.Claims
+@using SGE.Repositorios
+@inject UserAccountContext userDbContext
+
 
 <div class="page">
     <div class="sidebar">
@@ -7,13 +11,17 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
             <AuthorizeView>
                 <NotAuthorized>
-                    <a href="/login">Login</a>
+                    <a href="/login">Iniciar Sesión</a>
+                    <a href="/register">Registrarse</a>
                 </NotAuthorized>
                 <Authorized>
-                    <a href="/logout">Logout</a>
+                    @if(UserRole.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a href="/administracion">Administración</a>
+                    }
+                    <a href="/logout">Cerrar Sesión</a>
                 </Authorized>
             </AuthorizeView>
         </div>
@@ -29,3 +37,26 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private ClaimsPrincipal user;
+    private string UserRole { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateTask;
+        user = authState.User;
+
+        // Obtener el nombre de usuario del claim
+        var userName = user.Identity.Name;
+
+        // Obtener el rol del usuario desde la base de datos
+        var userData = userDbContext.UserAccount.Where(u => u.UserName == userName).FirstOrDefault();
+        if (userData != null)
+        {
+            UserRole = userData.Role;
+        }
+    }
+}
