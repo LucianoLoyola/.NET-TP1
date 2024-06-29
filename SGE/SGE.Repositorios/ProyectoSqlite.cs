@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SGE.Aplicacion;
-
 namespace SGE.Repositorios
+
 {
     public static class ProyectoSqlite
     {
