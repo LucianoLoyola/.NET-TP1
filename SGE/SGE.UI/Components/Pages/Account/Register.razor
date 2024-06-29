@@ -1,0 +1,82 @@
+@page "/register"
+@using SGE.Aplicacion
+@using SGE.Repositorios
+@using SGE.Aplicacion.ViewModels
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using System.Security.Claims
+@inject UserAccountContext userDbContext
+@inject NavigationManager navigationManager
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+        <EditForm Model="@Model" OnValidSubmit="HandleRegistration" FormName="RegisterForm">
+            <DataAnnotationsValidator />
+            <div class="mb-3 text-center flex-column">
+                <img src="/images/avatar.png" style="max-height:5rem;" />
+                <h3>REGISTRO</h3>
+            </div>
+            <div class="mb-3">
+                <label>Usuario</label>
+                <InputText @bind-Value="Model.UserName" class="form-control" placeholder="Username" />
+                <ValidationMessage For="() => Model.UserName" />
+            </div>
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <InputText @bind-Value="Model.Password" placeholder="Password" type="password" class="form-control" />
+                <ValidationMessage For="() => Model.Password" />
+            </div>
+            <div class="mb-3">
+                <label>Confirme su Contraseña</label>
+                <InputText @bind-Value="Model.ConfirmPassword" placeholder="Confirm Password" type="password" class="form-control" />
+                <ValidationMessage For="() => Model.ConfirmPassword" />
+            </div>
+            <div class="mb-3">
+                <label>Rol</label>
+                <InputSelect @bind-Value="Model.Role" class="form-control">
+                    <option value="">Seleccione un rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Usuario">Usuario</option>
+                </InputSelect>
+                <ValidationMessage For="() => Model.Role" />
+            </div>
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+            </div>
+            <div class="mb-3 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    public RegisterViewModel Model { get; set; } = new();
+    private string? errorMessage;
+
+    private async Task HandleRegistration()
+    {
+        // Verificar si el usuario ya existe
+        var existingUser = userDbContext.UserAccount.FirstOrDefault(x => x.UserName == Model.UserName);
+        if (existingUser != null)
+        {
+            errorMessage = "El usuario ya existe";
+            return;
+        }
+
+        // Crear una nueva cuenta de usuario
+        var userAccount = new UserAccount
+        {
+            UserName = Model.UserName,
+            Password = Model.Password,  // Asegúrate de almacenar la contraseña de manera segura (hashing)
+            Role = Model.Role
+        };
+
+        userDbContext.UserAccount.Add(userAccount);
+        await userDbContext.SaveChangesAsync();
+
+        // Redirigir al usuario a la página de inicio de sesión
+        navigationManager.NavigateTo("/login");
+    }
+}

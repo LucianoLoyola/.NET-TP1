@@ -1,0 +1,35 @@
+@page "/userprofile/{userId:int}"
+@using SGE.Aplicacion.ViewModels
+@using System.Security.Claims
+@using SGE.Repositorios
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using global::SGE.Aplicacion
+@inject UserAccountContext userDbContext
+
+<h3>Perfil de Usuario</h3>
+
+@if (user == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <div>
+        <p>Nombre de Usuario: @user.UserName</p>
+        <p>Rol: @user.Role</p>
+        <!-- Otros detalles del usuario -->
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+
+    private UserAccount user { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = userDbContext.UserAccount.FirstOrDefault(u => u.Id == UserId);
+    }
+}

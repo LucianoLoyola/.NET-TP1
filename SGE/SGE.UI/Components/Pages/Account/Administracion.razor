@@ -1,0 +1,53 @@
+@page "/administracion"
+@using SGE.Aplicacion
+@using SGE.Repositorios
+@using SGE.Aplicacion.ViewModels
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using System.Security.Claims
+@inject UserAccountContext userDbContext
+@inject NavigationManager navigationManager
+
+<h1>Administración</h1>
+
+
+<h3>Lista de Usuarios</h3>
+
+@if (UserAccounts != null && UserAccounts.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in UserAccounts)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <a href="/userprofile/@user.Id" class="btn btn-primary">Ver Perfil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay usuarios disponibles.</p>
+}
+
+@code {
+    List<UserAccount> UserAccounts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obtener todos los usuarios de la base de datos
+        UserAccounts = userDbContext.UserAccount.ToList();
+    }
+}
