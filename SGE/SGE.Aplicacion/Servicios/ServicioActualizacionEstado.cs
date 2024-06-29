@@ -1,3 +1,6 @@
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
+
 namespace SGE.Aplicacion;
 
 public class ServicioActualizacionEstado : IServicioActualizacionEstado 

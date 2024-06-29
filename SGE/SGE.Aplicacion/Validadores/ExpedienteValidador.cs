@@ -1,4 +1,6 @@
-﻿namespace SGE.Aplicacion;
+﻿using SGE.Aplicacion.Entidades;
+
+namespace SGE.Aplicacion;
 
 public class ExpedienteValidador
 {

@@ -1,3 +1,5 @@
+using SGE.Aplicacion.Interfaces;
+
 namespace SGE.Aplicacion;
 
 public class ServicioAutorizacionProvisorio : IServicioAutorizacion

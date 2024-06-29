@@ -1,3 +1,5 @@
+using SGE.Aplicacion.Entidades;
+
 namespace SGE.Aplicacion;
 
 public class TramiteValidador
