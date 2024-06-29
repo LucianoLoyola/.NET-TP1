@@ -1,5 +1,9 @@
 ﻿namespace SGE.Repositorios;
 using SGE.Aplicacion;
+using SGE.Aplicacion.CasosDeUso;
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
+
 public class RepositorioExpedienteTXT : IExpedienteRepositorio
 {
     readonly string _nombreArch = "expedientes.txt";

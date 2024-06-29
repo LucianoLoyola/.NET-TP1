@@ -2,6 +2,9 @@
 
 using System.ComponentModel.DataAnnotations;
 using SGE.Aplicacion;
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
+
 public class RepositorioTramiteTXT : ITramiteRepositorio
 {
     readonly string _nombreArch = "tramites.txt";

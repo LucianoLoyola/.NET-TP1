@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SGE.UI.Components;
 using SGE.Repositorios;
 using SGE.Aplicacion;
-using ASP.Components;
 
 // Crear una instancia de DbContextOptions para UserAccountContext
 var connectionString = "Data Source=UserAccount.sqlite";
