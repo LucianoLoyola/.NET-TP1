@@ -8,6 +8,10 @@
 @inject UserAccountContext userDbContext
 @inject NavigationManager navigationManager
 
+@using System.Security.Cryptography;
+@using System.Text;
+
+
 <div class="row">
     <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
         <EditForm Model="@Model" OnValidSubmit="HandleRegistration" FormName="RegisterForm">
@@ -69,7 +73,7 @@
         var userAccount = new UserAccount
         {
             UserName = Model.UserName,
-            Password = Model.Password,  // Asegúrate de almacenar la contraseña de manera segura (hashing)
+            Password = Hash(Model.Password),  // Asegúrate de almacenar la contraseña de manera segura (hashing)
             Role = Model.Role
         };
 
@@ -78,5 +82,19 @@
 
         // Redirigir al usuario a la página de inicio de sesión
         navigationManager.NavigateTo("/login");
+    }
+
+    private string Hash(string password){
+
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            StringBuilder builder = new StringBuilder();
+            foreach (byte b in bytes)
+            {
+                builder.Append(b.ToString("x2")); //agrega la cadena al final del StringBuilder
+            }
+            return builder.ToString();
+        }
     }
 }
