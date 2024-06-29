@@ -1,4 +1,7 @@
-﻿namespace SGE.Aplicacion;
+﻿namespace SGE.Aplicacion.CasosDeUso;
+
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 public class CasoDeUsoExpedienteAlta(IExpedienteRepositorio repo, ExpedienteValidador validador, IServicioAutorizacion servicioAuth){
     public void Ejecutar(Expediente expediente,int idUsuario, Permiso permiso){
 

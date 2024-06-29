@@ -1,5 +1,8 @@
-﻿namespace SGE.Aplicacion
-{
+﻿namespace SGE.Aplicacion.CasosDeUso;
+
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
+
     public class CasoDeUsoExpedienteConsultaPorId
     {
         public Expediente Ejecutar(int idExpediente, List<Expediente> listaE, List<Tramite> listaT)
@@ -45,4 +48,4 @@
             return expediente;//devuelve el expediente con su lista de tramites
         }
     }
-}
+

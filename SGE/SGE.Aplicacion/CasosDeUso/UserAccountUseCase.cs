@@ -1,6 +1,7 @@
+namespace SGE.Aplicacion.CasosDeUso;
 
-namespace SGE.Aplicacion;
-
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 public abstract class UserAccountUseCase(IRepositorioUserAccount repositorio)
 {
     protected IRepositorioUserAccount Repositorio { get; } = repositorio;

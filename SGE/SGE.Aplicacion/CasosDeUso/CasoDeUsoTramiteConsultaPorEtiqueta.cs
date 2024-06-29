@@ -1,5 +1,7 @@
-﻿namespace SGE.Aplicacion;
+﻿namespace SGE.Aplicacion.CasosDeUso;
 
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 public class CasoDeUsoTramiteConsultaPorEtiqueta()
 {
     public List<Tramite> Ejecutar(List<Tramite> listaTramites, Etiqueta etiqueta)

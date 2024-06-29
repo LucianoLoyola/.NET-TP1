@@ -1,5 +1,4 @@
-﻿namespace SGE.Aplicacion;
-
+﻿namespace SGE.Aplicacion.Entidades;
 public class Tramite
 {
     public int Id { get; set; }

@@ -1,4 +1,7 @@
-﻿namespace SGE.Aplicacion;
+﻿namespace SGE.Aplicacion.CasosDeUso;
+
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 
 public class CasoDeUsoListarTramites(ITramiteRepositorio repo){
     public List<Tramite> Ejecutar(){

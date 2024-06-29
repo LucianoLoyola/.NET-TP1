@@ -1,6 +1,7 @@
+namespace SGE.Aplicacion.CasosDeUso;
 
-namespace SGE.Aplicacion;
-
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 public class ModificarUserAccountUseCase(IRepositorioUserAccount repositorio):UserAccountUseCase(repositorio)
 {
     public void Ejecutar(UserAccount userAccount)

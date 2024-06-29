@@ -1,5 +1,9 @@
-﻿namespace SGE.Aplicacion;
+﻿namespace SGE.Aplicacion.CasosDeUso;
+
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 public class CasoDeUsoExpedienteModificacion(IExpedienteRepositorio repo, ExpedienteValidador validador, IServicioAutorizacion servicioAuth){
+
     public void Ejecutar(Expediente expediente ,int idUsuario, Permiso permiso){
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario

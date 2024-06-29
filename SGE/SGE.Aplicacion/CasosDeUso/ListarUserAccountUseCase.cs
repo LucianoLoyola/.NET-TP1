@@ -1,6 +1,7 @@
+namespace SGE.Aplicacion.CasosDeUso;
 
-namespace SGE.Aplicacion;
-
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 public class ListarUserAccountUseCase(IRepositorioUserAccount repositorio):UserAccountUseCase(repositorio)
 {
     public List<UserAccount> Ejecutar()

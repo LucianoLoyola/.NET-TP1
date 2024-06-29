@@ -1,4 +1,7 @@
-﻿namespace SGE.Aplicacion;
+﻿namespace SGE.Aplicacion.CasosDeUso;
+
+using SGE.Aplicacion.Entidades;
+using SGE.Aplicacion.Interfaces;
 
 public class CasoDeUsoTramiteBaja(ITramiteRepositorio repoT, IExpedienteRepositorio repoE, IServicioAutorizacion servicioAuth, IServicioActualizacionEstado servicioUpdate){
     public void Ejecutar(int idTramite, Expediente expediente, int idUsuario, Permiso permiso){

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SGE.Aplicacion
-{
+namespace SGE.Aplicacion.Entidades;
+
     [Table("user_account")]
     public class UserAccount
     {
@@ -23,4 +23,3 @@ namespace SGE.Aplicacion
         [MaxLength(20)]
         public string? Role { get; set; }
     }
-}
