@@ -7,6 +7,8 @@
 @using System.Security.Claims
 @inject UserAccountContext userDbContext
 @inject NavigationManager navigationManager
+@inject IServicioHash servicioHash
+
 
 <div class="row">
     <div class="row">
@@ -48,7 +50,7 @@
     private async Task Authenticate() // Cambiado a Authenticate
     {
         var userAccount = userDbContext.UserAccount.Where(x => x.UserName == Model.UserName).FirstOrDefault();
-        if (userAccount is null || userAccount.Password != Model.Password)
+        if (userAccount is null || userAccount.Password != servicioHash.GetHashSha256(Model.Password))
         {
             errorMessage = "Usuario o contraseña invalido";
             return;

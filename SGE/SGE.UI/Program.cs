@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SGE.UI.Components;
 using SGE.Repositorios;
 using SGE.Aplicacion;
+using SGE.Aplicacion.Interfaces;
+using SGE.Aplicacion.Servicios;
 
 // Crear una instancia de DbContextOptions para UserAccountContext
 var connectionString = "Data Source=UserAccount.sqlite";
@@ -28,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configurar servicios y middleware
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
