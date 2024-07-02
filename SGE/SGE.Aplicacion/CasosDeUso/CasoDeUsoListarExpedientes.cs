@@ -3,7 +3,7 @@
 using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
 
-public class CasoDeUsoListarExpedientes(IExpedienteRepositorio repo){
+public class CasoDeUsoListarExpedientes(IRepositorioExpediente repo){
     public List<Expediente> Ejecutar(){
         List<Expediente> listaExpedientes = repo.ListarExpedientes();
         

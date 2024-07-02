@@ -2,7 +2,7 @@
 
 using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
-public class CasoDeUsoExpedienteModificacion(IExpedienteRepositorio repo, ExpedienteValidador validador, IServicioAutorizacion servicioAuth){
+public class CasoDeUsoExpedienteModificacion(IRepositorioExpediente repo, ExpedienteValidador validador, IServicioAutorizacion servicioAuth){
 
     public void Ejecutar(Expediente expediente ,int idUsuario, Permiso permiso){
 

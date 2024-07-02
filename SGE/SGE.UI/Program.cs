@@ -13,7 +13,7 @@ var options = new DbContextOptionsBuilder<SGEContext>()
     .Options;
 
 // Inicializar la base de datos si es necesario
-ProyectoSqlite.Inicializar(options);
+SGESqlite.Inicializar(options);
 
 // Usar el contexto para mostrar los datos de UserAccount
 using (var context = new SGEContext(options))

@@ -4,7 +4,7 @@ namespace SGE.Aplicacion.Entidades;
 
 public class Expediente
 {
-    public int Id { get; set; } //debe ser un entero valido mayor a 0 
+    public int Id { get; set; } //debe ser un entero valido mayor a 0 (lo asigna el EF)
     public string caratula { get; set; } = ""; //no puede estar vacia 
     public DateTime fechaHoraCreacion { get; set; }
     public DateTime fechaHoraUModificacion { get; set; }

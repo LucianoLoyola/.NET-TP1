@@ -5,7 +5,10 @@ namespace SGE.Repositorios
 {
     public class SGEContext : DbContext
     {
-        public DbSet<UserAccount> UserAccount { get; set; }
+
+        public DbSet<UserAccount> Usuarios { get; set; }
+        public DbSet<Expediente> Expedientes { get; set; }
+        public DbSet<Tramite> Tramites { get; set; }
 
         public SGEContext(DbContextOptions<SGEContext> options) : base(options)
         {
@@ -15,8 +18,9 @@ namespace SGE.Repositorios
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=UserAccount.sqlite");
+                optionsBuilder.UseSqlite("Data Source=SGE.sqlite");
             }
         }
+
     }
 }

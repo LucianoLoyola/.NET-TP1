@@ -3,7 +3,7 @@
 using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
 
-public class CasoDeUsoTramiteBaja(ITramiteRepositorio repoT, IExpedienteRepositorio repoE, IServicioAutorizacion servicioAuth, IServicioActualizacionEstado servicioUpdate){
+public class CasoDeUsoTramiteBaja(IRepositorioTramite repoT, IRepositorioExpediente repoE, IServicioAutorizacion servicioAuth, IServicioActualizacionEstado servicioUpdate){
     public void Ejecutar(int idTramite, Expediente expediente, int idUsuario, Permiso permiso){
         try {
             if (!servicioAuth.PoseeElPermiso(idUsuario, permiso)){//verifica la autorizacion del usuario
