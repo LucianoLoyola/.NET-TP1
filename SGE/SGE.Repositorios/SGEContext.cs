@@ -3,11 +3,11 @@ using SGE.Aplicacion.Entidades;
 
 namespace SGE.Repositorios
 {
-    public class UserAccountContext : DbContext
+    public class SGEContext : DbContext
     {
         public DbSet<UserAccount> UserAccount { get; set; }
 
-        public UserAccountContext(DbContextOptions<UserAccountContext> options) : base(options)
+        public SGEContext(DbContextOptions<SGEContext> options) : base(options)
         {
         }
 
