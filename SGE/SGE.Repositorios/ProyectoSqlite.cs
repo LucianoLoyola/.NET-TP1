@@ -18,7 +18,6 @@ namespace SGE.Repositorios
                 context.SaveChanges();
             }
 
-            //Asegurarse de setear el modo journal=DELETE (no estoy seguro)
             var connection = Database.GetDbConnection();
             connection.Open();
             using (var command = connection.CreateCommand())
