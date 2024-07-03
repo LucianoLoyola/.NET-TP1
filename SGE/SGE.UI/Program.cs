@@ -6,14 +6,14 @@ using SGE.Aplicacion;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 
-// Crear una instancia de DbContextOptions para UserAccountContext
+// Crear una instancia de DbContextOptions para SGEContext
 var connectionString = "Data Source=UserAccount.sqlite";
 var options = new DbContextOptionsBuilder<SGEContext>()
     .UseSqlite(connectionString)
     .Options;
 
 // Inicializar la base de datos si es necesario
-ProyectoSqlite.Inicializar(options);
+SGESqlite.Inicializar(options);
 
 // Usar el contexto para mostrar los datos de UserAccount
 using (var context = new SGEContext(options))
@@ -43,7 +43,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
-// Agregar el DbContext de UserAccountContext con la configuración de SQLite
+// Agregar el DbContext de SGEContext con la configuración de SQLite
 builder.Services.AddDbContext<SGEContext>(options =>
     options.UseSqlite(connectionString));
 

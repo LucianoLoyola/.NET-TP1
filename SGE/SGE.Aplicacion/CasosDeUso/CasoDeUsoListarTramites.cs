@@ -3,7 +3,7 @@
 using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
 
-public class CasoDeUsoListarTramites(ITramiteRepositorio repo){
+public class CasoDeUsoListarTramites(IRepositorioTramite repo){
     public List<Tramite> Ejecutar(){
         List<Tramite> listaTramites = repo.ListarTramites();
         
