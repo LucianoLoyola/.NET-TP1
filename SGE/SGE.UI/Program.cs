@@ -19,7 +19,7 @@ SGESqlite.Inicializar(options);
 using (var context = new SGEContext(options))
 {
     Console.WriteLine("-- Tabla UserAccount --");
-    foreach (var a in context.UserAccount)
+    foreach (var a in context.Usuarios)
     {
         Console.WriteLine($"{a.Id} {a.UserName}");
     }

@@ -5,15 +5,15 @@ namespace SGE.Aplicacion;
 
 public class ServicioAutorizacionProvisorio : IServicioAutorizacion
 {
-    private readonly IRepositorioUserAccount _repositorio;
+    private readonly IRepositorioUsuario _repositorio;
 
-    public ServicioAutorizacionProvisorio(IRepositorioUserAccount repositorioUsuario)
+    public ServicioAutorizacionProvisorio(IRepositorioUsuario repositorioUsuario)
     {
         _repositorio = repositorioUsuario;
     }
     //busca un usuario por id en la base de datos
     public bool PoseeElPermiso(int IdUsuario, Permiso permiso){
-        var usuario = _repositorio.GetUserAccount(IdUsuario); //hay que implementar el metodo
+        var usuario = _repositorio.GetUsuario(IdUsuario); //hay que implementar el metodo
         return usuario?.Permisos.Contains(permiso) ?? false;  //quiza no funcione porque trae un string de la base de datos
                                                     // (aunque podría funcionar porque está implementada la conversión en el user context).
     } 

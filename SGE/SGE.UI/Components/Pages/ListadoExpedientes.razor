@@ -28,7 +28,7 @@
                 <td>@exp.fechaHoraUModificacion</td>
                 <td>@exp.IdUsuarioMod</td>
                 <td>@exp.estado</td>
-                <td>@exp.tramites</td>
+                <td>@exp</td>
                 <td>
                     <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
                     <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Elliminar</button>
@@ -59,7 +59,7 @@
     {
         if (_ExpedienteParaEliminar != null)
         {
-            CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id);
+            @* CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id); *@
             _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
         }
     }

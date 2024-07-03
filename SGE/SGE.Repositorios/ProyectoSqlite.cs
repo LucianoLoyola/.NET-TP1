@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using SGE.Aplicacion;
 using SGE.Aplicacion.Entidades;
 namespace SGE.Repositorios
@@ -10,21 +11,29 @@ namespace SGE.Repositorios
         public static void Inicializar(DbContextOptions<SGEContext> options)
         {
             using var context = new SGEContext(options);
-            if (context.Database.EnsureCreated())
-            {
+            // if (context.Database.EnsureCreated())
+            // {
+            //     Console.WriteLine("Se creó la base de datos");
+            //     var connection = Database.GetDbConnection();
+            //     connection.Open();
+            //     using (var command = connection.CreateCommand())
+            //     {
+            //         command.CommandText = "PRAGMA journal_mode=DELETE;";
+            //         command.ExecuteNonQuery();
+            //     }
+            // }
+                Database.EnsureCreated();
                 Console.WriteLine("Se creó la base de datos");
-                context.UserAccount.Add(new UserAccount(){UserName="user", Password="Password", Role="User"});
-                context.UserAccount.Add(new UserAccount(){UserName="admin",Password="Password",Role="Administrator"});
-                context.SaveChanges();
+                var connection = Database.GetDbConnection();
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "PRAGMA journal_mode=DELETE;";
+                    command.ExecuteNonQuery();
+                }
             }
 
-            var connection = Database.GetDbConnection();
-            connection.Open();
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "PRAGMA journal_mode=DELETE;";
-                command.ExecuteNonQuery();
-            }
+
         }
         
     }

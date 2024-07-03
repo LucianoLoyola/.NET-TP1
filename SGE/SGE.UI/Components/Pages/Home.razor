@@ -46,7 +46,7 @@
         var userName = user.Identity.Name;
 
         // Obtener el rol del usuario desde la base de datos
-        var userData = DbContext.UserAccount.Where(u => u.UserName == userName).FirstOrDefault();
+        var userData = DbContext.Usuarios.Where(u => u.UserName == userName).FirstOrDefault();
         if (userData != null)
         {
             UserRole = userData.Role;
