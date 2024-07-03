@@ -1,0 +1,70 @@
+@page "/listadoexpedientes"
+@rendermode InteractiveServer
+@inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
+@inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
+@inject CasoDeUsoExpedienteModificacion CasoDeUsoExpedienteModificacion
+@inject NavigationManager Navegador
+ 
+<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>CARATULA</th>
+            <th>FECHA CREACION</th>
+            <th>FECHA MODIFICACION</th>
+            <th>ID USUARIO MODIF.</th>
+            <th>ESTADO</th>
+            <th>TRAMITES</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exp in _lista)
+        {
+            <tr>
+                <td>@exp.Id</td>
+                <td>@exp.caratula  </td>
+                <td>@exp.fechaHoraCreacion</td>
+                <td>@exp.fechaHoraUModificacion</td>
+                <td>@exp.IdUsuarioMod</td>
+                <td>@exp.estado</td>
+                <td>@exp.tramites</td>
+                <td>
+                    <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+                    <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Elliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<Expediente> _lista = new List<Expediente>();
+    protected override void OnInitialized()
+    {
+        _lista = CasoDeUsoListarExpedientes.Ejecutar();
+    }
+
+    DialogoConfirmacion dialogo = null!;
+    Expediente? _ExpedienteParaEliminar = null;
+
+    //ver otra manera de hacer, con EventCallback  (esta en la filmina)
+    private void ConfirmarEliminacion(Expediente exp)
+    {
+        _ExpedienteParaEliminar = exp;
+        dialogo.Mensaje = $"¿Desea eliminar el expediente {exp.Id}?";
+        dialogo.Mostrar();
+    }
+    private void Eliminar()
+    {
+        if (_ExpedienteParaEliminar != null)
+        {
+            CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id);
+            _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
+        }
+    }
+
+    void ModificarExpediente(Expediente exp){
+        Navegador.NavigateTo($"expediente/{exp.Id}");
+    }
+}
