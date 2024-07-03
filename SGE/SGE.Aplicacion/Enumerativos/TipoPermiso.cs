@@ -1,7 +1,6 @@
-﻿namespace SGE.Aplicacion;
-
-public enum Permiso
+public enum TipoPermiso
 {
+    Lectura,
     ExpedienteAlta,
     ExpedienteBaja,
     ExpedienteModificacion,

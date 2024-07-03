@@ -22,4 +22,6 @@ namespace SGE.Aplicacion.Entidades;
         [Column("role")]
         [MaxLength(20)]
         public string? Role { get; set; }
+
+        public List<Permiso>? Permisos { get; set; }
     }

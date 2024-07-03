@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using System.Security.Claims
 @using SGE.Repositorios
-@inject UserAccountContext userDbContext
+@inject SGEContext DbContext
 
 
 <div class="page">
@@ -53,7 +53,7 @@
         var userName = user.Identity.Name;
 
         // Obtener el rol del usuario desde la base de datos
-        var userData = userDbContext.UserAccount.Where(u => u.UserName == userName).FirstOrDefault();
+        var userData = DbContext.UserAccount.Where(u => u.UserName == userName).FirstOrDefault();
         if (userData != null)
         {
             UserRole = userData.Role;

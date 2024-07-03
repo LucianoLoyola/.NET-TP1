@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
-@inject UserAccountContext userDbContext
+@inject SGEContext DbContext
 
 <PageTitle>Home</PageTitle>
 
@@ -46,7 +46,7 @@
         var userName = user.Identity.Name;
 
         // Obtener el rol del usuario desde la base de datos
-        var userData = userDbContext.UserAccount.Where(u => u.UserName == userName).FirstOrDefault();
+        var userData = DbContext.UserAccount.Where(u => u.UserName == userName).FirstOrDefault();
         if (userData != null)
         {
             UserRole = userData.Role;

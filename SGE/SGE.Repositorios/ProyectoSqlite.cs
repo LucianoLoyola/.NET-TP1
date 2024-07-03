@@ -6,9 +6,9 @@ namespace SGE.Repositorios
 {
     public static class ProyectoSqlite
     {
-        public static void Inicializar(DbContextOptions<UserAccountContext> options)
+        public static void Inicializar(DbContextOptions<SGEContext> options)
         {
-            using var context = new UserAccountContext(options);
+            using var context = new SGEContext(options);
             if (context.Database.EnsureCreated())
             {
                 Console.WriteLine("Se creó la base de datos");

@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using global::SGE.Aplicacion
-@inject UserAccountContext userDbContext
+@inject SGEContext DbContext
 
 <h3>Perfil de Usuario</h3>
 
@@ -30,6 +30,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        user = userDbContext.UserAccount.FirstOrDefault(u => u.Id == UserId);
+        user = DbContext.UserAccount.FirstOrDefault(u => u.Id == UserId);
     }
 }

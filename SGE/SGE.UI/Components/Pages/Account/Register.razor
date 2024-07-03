@@ -1,11 +1,12 @@
 @page "/register"
+@using SGE.Aplicacion
 @using SGE.Aplicacion.Entidades
 @using SGE.Repositorios
 @using SGE.Aplicacion.ViewModels
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using System.Security.Claims
-@inject UserAccountContext userDbContext
+@inject SGEContext DbContext
 @inject NavigationManager navigationManager
 @inject IServicioHash servicioHash
 
@@ -63,7 +64,7 @@
     private async Task HandleRegistration()
     {
         // Verificar si el usuario ya existe
-        var existingUser = userDbContext.UserAccount.FirstOrDefault(x => x.UserName == Model.UserName);
+        var existingUser = DbContext.UserAccount.FirstOrDefault(x => x.UserName == Model.UserName);
         if (existingUser != null)
         {
             errorMessage = "El usuario ya existe";
@@ -75,11 +76,17 @@
         {
             UserName = Model.UserName,
             Password = servicioHash.GetHashSha256(Model.Password),  // Asegúrate de almacenar la contraseña de manera segura (hashing)
-            Role = Model.Role
-        };
+            Role = Model.Role,
+            Permisos = new List<Permiso>(){
+                new Permiso(){tipoPermiso = TipoPermiso.Lectura}     // Asignar permiso de lectura
 
-        userDbContext.UserAccount.Add(userAccount);
-        await userDbContext.SaveChangesAsync();
+                }
+        };
+        @* var permisoLectura = new Permiso { tipoPermiso = TipoPermiso.Lectura };
+        userAccount.Permisos.Add(permisoLectura); *@
+
+        DbContext.UserAccount.Add(userAccount);
+        await DbContext.SaveChangesAsync();
 
         // Redirigir al usuario a la página de inicio de sesión
         navigationManager.NavigateTo("/login");
