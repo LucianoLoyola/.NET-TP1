@@ -7,7 +7,7 @@ public class CasoDeUsoExpedienteBaja(IRepositorioExpediente repo, IServicioAutor
 
 
     //este metodo queda en desuso, puesto que la propiedad DELETE ON CASCADE de la propiedad de navegación nos facilita el trabajo
-     public void Ejecutar(int idExpediente, int idUsuario,List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite, Permiso permiso){
+     public void Ejecutar(int idExpediente, int idUsuario,List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite, TipoPermiso permiso){
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {
             throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");

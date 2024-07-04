@@ -32,7 +32,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
-    .AddTransient<CasoDeUsoListarExpedientes>();
+    .AddTransient<CasoDeUsoListarExpedientes>()
+    .AddTransient<CasoDeUsoExpedienteConsultaPorId>();
     // .AddTransient<CasoDeUsoExpedienteModificacion>()
     // .AddTransient<CasoDeUsoExpedienteBaja>();
     // .AddTransient<EliminarClienteUseCase>()
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
 builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
+builder.Services.AddScoped<IServicioSesion, ServicioSesion>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -53,11 +55,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddHttpContextAccessor();
+
 
 // Agregar el DbContext de SGEContext con la configuración de SQLite
 builder.Services.AddDbContext<SGEContext>(options =>
     options.UseSqlite(connectionString));
-
 
 
 

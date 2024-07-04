@@ -4,7 +4,7 @@ using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
 
 public class CasoDeUsoTramiteBaja(IRepositorioTramite repoT, IRepositorioExpediente repoE, IServicioAutorizacion servicioAuth, IServicioActualizacionEstado servicioUpdate){
-    public void Ejecutar(int idTramite, Expediente expediente, int idUsuario, Permiso permiso){
+    public void Ejecutar(int idTramite, Expediente expediente, int idUsuario, TipoPermiso permiso){
         try {
             if (!servicioAuth.PoseeElPermiso(idUsuario, permiso)){//verifica la autorizacion del usuario
                 throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");
@@ -20,7 +20,7 @@ public class CasoDeUsoTramiteBaja(IRepositorioTramite repoT, IRepositorioExpedie
     }
 
     // Método sobrecargado para las veces que se realiza el borrado de expediente, y no es necesario actualizar el estado del mismo
-    public void Ejecutar(int idTramite, int idUsuario, Permiso permiso){
+    public void Ejecutar(int idTramite, int idUsuario, TipoPermiso permiso){
         try {
             if (!servicioAuth.PoseeElPermiso(idUsuario, permiso)){//verifica la autorizacion del usuario
                 throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");

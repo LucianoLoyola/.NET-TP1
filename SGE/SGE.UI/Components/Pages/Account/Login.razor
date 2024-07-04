@@ -57,14 +57,13 @@
         }
         var claims = new List<Claim> {
             new Claim(ClaimTypes.Name, Model.UserName),
-            new Claim(ClaimTypes.Role, userAccount.Role)
+            new Claim(ClaimTypes.Role, userAccount.Role),
+            new Claim(ClaimTypes.NameIdentifier, userAccount.Id) // agrego un claim para el id
+
         };
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); // Usar el esquema de autenticación por defecto
         var principal = new ClaimsPrincipal(identity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         navigationManager.NavigateTo("/");
     }
-}
-
-
 }

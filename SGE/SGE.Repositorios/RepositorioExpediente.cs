@@ -12,8 +12,11 @@ public class RepositorioExpediente : IRepositorioExpediente
         db = context;
     }
 
-    public void AgregarExpediente(Expediente expediente){
+    public void AgregarExpediente(Expediente expediente, int idUsuario){
         if (expediente.caratula == null) throw new Exception("El expediente debe tener una caratula");
+        expediente.IdUsuarioMod = idUsuario;
+        expediente.fechaHoraCreacion = DateTime.Now;
+        expediente.fechaHoraUModificacion = null;
         db.Add(expediente);
         db.SaveChanges();
     }
