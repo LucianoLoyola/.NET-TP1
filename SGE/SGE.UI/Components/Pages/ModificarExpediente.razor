@@ -1,4 +1,4 @@
-@page "/expediente/{Id;int?}"
+@page "/expediente/{Id:int?}"
 @using SGE.Aplicacion
 InteractiveServer
 @inject CasoDeUsoExpedienteAlta altaExpediente
@@ -46,10 +46,9 @@ else{
 
 
 @code {
-    [Parameter]
-    public string? Id { get; set; }
-    @* Excepcion dialogo = null!; *@
+    
     Expediente _expediente = new Expediente();
+    [Parameter] public int? Id {get;set;}
     bool _esNuevoExpediente = true;
 
     //lista de estados para seleccionar
@@ -66,7 +65,8 @@ else{
     {
         if (Id != null)
         {
-            var exp_hallado = consultaExpediente.Ejecutar(int.Parse(Id));
+            int id = Id.HasValue ? Id.Value : -1; // los Id son a partir del 1
+            var exp_hallado = consultaExpediente.Ejecutar(id);
             if (exp_hallado != null)
             {
                 _expediente = exp_hallado;
