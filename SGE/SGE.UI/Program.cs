@@ -5,6 +5,7 @@ using SGE.Repositorios;
 using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
+using SGE.Aplicacion;
 
 //que hace esto?? es lo mismo que no pasarle nada?
 // Crear una instancia de DbContextOptions para SGEContext (le pasa las opciones al constructor)
@@ -33,8 +34,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<CasoDeUsoListarExpedientes>()
-    .AddTransient<CasoDeUsoExpedienteConsultaPorId>();
-    // .AddTransient<CasoDeUsoExpedienteModificacion>()
+    .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
+    .AddTransient<CasoDeUsoExpedienteModificacion>();
     // .AddTransient<CasoDeUsoExpedienteBaja>();
     // .AddTransient<EliminarClienteUseCase>()
     // .AddTransient<ModificarClienteUseCase>()
@@ -56,6 +57,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddTransient<ExpedienteValidador>();
+builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
 
 
 // Agregar el DbContext de SGEContext con la configuración de SQLite
