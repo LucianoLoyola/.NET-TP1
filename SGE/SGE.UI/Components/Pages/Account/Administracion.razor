@@ -48,6 +48,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         // Obtener todos los usuarios de la base de datos
-        UserAccounts = DbContext.UserAccount.ToList();
+        UserAccounts = DbContext.Usuarios.ToList();
     }
 }

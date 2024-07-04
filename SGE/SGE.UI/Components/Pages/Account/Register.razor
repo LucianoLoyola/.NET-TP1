@@ -64,7 +64,7 @@
     private async Task HandleRegistration()
     {
         // Verificar si el usuario ya existe
-        var existingUser = DbContext.UserAccount.FirstOrDefault(x => x.UserName == Model.UserName);
+        var existingUser = DbContext.Usuarios.FirstOrDefault(x => x.UserName == Model.UserName);
         if (existingUser != null)
         {
             errorMessage = "El usuario ya existe";
@@ -85,7 +85,7 @@
         @* var permisoLectura = new Permiso { tipoPermiso = TipoPermiso.Lectura };
         userAccount.Permisos.Add(permisoLectura); *@
 
-        DbContext.UserAccount.Add(userAccount);
+        DbContext.Usuarios.Add(userAccount);
         await DbContext.SaveChangesAsync();
 
         // Redirigir al usuario a la página de inicio de sesión

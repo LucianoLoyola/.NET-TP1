@@ -1,43 +1,48 @@
-@page "/listadoexpedientes"
+@page "/listadoExpedientes"
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
-@inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
-@inject CasoDeUsoExpedienteModificacion CasoDeUsoExpedienteModificacion
+@* @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
+@inject CasoDeUsoExpedienteModificacion CasoDeUsoExpedienteModificacion *@
 @inject NavigationManager Navegador
  
 <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>CARATULA</th>
-            <th>FECHA CREACION</th>
-            <th>FECHA MODIFICACION</th>
-            <th>ID USUARIO MODIF.</th>
-            <th>ESTADO</th>
-            <th>TRAMITES</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var exp in _lista)
-        {
+@if (_lista.Count == 0){
+    <h3>Aún no existen expedientes</h3>
+    <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+    }
+else{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@exp.Id</td>
-                <td>@exp.caratula  </td>
-                <td>@exp.fechaHoraCreacion</td>
-                <td>@exp.fechaHoraUModificacion</td>
-                <td>@exp.IdUsuarioMod</td>
-                <td>@exp.estado</td>
-                <td>@exp</td>
-                <td>
-                    <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
-                    <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Elliminar</button>
-                </td>
+                <th>ID</th>
+                <th>CARATULA</th>
+                <th>FECHA CREACION</th>
+                <th>FECHA MODIFICACION</th>
+                <th>ID USUARIO MODIF.</th>
+                <th>ESTADO</th>
+                <th>TRAMITES</th>
             </tr>
-        }
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            @foreach (var exp in _lista)
+            {
+                <tr>
+                    <td>@exp.Id</td>
+                    <td>@exp.caratula  </td>
+                    <td>@exp.fechaHoraCreacion</td>
+                    <td>@exp.fechaHoraUModificacion</td>
+                    <td>@exp.IdUsuarioMod</td>
+                    <td>@exp.estado</td>
+                    <td>@exp</td>
+                    <td>
+                        @* <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Elliminar</button> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 @code {
     List<Expediente> _lista = new List<Expediente>();
     protected override void OnInitialized()
@@ -65,6 +70,10 @@
     }
 
     void ModificarExpediente(Expediente exp){
+        Navegador.NavigateTo($"expediente/{exp.Id}");
+    }
+
+    void AgregarExpediente(){
         Navegador.NavigateTo($"expediente/{exp.Id}");
     }
 }

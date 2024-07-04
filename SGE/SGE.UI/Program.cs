@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using SGE.UI.Components;
 using SGE.Repositorios;
-using SGE.Aplicacion;
+using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 
-// Crear una instancia de DbContextOptions para SGEContext
-var connectionString = "Data Source=UserAccount.sqlite";
+//que hace esto?? es lo mismo que no pasarle nada?
+// Crear una instancia de DbContextOptions para SGEContext (le pasa las opciones al constructor)
+var connectionString = "Data Source=SGE.sqlite";
 var options = new DbContextOptionsBuilder<SGEContext>()
     .UseSqlite(connectionString)
     .Options;
@@ -16,20 +17,30 @@ var options = new DbContextOptionsBuilder<SGEContext>()
 SGESqlite.Inicializar(options);
 
 // Usar el contexto para mostrar los datos de UserAccount
-using (var context = new SGEContext(options))
-{
-    Console.WriteLine("-- Tabla UserAccount --");
-    foreach (var a in context.Usuarios)
-    {
-        Console.WriteLine($"{a.Id} {a.UserName}");
-    }
-}
+// using (var context = new SGEContext(options))
+// {
+//     Console.WriteLine("-- Tabla UserAccount --");
+//     foreach (var a in context.Usuarios)
+//     {
+//         Console.WriteLine($"{a.Id} {a.UserName}");
+//     }
+// }
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar servicios y middleware
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddTransient<AgregarUsuarioUseCase>()
+    .AddTransient<CasoDeUsoListarExpedientes>();
+    // .AddTransient<CasoDeUsoExpedienteModificacion>()
+    // .AddTransient<CasoDeUsoExpedienteBaja>();
+    // .AddTransient<EliminarClienteUseCase>()
+    // .AddTransient<ModificarClienteUseCase>()
+    // .AddTransient<ObtenerClienteUseCase>();
+builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
+builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -46,6 +57,9 @@ builder.Services.AddCascadingAuthenticationState();
 // Agregar el DbContext de SGEContext con la configuración de SQLite
 builder.Services.AddDbContext<SGEContext>(options =>
     options.UseSqlite(connectionString));
+
+
+
 
 var app = builder.Build();
 

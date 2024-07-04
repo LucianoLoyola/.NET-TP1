@@ -49,7 +49,7 @@
 
     private async Task Authenticate() // Cambiado a Authenticate
     {
-        var userAccount = DbContext.UserAccount.Where(x => x.UserName == Model.UserName).FirstOrDefault();
+        var userAccount = DbContext.Usuarios.Where(x => x.UserName == Model.UserName).FirstOrDefault();
         if (userAccount is null || userAccount.Password != servicioHash.GetHashSha256(Model.Password))
         {
             errorMessage = "Usuario o contraseña invalido";

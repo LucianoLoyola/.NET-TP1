@@ -18,7 +18,7 @@ namespace SGE.Repositorios
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=UserAccount.sqlite");
+                optionsBuilder.UseSqlite("Data Source=SGE.sqlite");
             }
         }
 

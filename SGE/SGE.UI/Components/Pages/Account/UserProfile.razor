@@ -30,6 +30,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        user = DbContext.UserAccount.FirstOrDefault(u => u.Id == UserId);
+        user = DbContext.Usuarios.FirstOrDefault(u => u.Id == UserId);
     }
 }
