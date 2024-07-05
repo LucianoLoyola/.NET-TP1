@@ -37,3 +37,7 @@ namespace SGE.Aplicacion.Entidades;
 
         public List<Permiso>? Permisos { get; set; }
     }
+
+/*
+
+*/

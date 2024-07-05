@@ -25,16 +25,16 @@ public class RepositorioUsuario : IRepositorioUsuario
         usr_existente.UserName = usuario.UserName;
         usr_existente.Password = usuario.Password;
         usr_existente.Role = usuario.Role;
-        usr_existente.Email=usuario.Email;
-        usr_existente.Name=usuario.Name;
-        usr_existente.Surname=usuario.Surname;
+        usr_existente.Email= usuario.Email;
+        usr_existente.Name= usuario.Name;
+        usr_existente.Surname= usuario.Surname;
 
         db.SaveChanges();
     }
     public void EliminarUsuario(int id){
         var usr_existente = db.Usuarios.Find(id);
         if (usr_existente == null) throw new Exception("No se encontro usuario con ese id");
-        
+
         db.Remove(usr_existente); //se borra realmente con el db.SaveChanges()
         db.SaveChanges();
     }
