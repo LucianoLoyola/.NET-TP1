@@ -9,8 +9,6 @@ public interface IRepositorioExpediente
     void ModificarExpediente(Expediente expediente);
     // void EliminarExpediente(int id,List<Tramite> listaT,CasoDeUsoTramiteBaja EliminarTramite);
     List<Expediente> ListarExpedientes();
-    void EliminarExpediente(int idExpediente, List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite);
-    void EliminarExpediente(int id);
-
+    void EliminarExpediente(int idExpediente);
     Expediente GetExpedientePorId(int id);
 }

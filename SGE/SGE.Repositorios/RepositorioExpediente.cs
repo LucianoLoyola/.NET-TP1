@@ -16,7 +16,7 @@ public class RepositorioExpediente : IRepositorioExpediente
         if (expediente.caratula == null) throw new Exception("El expediente debe tener una caratula");
         expediente.IdUsuarioMod = idUsuario;
         expediente.fechaHoraCreacion = DateTime.Now;
-        expediente.fechaHoraUModificacion = null;
+        expediente.fechaHoraUModificacion = DateTime.Now;
         db.Add(expediente);
         db.SaveChanges();
     }
@@ -40,19 +40,11 @@ public class RepositorioExpediente : IRepositorioExpediente
         return db.Expedientes.ToList();
     }
 
-    public void EliminarExpediente(int idExpediente, List<Tramite> listaT, CasoDeUsoTramiteBaja EliminarTramite){
-        var usr_existente = db.Expedientes.Find(idExpediente);
-        if (usr_existente == null) throw new Exception("No se encontro la poliza con ese id");
+    public void EliminarExpediente(int idExpediente){
+        var exp_existente = db.Expedientes.Find(idExpediente);
+        if (exp_existente == null) throw new Exception("No se encontro el expediente con ese id");
 
-        db.Remove(usr_existente); //se borra realmente con el db.SaveChanges()
-        db.SaveChanges();
-    }
-
-    public void EliminarExpediente(int id){
-        var usr_existente = db.Expedientes.Find(id);
-        if (usr_existente == null) throw new Exception("No se encontro la poliza con ese id");
-
-        db.Remove(usr_existente); //se borra realmente con el db.SaveChanges()
+        db.Remove(exp_existente); //se borra realmente con el db.SaveChanges()
         db.SaveChanges();
     }
 
