@@ -15,6 +15,18 @@ namespace SGE.Aplicacion.Entidades;
         [MaxLength(100)]
         public string? UserName { get; set; }
 
+        [Column("name")]
+        [MaxLength(100)]
+        public string? Name { get; set; }
+
+        [Column("surname")]
+        [MaxLength(100)]
+        public string? Surname { get; set; }
+
+        [Column("email")]
+        [MaxLength(100)]
+        public string? Email { get; set; }
+
         [Column("password")]
         [MaxLength(100)]
         public string? Password { get; set; }
@@ -25,3 +37,7 @@ namespace SGE.Aplicacion.Entidades;
 
         public List<Permiso>? Permisos { get; set; }
     }
+
+/*
+
+*/

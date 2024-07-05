@@ -25,6 +25,9 @@ public class RepositorioUsuario : IRepositorioUsuario
         usr_existente.UserName = usuario.UserName;
         usr_existente.Password = usuario.Password;
         usr_existente.Role = usuario.Role;
+        usr_existente.Email= usuario.Email;
+        usr_existente.Name= usuario.Name;
+        usr_existente.Surname= usuario.Surname;
 
         db.SaveChanges();
     }

@@ -31,6 +31,22 @@ namespace SGE.Repositorios
                     v => v.ToString(), // Convertir enumerativo a string
                     v => (TipoPermiso)Enum.Parse(typeof(TipoPermiso), v) // Convertir string a enumerativo
                 );
+
+            modelBuilder.Entity<UserAccount>()
+                .Property(a => a.Email)
+                .HasColumnName("Email").HasDefaultValue("no especificado");
+            modelBuilder.Entity<UserAccount>()
+                .Property(a => a.Name)
+                .HasColumnName("Name").HasDefaultValue("no especificado");
+            modelBuilder.Entity<UserAccount>()
+                .Property(a => a.Surname)
+                .HasColumnName("Surname").HasDefaultValue("no especificado");
+
+            
             }
+
+        
+
+            
     }
 }
