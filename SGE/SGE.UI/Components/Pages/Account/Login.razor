@@ -46,7 +46,6 @@
     [SupplyParameterFromForm]
     public LoginViewModel Model { get; set; } = new();
     private string? errorMessage;
-
     private async Task Authenticate() // Cambiado a Authenticate
     {
         var userAccount = DbContext.Usuarios.Where(x => x.UserName == Model.UserName).FirstOrDefault();
@@ -58,7 +57,7 @@
         var claims = new List<Claim> {
             new Claim(ClaimTypes.Name, Model.UserName),
             new Claim(ClaimTypes.Role, userAccount.Role),
-            @* new Claim(ClaimTypes.NameIdentifier, userAccount.Id) // agrego un claim para el id *@
+            new Claim("UserId", userAccount.Id.ToString()) // agrego un claim para el id *@
 
         };
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); // Usar el esquema de autenticación por defecto
@@ -66,4 +65,6 @@
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         navigationManager.NavigateTo("/");
     }
+
+
 }

@@ -1,6 +1,6 @@
 @page "/expediente/{Id:int?}"
 @using SGE.Aplicacion
-InteractiveServer
+@rendermode InteractiveServer
 @inject CasoDeUsoExpedienteAlta altaExpediente
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject CasoDeUsoExpedienteModificacion modificacionExpediente
@@ -30,7 +30,8 @@ InteractiveServer
             </select>
         </div>
 
-        <button type="button" class="btn btn-primary" @onclick="CrearExpediente">Agregar Nuevo</button>
+        <button class="btn btn-primary" @onclick="CrearExpediente">Agregar Expediente</button>
+
 
     </form>
 
@@ -52,15 +53,8 @@ else{
     bool _esNuevoExpediente = true;
 
     //lista de estados para seleccionar
-    @* private Estado estado { get; set; } *@
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
     
-    @* //convierte a int
-    protected override void OnInitialized()
-    {
-        if (Id != null) expediente.Id = int.Parse(Id);
-
-    }  *@
     protected override void OnParametersSet()
     {
         if (Id != null)
@@ -75,12 +69,7 @@ else{
         }
     }
 
-    @* private void ActualizarEstado(Estado value)
-    {
-        _expediente.estado = value;
-    } *@
-
-    private void CrearExpediente()
+    void CrearExpediente()
     {
         try
         {
@@ -91,9 +80,9 @@ else{
         {
             @* dialogo.Mostrar(e.Message); *@
         }
-    
+
     }
-    private void Siguiente()
+    void Siguiente()
     {
         Navegador.NavigateTo("/");
     }

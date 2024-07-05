@@ -37,6 +37,13 @@
     private ClaimsPrincipal user;
     private string UserRole { get; set; }
 
+    using var db = new SGEContext();
+    foreach (UserAccount u in db.Usuarios.Include(u => u.Permisos))
+    {
+    Console.WriteLine(u.userName);
+    u.Permisos?.ToList()
+    .ForEach(per => Console.WriteLine($" - {per.tipoPermiso"));
+}
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateTask;
