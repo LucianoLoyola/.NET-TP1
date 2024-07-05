@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Microsoft.EntityFrameworkCore
 @using SGE.Repositorios
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
@@ -36,18 +37,40 @@
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
     private ClaimsPrincipal user;
     private string UserRole { get; set; }
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
 
-    using var db = new SGEContext();
-    foreach (UserAccount u in db.Usuarios.Include(u => u.Permisos))
-    {
-    Console.WriteLine(u.userName);
-    u.Permisos?.ToList()
-    .ForEach(per => Console.WriteLine($" - {per.tipoPermiso"));
-}
+
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateTask;
         user = authState.User;
+
+
+        usuarios = await DbContext.Usuarios.Include(u => u.Permisos).ToListAsync();
+        foreach (var usuario in usuarios)
+        {
+            Console.WriteLine($"Usuario: {usuario.UserName}");
+
+            // Verificar si el usuario tiene permisos
+            if (usuario.Permisos != null && usuario.Permisos.Any())
+            {
+                Console.WriteLine("Permisos:");
+
+                // Iterar sobre los permisos del usuario
+            foreach (var permiso in usuario.Permisos)
+                {
+                    Console.WriteLine($" - {permiso.tipoPermiso}");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Este usuario no tiene permisos asignados.");
+            }
+
+            Console.WriteLine(); // Separador entre usuarios
+        }
+
 
         // Obtener el nombre de usuario del claim
         var userName = user.Identity.Name;

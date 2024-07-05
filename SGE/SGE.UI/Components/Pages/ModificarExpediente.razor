@@ -1,4 +1,5 @@
 @page "/expediente/{Id:int?}"
+@using Microsoft.EntityFrameworkCore
 @using SGE.Aplicacion
 @rendermode InteractiveServer
 @inject CasoDeUsoExpedienteAlta altaExpediente
@@ -6,6 +7,8 @@
 @inject CasoDeUsoExpedienteModificacion modificacionExpediente
 @inject NavigationManager Navegador
 @inject IServicioSesion sesion
+@inject SGEContext DbContext
+
 
 @if (_esNuevoExpediente){
 
@@ -45,16 +48,49 @@ else{
     //aquí codigo para modificación del expediente
 }
 
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <p class="text-danger">@_errorMessage</p>
+    }
+
 
 @code {
-    
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
+
     Expediente _expediente = new Expediente();
     [Parameter] public int? Id {get;set;}
     bool _esNuevoExpediente = true;
+    private string _errorMessage; // Mensaje de error para mostrar en la página
 
     //lista de estados para seleccionar
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
     
+    protected override void OnInitialized(){
+    usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
+        Console.WriteLine("usuarios en agregar expediente");
+        foreach (var usuario in usuarios)
+        {
+            Console.WriteLine($"Usuario: {usuario.UserName}");
+
+            if (usuario.Permisos != null && usuario.Permisos.Any())
+            {
+                Console.WriteLine("Permisos:");
+
+                foreach (var permiso in usuario.Permisos)
+                {
+                    Console.WriteLine($" - {permiso.tipoPermiso}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Este usuario no tiene permisos asignados.");
+            }
+
+            Console.WriteLine(); // Separador entre usuarios
+        }
+
+
+    }
     protected override void OnParametersSet()
     {
         if (Id != null)
@@ -76,9 +112,10 @@ else{
             altaExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteAlta);
             Siguiente();
         }
-        catch (Exception e)
+        catch (Exception error)
         {
-            @* dialogo.Mostrar(e.Message); *@
+            _errorMessage = "No tiene permisos para agregar este expediente.";
+            Console.WriteLine($"Error al agregar expediente: {error.Message}");
         }
 
     }
