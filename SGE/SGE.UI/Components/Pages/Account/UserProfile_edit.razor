@@ -1,0 +1,94 @@
+@page "/userprofile_edit/{userId:int}"
+@using SGE.Aplicacion.ViewModels
+@using System.Security.Claims
+@using SGE.Repositorios
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using global::SGE.Aplicacion
+@inject SGEContext DbContext
+@inject NavigationManager Navigation
+
+<h3>Perfil de Usuario</h3>
+
+@if (user == null)
+{
+    <p>El usuario no existe</p>
+}
+else
+{
+<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <Antiforgery /> <!-- Agregar Antiforgery token -->
+    <div class="mb-3">
+        <label for="UserName">Nombre de Usuario:</label>
+        <InputText id="UserName" class="form-control" @bind-Value="user.UserName" />
+    </div>
+    <div class="mb-3">
+        <label for="Name">Nombre:</label>
+        <InputText id="Name" class="form-control" @bind-Value="user.Name" />
+    </div>
+    <div class="mb-3">
+        <label for="Surname">Apellido:</label>
+        <InputText id="Surname" class="form-control" @bind-Value="user.Surname" />
+    </div>
+    <div class="mb-3">
+        <label for="Email">Email:</label>
+        <InputText id="Email" class="form-control" @bind-Value="user.Email" />
+    </div>
+    <div class="mb-3">
+        <label for="Role">Rol:</label>
+        <InputSelect id="Role" class="form-control" @bind-Value="user.Role">
+            <option value="Usuario">Usuario</option>
+            <option value="Administrador">Administrador</option>
+        </InputSelect>
+    </div>
+    <button type="submit">Guardar</button>
+</EditForm>
+
+}
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+
+    private UserAccount user { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await DbContext.Usuarios.FindAsync(UserId);
+        if (user == null)
+        {
+            Console.WriteLine("Falla al encontrar usuario");
+            Navigation.NavigateTo("/error");
+        }
+        else
+        {
+            // Debug: imprime el rol del usuario
+            Console.WriteLine($"Rol del usuario: {user.Role}");
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Obtener el usuario desde el contexto
+        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
+        if (userToUpdate != null)
+        {
+            // Actualizar las propiedades
+            userToUpdate.UserName = user.UserName;
+            userToUpdate.Name = user.Name;
+            userToUpdate.Surname = user.Surname;
+            userToUpdate.Email = user.Email;
+            userToUpdate.Role = user.Role;
+
+            // Guardar los cambios
+            await DbContext.SaveChangesAsync();
+
+            // Navegar a una página de confirmación o mostrar un mensaje de éxito
+            Console.WriteLine("Exito");
+            Navigation.NavigateTo("/administracion");
+        }
+    }
+}

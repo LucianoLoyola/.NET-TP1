@@ -55,13 +55,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/access-denied";
     });
 
+
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<ExpedienteValidador>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
-
+    builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
 
 // Agregar el DbContext de SGEContext con la configuración de SQLite
 builder.Services.AddDbContext<SGEContext>(options =>
@@ -76,6 +77,9 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
+
+
+
 
 app.UseStaticFiles();
 app.UseAntiforgery();
