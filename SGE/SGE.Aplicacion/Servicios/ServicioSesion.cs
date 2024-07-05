@@ -18,7 +18,7 @@ public class ServicioSesion : IServicioSesion
     public int GetUserId()
     {
         var user = _httpContextAccessor.HttpContext?.User;
-        var userIdClaim = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userIdClaim = user?.FindFirst("UserId")?.Value;
 
         if (int.TryParse(userIdClaim, out int userId))
         {
@@ -31,4 +31,4 @@ public class ServicioSesion : IServicioSesion
         }
     }
 }
-}
+} 

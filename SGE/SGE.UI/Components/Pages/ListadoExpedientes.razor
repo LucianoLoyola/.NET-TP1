@@ -1,9 +1,11 @@
 @page "/listadoExpedientes"
+@using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
 @* @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
 @inject CasoDeUsoExpedienteModificacion CasoDeUsoExpedienteModificacion *@
 @inject NavigationManager Navegador
+@inject SGEContext DbContext
  
 <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 
@@ -45,10 +47,34 @@ else{
     </table>
 }
 @code {
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Expediente> _lista = new List<Expediente>();
     protected override void OnInitialized()
     {
         _lista = CasoDeUsoListarExpedientes.Ejecutar();
+        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
+        Console.WriteLine("usuarios en listado expediente");
+        foreach (var usuario in usuarios)
+        {
+            Console.WriteLine($"Usuario: {usuario.UserName}");
+
+            if (usuario.Permisos != null && usuario.Permisos.Any())
+            {
+                Console.WriteLine("Permisos:");
+
+                foreach (var permiso in usuario.Permisos)
+                {
+                    Console.WriteLine($" - {permiso.tipoPermiso}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Este usuario no tiene permisos asignados.");
+            }
+
+            Console.WriteLine(); // Separador entre usuarios
+        }
+
     }
 
     DialogoConfirmacion dialogo = null!;
@@ -77,4 +103,5 @@ else{
     void AgregarExpediente(){
         Navegador.NavigateTo($"expediente/");
     }
+
 }
