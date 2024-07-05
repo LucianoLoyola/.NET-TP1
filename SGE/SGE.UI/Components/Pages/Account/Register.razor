@@ -19,13 +19,28 @@
         <EditForm Model="@Model" OnValidSubmit="HandleRegistration" FormName="RegisterForm">
             <DataAnnotationsValidator />
             <div class="mb-3 text-center flex-column">
-                <img src="/images/avatar.png" style="max-height:5rem;" />
+                <img src="/images/panel1.png" style="max-height:5rem;" />
                 <h3>REGISTRO</h3>
             </div>
             <div class="mb-3">
                 <label>Usuario</label>
                 <InputText @bind-Value="Model.UserName" class="form-control" placeholder="Username" />
                 <ValidationMessage For="() => Model.UserName" />
+            </div>
+            <div class="mb-3">
+                <label>Nombre</label>
+                <InputText @bind-Value="Model.Name" class="form-control" placeholder="Name" />
+                <ValidationMessage For="() => Model.Name" />
+            </div>
+            <div class="mb-3">
+                <label>Apellido</label>
+                <InputText @bind-Value="Model.Surname" class="form-control" placeholder="Surname" />
+                <ValidationMessage For="() => Model.Surname" />
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <InputText @bind-Value="Model.Email" class="form-control" placeholder="Email" />
+                <ValidationMessage For="() => Model.Email" />
             </div>
             <div class="mb-3">
                 <label>Contraseña</label>
@@ -37,15 +52,7 @@
                 <InputText @bind-Value="Model.ConfirmPassword" placeholder="Confirm Password" type="password" class="form-control" />
                 <ValidationMessage For="() => Model.ConfirmPassword" />
             </div>
-            <div class="mb-3">
-                <label>Rol</label>
-                <InputSelect @bind-Value="Model.Role" class="form-control">
-                    <option value="">Seleccione un rol</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="Usuario">Usuario</option>
-                </InputSelect>
-                <ValidationMessage For="() => Model.Role" />
-            </div>
+
             <div class="mb-3 text-center">
                 <span class="text-danger">@errorMessage</span>
             </div>
@@ -58,25 +65,48 @@
 
 @code {
     [SupplyParameterFromForm]
+    
     public RegisterViewModel Model { get; set; } = new();
     private string? errorMessage;
 
     private async Task HandleRegistration()
     {
+        Console.WriteLine("HandleRegistration called");
+
+        if (string.IsNullOrEmpty(Model.UserName) ||
+            string.IsNullOrEmpty(Model.Password) ||
+            string.IsNullOrEmpty(Model.Name) ||
+            string.IsNullOrEmpty(Model.Surname) ||
+            string.IsNullOrEmpty(Model.Email))
+        {
+            errorMessage = "Todos los campos son obligatorios";
+            Console.WriteLine(errorMessage);
+            return;
+        }
+        
+        Console.WriteLine("Passed validation checks");
+
         // Verificar si el usuario ya existe
         var existingUser = DbContext.Usuarios.FirstOrDefault(x => x.UserName == Model.UserName);
         if (existingUser != null)
         {
             errorMessage = "El usuario ya existe";
+            Console.WriteLine(errorMessage);
             return;
         }
+        Console.WriteLine("User does not exist");
 
+        var usuariosExistentes = DbContext.Usuarios.Any();
+        
         // Crear una nueva cuenta de usuario
         var userAccount = new UserAccount
         {
             UserName = Model.UserName,
-            Password = servicioHash.GetHashSha256(Model.Password),  // Asegúrate de almacenar la contraseña de manera segura (hashing)
-            Role = Model.Role,
+            Password = servicioHash.GetHashSha256(Model.Password),
+            Role = usuariosExistentes ? "Usuario" : "Administrador",
+            Name= Model.Name,
+            Surname= Model.Surname,
+            Email= Model.Email,
             Permisos = new List<Permiso>(){
                 new Permiso(){tipoPermiso = TipoPermiso.Lectura}, // Asignar permiso de lectura
                 new Permiso(){tipoPermiso = TipoPermiso.ExpedienteAlta},     // Asignar permiso de alta expediente para prueba
@@ -85,14 +115,15 @@
 
                 }
         };
-        @* var permisoLectura = new Permiso { tipoPermiso = TipoPermiso.Lectura };
-        userAccount.Permisos.Add(permisoLectura); *@
+        Console.WriteLine("Created user account");
 
         DbContext.Usuarios.Add(userAccount);
         await DbContext.SaveChangesAsync();
+        Console.WriteLine("Saved changes to database");
 
         // Redirigir al usuario a la página de inicio de sesión
         navigationManager.NavigateTo("/login");
+        Console.WriteLine("Navigated to /login");
     }
 
 }
