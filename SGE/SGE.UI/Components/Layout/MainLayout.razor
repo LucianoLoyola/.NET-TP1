@@ -19,8 +19,10 @@
                 <Authorized>
                     @if (!string.IsNullOrEmpty(UserRole) && UserRole.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
                         {
+                            <a href="/userprofile/@Id">ActualizarPerfil</a>
                             <a href="/administracion">Administración</a>
                         }
+                    <a href="/userprofile/@Id">ActualizarPerfil</a>
                     <a href="/logout">Cerrar Sesión</a>
                 </Authorized>
             </AuthorizeView>
@@ -43,7 +45,7 @@
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
     private ClaimsPrincipal user;
     private string UserRole { get; set; }
-
+    private int Id {get; set;}
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateTask;
@@ -52,11 +54,12 @@
         // Obtener el nombre de usuario del claim
         var userName = user.Identity.Name;
 
-        // Obtener el rol del usuario desde la base de datos
+        // Obtener el rol y el Id del usuario desde la base de datos
         var userData = DbContext.Usuarios.Where(u => u.UserName == userName).FirstOrDefault();
         if (userData != null)
         {
             UserRole = userData.Role;
+            Id = userData.Id;
         }
     }
 }

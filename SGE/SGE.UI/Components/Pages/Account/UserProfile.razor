@@ -6,6 +6,8 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using global::SGE.Aplicacion
 @inject SGEContext DbContext
+@inject NavigationManager navigationManager
+@inject IServicioHash servicioHash
 
 <h3>Perfil de Usuario</h3>
 
@@ -15,21 +17,92 @@
 }
 else
 {
-    <div>
-        <p>Nombre de Usuario: @user.UserName</p>
-        <p>Rol: @user.Role</p>
-        <!-- Otros detalles del usuario -->
+    <div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+        <EditForm Model="@Model" OnValidSubmit="HandleUpdate" FormName="UpdateForm">
+            <DataAnnotationsValidator />
+            <div class="mb-3 text-center flex-column">
+                <img src="/images/avatar.png" style="max-height:5rem;" />
+                <h3>ACTUALIZAR</h3>
+            </div>
+            <div class="mb-3">
+                <label>Usuario</label>
+                <InputText @bind-Value="Model.UserName" class="form-control" placeholder=@user.UserName />
+                <ValidationMessage For="() => Model.UserName" />
+            </div>
+            <div class="mb-3">
+                <label>Nombre</label>
+                <InputText @bind-Value="Model.Name" class="form-control" placeholder=@user.Name />
+                <ValidationMessage For="() => Model.Name" />
+            </div>
+            <div class="mb-3">
+                <label>Apellido</label>
+                <InputText @bind-Value="Model.Surname" class="form-control" placeholder=@user.Surname />
+                <ValidationMessage For="() => Model.Surname" />
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <InputText @bind-Value="Model.Email" class="form-control" placeholder=@user.Email />
+                <ValidationMessage For="() => Model.Email" />
+            </div>
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <InputText @bind-Value="Model.Password" placeholder="Password" type="password" class="form-control" />
+                <ValidationMessage For="() => Model.Password" />
+            </div>
+            <div class="mb-3">
+                <label>Confirme su Contraseña</label>
+                <InputText @bind-Value="Model.ConfirmPassword" placeholder="Confirm Password" type="password" class="form-control" />
+                <ValidationMessage For="() => Model.ConfirmPassword" />
+            </div>
+
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+            </div>
+            <div class="mb-3 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Actualizar datos</button>
+            </div>
+        </EditForm>
     </div>
+</div>
 }
 
 @code {
     [Parameter]
     public int UserId { get; set; }
-
     private UserAccount user { get; set; }
 
+    [SupplyParameterFromForm]
+    public UpdateViewModel Model { get; set; } = new();
+    private string? errorMessage;
+    
     protected override async Task OnInitializedAsync()
     {
         user = DbContext.Usuarios.FirstOrDefault(u => u.Id == UserId);
     }
+
+    private async Task HandleUpdate()
+    {
+        // Verificar si el usuario ya existe
+        var existingUser = userDbContext.UserAccount.FirstOrDefault(x => x.UserName == Model.UserName);
+        if (existingUser != null)
+        {
+            errorMessage = "El usuario ya existe";
+            return;
+        }
+
+        if(Model.UserName != null) user.UserName = Model.UserName;
+        if(Model.Password != null) user.Password = servicioHash.GetHashSha256(Model.Password);  // Asegúrate de almacenar la contraseña de manera segura (hashing)
+        if(Model.Name != null) user.Name = Model.Name;
+        if(Model.Surname != null) user.Surname = Model.Surname;
+        if(Model.Email != null) user.Email = Model.Email;
+
+        await userDbContext.SaveChangesAsync();
+        Console.WriteLine("Saved changes to database");
+
+        // Redirigir al usuario a la página de inicio de sesión
+        navigationManager.NavigateTo("/login");
+        Console.WriteLine("Navigated to /login");
+    }
+
 }
