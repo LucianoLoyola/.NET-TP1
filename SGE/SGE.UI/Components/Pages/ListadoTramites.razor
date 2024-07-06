@@ -1,8 +1,7 @@
-@page "/listadoExpedientes"
+@page "/listadoTramites"
 @using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
-@inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
-@inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
+@inject CasoDeUsoListarTramites listarTramites
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
@@ -37,9 +36,7 @@ else{
                     <td>@exp.fechaHoraUModificacion</td>
                     <td>@exp.IdUsuarioMod</td>
                     <td>@exp.estado</td>
-                    <td>
-                        <button class="btn btn-primary" @onclick= "()=>AgregarTramite(exp)">Agregar Trámite</button>
-                    </td>
+                    <td>aqui iria algun boton o alguna manera de mostrar los tramites asociados al expediente</td>
                     <td>
                         <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
                         <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
