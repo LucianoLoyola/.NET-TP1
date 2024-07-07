@@ -1,8 +1,8 @@
-@page "/listadoTramites/{IdExp:int?}"
+﻿@page "/listadoTramites"
 @using Microsoft.EntityFrameworkCore
 @using SGE.UI.Components
 @rendermode InteractiveServer
-@inject CasoDeUsoListarTramitesPorIdEx TramitesPorId 
+@inject CasoDeUsoListarTramites Tramites 
 @inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
@@ -54,10 +54,9 @@ else{
 @code {
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Tramite> _lista = new List<Tramite>();
-    [Parameter] public int IdExp {get;set;}
     protected override void OnInitialized()
     {
-        _lista = TramitesPorId.Ejecutar(IdExp);
+        _lista = Tramites.Ejecutar();
         usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
         Console.WriteLine("usuarios en listado tramites");
         foreach (var usuario in usuarios)
@@ -98,7 +97,7 @@ else{
         if (_TramiteParaEliminar != null)
         {
             CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.TramiteBaja);
-            _lista = TramitesPorId.Ejecutar(IdExp); //se actualiza la lista de tramites
+            _lista = Tramites.Ejecutar(); //se actualiza la lista de tramites
         }
     }
 
