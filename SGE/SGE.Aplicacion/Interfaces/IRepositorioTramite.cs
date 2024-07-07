@@ -8,5 +8,6 @@ public interface IRepositorioTramite
     void EliminarTramite(int id);
     List<Tramite> ListarTramites();
     Tramite GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta); //etiqueta quizá entre como string
+    Tramite GetTramitePorId(int id);
 
 }

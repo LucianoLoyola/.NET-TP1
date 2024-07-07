@@ -3,8 +3,8 @@
 @using SGE.Aplicacion
 @rendermode InteractiveServer
 @inject CasoDeUsoTramiteAlta altaTramite
-@inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
-@inject CasoDeUsoExpedienteModificacion modificacionExpediente
+@inject CasoDeUsoTramiteConsultaPorId consultaTramite
+@inject CasoDeUsoTramiteModificacion modificacionTramite
 @inject NavigationManager Navegador
 @inject IServicioSesion sesion
 @inject SGEContext DbContext
@@ -15,25 +15,25 @@
 
     <h3>Agregar Trámite</h3>
 
-    @* Formulario para agregar Expediente *@
+    @* Formulario para agregar Tramite *@
     <form>
-        @* Campo para seleccionar el estado del expediente *@
+        @* Campo para seleccionar la etiqueta del tramite *@
         <div class="form-group">
-            <label for="estado">Etiqueta del trámite:</label>
-            <select id="estado" class="form-control" @bind="_expediente.estado">
-                @foreach (var estado in estados)
+            <label for="etiqueta">Etiqueta del trámite:</label>
+            <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
+                @foreach (var etiqueta in etiquetas)
                 {
-                    <option value="@estado">@estado</option>
+                    <option value="@etiqueta">@etiqueta</option>
                 }
             </select>
         </div>
         <div class="form-group">
             @* no puede estar vacío *@
             <label for="valorAsegurado">Contenido:</label>
-            <input type="text" class="form-control" id="caratula" @bind="_expediente.caratula" required>
+            <input type="text" class="form-control" id="contenido" @bind="_tramite.Contenido" required>
         </div>
 
-        <button class="btn btn-primary" @onclick="CrearExpediente">Agregar Tramite</button>
+        <button class="btn btn-primary" @onclick="CrearTramite">Agregar Tramite</button>
 
 
     </form>
@@ -47,27 +47,27 @@
 //codigo para la modificación de tramite----------------------------------
 else{
 
-    <h3>Modificar Expediente</h3>
+    <h3>Modificar Tramite</h3>
 
-    @* Formulario para modificar Expediente *@
+    @* Formulario para modificar Tramite *@
     <form>
         <div class="form-group">
-            <label for="valorAsegurado">Caratula:</label>
-            <input type="text" class="form-control" id="caratula" @bind="_expediente.caratula" required>
+            <label for="valorAsegurado">Contenido:</label>
+            <input type="text" class="form-control" id="contenido" @bind="_tramite.Contenido" required>
         </div>
 
-        @* Campo para seleccionar el estado del expediente *@
+        @* Campo para seleccionar la etiqueta del tramite *@
         <div class="form-group">
-            <label for="estado">Estado del Expediente:</label>
-            <select id="estado" class="form-control" @bind="_expediente.estado">
-                @foreach (var estado in estados)
+            <label for="etiqueta">Etiqueta del Tramite:</label>
+            <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
+                @foreach (var etiqueta in etiquetas)
                 {
-                    <option value="@estado">@estado</option>
+                    <option value="@etiqueta">@etiqueta</option>
                 }
             </select>
         </div>
 
-        <button class="btn btn-primary" @onclick="ActualizarExpediente">Modificar Expediente</button>
+        <button class="btn btn-primary" @onclick="ActualizarTramite">Modificar Tramite</button>
 
 
     </form>
@@ -84,75 +84,69 @@ else{
 
 @code {
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
-
-    Expediente _expediente = new Expediente();
-    [Parameter] public int? Id {get;set;}
+    private Expediente _expediente;
+    Tramite _tramite = new Tramite();
+    [Parameter] public int? IdTramite {get;set;}
+    int ExpedienteId;
     bool _esNuevoTramite = true;
     private string _errorMessage; // Mensaje de error para mostrar en la página
 
-    //lista de estados para seleccionar
-    private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
+    //lista de etiquetas para seleccionar
+    private List<Etiqueta> etiquetas = Enum.GetValues(typeof(Etiqueta)).Cast<Etiqueta>().ToList();
     
-    protected override void OnInitialized(){
-
-        @* var usuarioActual = DbContext.Usuarios.Include(u => u.Permisos).FirstOrDefault(u => u.Id == sesion.GetUserId());
-        if (usuarioActual == null)
-        {
-            throw new InvalidOperationException("Usuario no encontrado.");
-        }         *@
-
+    public async Task RecuperarExpediente(){
+        _expediente = await DbContext.Expedientes.FirstOrDefaultAsync(e => e.Id == ExpedienteId);
     }
     protected override void OnParametersSet()
     {
-        if (Id != null)
+        if (IdTramite != null)
         {
-            int id = Id.HasValue ? Id.Value : -1; // los Id son a partir del 1
-            var exp_hallado = consultaExpediente.Ejecutar(id);
-            if (exp_hallado != null)
+            int id = IdTramite.HasValue ? IdTramite.Value : -1; // los Id son a partir del 1
+            var tra_hallado = consultaTramite.Ejecutar(id);
+            if (tra_hallado != null)
             {
-                _expediente = exp_hallado;
+                _tramite = tra_hallado;
                 _esNuevoTramite = false;
             }
         }
     }
 
-    void CrearExpediente()
+    void CrearTramite()
     {
         try
         {
             _errorMessage="";
-            altaExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteAlta);
+            altaTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.TramiteAlta);
             Siguiente();
         }
         catch (Exception error)
         {
-            _errorMessage = "No tiene permisos para agregar este expediente.";
-            Console.WriteLine($"Error al agregar expediente: {error.Message}");
+            _errorMessage = "No tiene permisos para agregar este tramite.";
+            Console.WriteLine($"Error al agregar tramite: {error.Message}");
         }
     }
 
-    void ActualizarExpediente()
+    void ActualizarTramite()
     {
         try
         {
             _errorMessage="";
-            modificacionExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteModificacion);
+            modificacionTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.ExpedienteModificacion);
             Siguiente();
         }
         catch (Exception error)
         {
-            _errorMessage = "No tiene permisos para modificar este expediente.";
-            Console.WriteLine($"Error al modificar expediente: {error.Message}");
+            _errorMessage = "No tiene permisos para modificar este tramite.";
+            Console.WriteLine($"Error al modificar tramite: {error.Message}");
         }
     }
-
 
     void Siguiente()
     {
         try
         {
-            Console.WriteLine("Navegando a /listadoExpedientes");
-            Navegador.NavigateTo("/listadoExpedientes");
+            Console.WriteLine("Navegando a /listadoTramites");
+            Navegador.NavigateTo("/listadoTramites");
         }
         catch (Exception ex)
         {

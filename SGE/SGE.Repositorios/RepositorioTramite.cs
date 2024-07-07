@@ -46,7 +46,9 @@ public class RepositorioTramite : IRepositorioTramite
     }
 
     Tramite GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta){ //quizá reciba un string
-        return db.Tramites.Where(e => e.Etiqueta == etiqueta).SingleOrDefault();
+        tramite = db.Tramites.Where(e => e.Etiqueta == etiqueta).SingleOrDefault();
+        if(tramite == null) return null;
+        else return tramite;
     }
 
     void IRepositorioTramite.AgregarTramite(Tramite tramite, int idExpediente)
@@ -72,5 +74,9 @@ public class RepositorioTramite : IRepositorioTramite
     Tramite IRepositorioTramite.GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta)
     {
         throw new NotImplementedException();
+    }
+
+    public Tramite GetTramitePorId(int id){
+        return db.Tramites.Where(t => t.Id == id).SingleOrDefault();
     }
 }

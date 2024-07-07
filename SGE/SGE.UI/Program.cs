@@ -33,6 +33,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
+    .AddTransient<CasoDeUsoTramiteBaja>()
+    .AddTransient<CasoDeUsoTramiteAlta>()
+    .AddTransient<CasoDeUsoTramiteConsultaPorId>()
+    .AddTransient<CasoDeUsoTramiteModificacion>()
+    .AddTransient<CasoDeUsoListarTramites>()
     .AddTransient<CasoDeUsoListarExpedientes>()
     .AddTransient<CasoDeUsoExpedienteAlta>()
     .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
@@ -60,6 +65,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<ExpedienteValidador>();
+builder.Services.AddTransient<TramiteValidador>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
 
 

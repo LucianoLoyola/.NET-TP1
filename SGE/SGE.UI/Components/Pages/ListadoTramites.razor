@@ -1,7 +1,8 @@
 @page "/listadoTramites"
 @using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
-@inject CasoDeUsoListarTramites listarTramites
+@inject CasoDeUsoListarTramites CasoDeUsoListarTramites
+@inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
@@ -10,53 +11,53 @@
 <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 
 @if (_lista.Count == 0){
-    <h3>Aún no existen expedientes</h3>
-    <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+    <h3>Aún no existen tramites</h3>
+    <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
     }
 else{
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>CARATULA</th>
+                <th>ID EXPEDIENTE</th>
+                <th>ETIQUETA</th>
+                <th>CONTENIDO</th>
                 <th>FECHA CREACION</th>
                 <th>FECHA MODIFICACION</th>
                 <th>ID USUARIO MODIF.</th>
-                <th>ESTADO</th>
-                <th>TRAMITES</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var exp in _lista)
+            @foreach (var tra in _lista)
             {
                 <tr>
-                    <td>@exp.Id</td>
-                    <td>@exp.caratula  </td>
-                    <td>@exp.fechaHoraCreacion</td>
-                    <td>@exp.fechaHoraUModificacion</td>
-                    <td>@exp.IdUsuarioMod</td>
-                    <td>@exp.estado</td>
-                    <td>aqui iria algun boton o alguna manera de mostrar los tramites asociados al expediente</td>
+                    <td>@tra.Id</td>
+                    <td>@tra.ExpedienteId  </td>
+                    <td>@tra.Etiqueta</td>
+                    <td>@tra.Contenido</td>
+                    <td>@tra.fechaHoraCreacion</td>
+                    <td>@tra.fechaHoraUltimaModificacion</td>
+                    <td>@tra.IdUsuarioMod</td>
                     <td>
-                        <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
-                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
+                        <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
+                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 
-        <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+        <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
 
 }
 @code {
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
-    List<Expediente> _lista = new List<Expediente>();
+    List<Tramite> _lista = new List<Tramite>();
     protected override void OnInitialized()
     {
-        _lista = CasoDeUsoListarExpedientes.Ejecutar();
+        _lista = CasoDeUsoListarTramites.Ejecutar();
         usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
-        Console.WriteLine("usuarios en listado expediente");
+        Console.WriteLine("usuarios en listado tramites");
         foreach (var usuario in usuarios)
         {
             Console.WriteLine($"Usuario: {usuario.UserName}");
@@ -81,30 +82,30 @@ else{
     }
 
     DialogoConfirmacion dialogo = null!;
-    Expediente? _ExpedienteParaEliminar = null;
+    Tramite? _TramiteParaEliminar = null;
 
     //ver otra manera de hacer, con EventCallback  (esta en la filmina)
-    private void ConfirmarEliminacion(Expediente exp)
+    private void ConfirmarEliminacion(Tramite tra)
     {
-        _ExpedienteParaEliminar = exp;
-        dialogo.Mensaje = $"¿Desea eliminar el expediente {exp.Id}?";
+        _TramiteParaEliminar = tra;
+        dialogo.Mensaje = $"¿Desea eliminar el expediente {tra.Id}?";
         dialogo.Mostrar();
     }
     private void Eliminar()
     {
-        if (_ExpedienteParaEliminar != null)
+        if (_TramiteParaEliminar != null)
         {
-            CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.ExpedienteBaja);
-            _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
+            CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.TramiteBaja);
+            _lista = CasoDeUsoListarTramites.Ejecutar(); //se actualiza la lista de clientes
         }
     }
 
-    void ModificarExpediente(Expediente exp){
-        Navegador.NavigateTo($"expediente/{exp.Id}");
+    void ModificarTramite(Tramite tra){
+        Navegador.NavigateTo($"tramite/{tra.Id}");
     }
 
-    void AgregarExpediente(){
-        Navegador.NavigateTo($"expediente/");
+    void AgregarTramite(){
+        Navegador.NavigateTo($"tramite/");
     }
 
 }

@@ -1,12 +1,12 @@
 @page "/listadoExpedientes"
 @using Microsoft.EntityFrameworkCore
+@using SGE.UI.Components
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
 @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
-
  
 <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 
@@ -38,7 +38,7 @@ else{
                     <td>@exp.IdUsuarioMod</td>
                     <td>@exp.estado</td>
                     <td>
-                        <button class="btn btn-primary" @onclick= "()=>AgregarTramite(exp)">Agregar Trámite</button>
+                        <button class="btn btn-primary" @onclick= "()=>VerTramites(exp)">Trámites</button>
                     </td>
                     <td>
                         <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
@@ -108,6 +108,10 @@ else{
 
     void AgregarExpediente(){
         Navegador.NavigateTo($"expediente/");
+    }
+
+    void VerTramites(Expediente exp){
+        Navegador.NavigateTo($"listadoTramites/");
     }
 
 }
