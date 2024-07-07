@@ -1,14 +1,15 @@
-@page "/listadoTramites"
+@page "/listadoTramites/{Id:int?}"
 @using Microsoft.EntityFrameworkCore
+@using SGE.UI.Components
 @rendermode InteractiveServer
-@inject CasoDeUsoListarTramites CasoDeUsoListarTramites
+@inject CasoDeUsoListarTramitesPorIdEx TramitesPorId 
 @inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
 
  
-<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+@*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
 
 @if (_lista.Count == 0){
     <h3>Aún no existen tramites</h3>
@@ -53,9 +54,10 @@ else{
 @code {
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Tramite> _lista = new List<Tramite>();
+    [Parameter] public int IdExp {get;set;}
     protected override void OnInitialized()
     {
-        _lista = CasoDeUsoListarTramites.Ejecutar();
+        _lista = TramitesPorId.Ejecutar(IdExp);
         usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
         Console.WriteLine("usuarios en listado tramites");
         foreach (var usuario in usuarios)
@@ -96,7 +98,7 @@ else{
         if (_TramiteParaEliminar != null)
         {
             CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.TramiteBaja);
-            _lista = CasoDeUsoListarTramites.Ejecutar(); //se actualiza la lista de clientes
+            _lista = TramitesPorId.Ejecutar(IdExp); //se actualiza la lista de tramites
         }
     }
 

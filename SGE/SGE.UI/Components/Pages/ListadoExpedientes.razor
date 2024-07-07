@@ -8,7 +8,7 @@
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
  
-<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+@*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
 
 @if (_lista.Count == 0){
     <h3>Aún no existen expedientes</h3>
@@ -38,7 +38,7 @@ else{
                     <td>@exp.IdUsuarioMod</td>
                     <td>@exp.estado</td>
                     <td>
-                        <button class="btn btn-primary" @onclick= "()=>VerTramites(exp)">Trámites</button>
+                        <button class="btn btn-primary" @onclick= "()=>VerTramites(exp.Id)">Trámites</button>
                     </td>
                     <td>
                         <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
@@ -110,8 +110,8 @@ else{
         Navegador.NavigateTo($"expediente/");
     }
 
-    void VerTramites(Expediente exp){
-        Navegador.NavigateTo($"listadoTramites/");
+    void VerTramites(int IdExp){
+        Navegador.NavigateTo($"listadoTramites/{IdExp}");
     }
 
 }

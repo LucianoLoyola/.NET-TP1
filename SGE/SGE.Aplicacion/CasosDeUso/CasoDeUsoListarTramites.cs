@@ -14,4 +14,6 @@ public class CasoDeUsoListarTramites(IRepositorioTramite repo){
         
         return listaTramites;
     }
+
+    
 }

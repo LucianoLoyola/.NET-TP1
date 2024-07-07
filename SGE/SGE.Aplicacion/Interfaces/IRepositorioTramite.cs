@@ -7,6 +7,7 @@ public interface IRepositorioTramite
     void ModificarTramite(Tramite tramite);
     void EliminarTramite(int id);
     List<Tramite> ListarTramites();
+    List<Tramite> ListarTramitesPorIdExp(int idExpediente);
     Tramite GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta); //etiqueta quizá entre como string
     Tramite GetTramitePorId(int id);
 

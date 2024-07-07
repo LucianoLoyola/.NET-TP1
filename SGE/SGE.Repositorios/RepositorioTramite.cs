@@ -77,4 +77,9 @@ public class RepositorioTramite : IRepositorioTramite
     }
 
     public Tramite GetTramitePorId(int id) => db.Tramites.Where(t => t.Id == id).SingleOrDefault();
+
+    List<Tramite> IRepositorioTramite.ListarTramitesPorIdExp(int idExpediente)
+    {
+        return db.Tramites.Where(t => t.ExpedienteId == idExpediente).ToList();
+    }
 }
