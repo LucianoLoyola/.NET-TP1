@@ -4,10 +4,11 @@
 @using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
-@* @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
-@inject CasoDeUsoExpedienteModificacion CasoDeUsoExpedienteModificacion *@
+@inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
+@inject IServicioSesion sesion
+
  
 <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 
@@ -38,15 +39,18 @@ else{
                     <td>@exp.fechaHoraUModificacion</td>
                     <td>@exp.IdUsuarioMod</td>
                     <td>@exp.estado</td>
-                    <td>@exp</td>
+                    <td>aqui iria algun boton o alguna manera de mostrar los tramites asociados al expediente</td>
                     <td>
-                        @* <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
-                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Elliminar</button> *@
+                        <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+        <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+
 }
 @code {
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
@@ -93,7 +97,7 @@ else{
     {
         if (_ExpedienteParaEliminar != null)
         {
-            @* CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id); *@
+            CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.ExpedienteBaja);
             _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
         }
     }

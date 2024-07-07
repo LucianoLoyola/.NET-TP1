@@ -43,17 +43,45 @@
     @* Componente para mostrar errores *@
     @* <Excepcion @ref=dialogo /> *@
 
-
+    <p class="text-danger">@_errorMessage</p>
 }
+
+//codigo para la modificación----------------------------------
 else{
 
-    //aquí codigo para modificación del expediente
+    <h3>Modificar Expediente</h3>
+
+    @* Formulario para modificar Expediente *@
+    <form>
+        <div class="form-group">
+            <label for="valorAsegurado">Caratula:</label>
+            <input type="text" class="form-control" id="caratula" @bind="_expediente.caratula" required>
+        </div>
+
+        @* Campo para seleccionar el estado del expediente *@
+        <div class="form-group">
+            <label for="estado">Estado del Expediente:</label>
+            <select id="estado" class="form-control" @bind="_expediente.estado">
+                @foreach (var estado in estados)
+                {
+                    <option value="@estado">@estado</option>
+                }
+            </select>
+        </div>
+
+        <button class="btn btn-primary" @onclick="ActualizarExpediente">Modificar Expediente</button>
+
+
+    </form>
+
+    @* Componente para mostrar errores *@
+    @* <Excepcion @ref=dialogo /> *@
+
+    <p class="text-danger">@_errorMessage</p>
+
 }
 
-    @if (!string.IsNullOrEmpty(_errorMessage))
-    {
-        <p class="text-danger">@_errorMessage</p>
-    }
+
 
 
 @code {
@@ -68,29 +96,12 @@ else{
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
     
     protected override void OnInitialized(){
-    usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
-        Console.WriteLine("usuarios en agregar expediente");
-        foreach (var usuario in usuarios)
+
+        @* var usuarioActual = DbContext.Usuarios.Include(u => u.Permisos).FirstOrDefault(u => u.Id == sesion.GetUserId());
+        if (usuarioActual == null)
         {
-            Console.WriteLine($"Usuario: {usuario.UserName}");
-
-            if (usuario.Permisos != null && usuario.Permisos.Any())
-            {
-                Console.WriteLine("Permisos:");
-
-                foreach (var permiso in usuario.Permisos)
-                {
-                    Console.WriteLine($" - {permiso.tipoPermiso}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Este usuario no tiene permisos asignados.");
-            }
-
-            Console.WriteLine(); // Separador entre usuarios
-        }
-
+            throw new InvalidOperationException("Usuario no encontrado.");
+        }         *@
 
     }
     protected override void OnParametersSet()
@@ -111,6 +122,7 @@ else{
     {
         try
         {
+            _errorMessage="";
             altaExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteAlta);
             Siguiente();
         }
@@ -119,10 +131,35 @@ else{
             _errorMessage = "No tiene permisos para agregar este expediente.";
             Console.WriteLine($"Error al agregar expediente: {error.Message}");
         }
-
     }
+
+    void ActualizarExpediente()
+    {
+        try
+        {
+            _errorMessage="";
+            modificacionExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteModificacion);
+            Siguiente();
+        }
+        catch (Exception error)
+        {
+            _errorMessage = "No tiene permisos para modificar este expediente.";
+            Console.WriteLine($"Error al modificar expediente: {error.Message}");
+        }
+    }
+
+
     void Siguiente()
     {
-        Navegador.NavigateTo("/");
+        try
+        {
+            Console.WriteLine("Navegando a /listadoExpedientes");
+            Navegador.NavigateTo("/listadoExpedientes");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al navegar: {ex.Message}");
+        }    
+        
     }
 }    
