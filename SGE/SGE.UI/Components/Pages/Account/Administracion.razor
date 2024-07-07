@@ -1,4 +1,6 @@
 @page "/administracion"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles="Administrador")]
 @using SGE.Aplicacion
 @using SGE.Repositorios
 @using SGE.Aplicacion.ViewModels

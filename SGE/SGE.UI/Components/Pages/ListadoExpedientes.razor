@@ -1,4 +1,6 @@
 @page "/listadoExpedientes"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles="Administrador,Usuario")]
 @using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes

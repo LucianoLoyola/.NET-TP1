@@ -1,4 +1,6 @@
 @page "/expediente/{Id:int?}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles="Administrador,Usuario")]
 @using Microsoft.EntityFrameworkCore
 @using SGE.Aplicacion
 @rendermode InteractiveServer

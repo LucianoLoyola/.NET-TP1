@@ -1,4 +1,6 @@
 @page "/userprofile_update/{userId:int?}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles="Usuario")]
 @using Microsoft.EntityFrameworkCore
 @using SGE.Repositorios
 @using SGE.Aplicacion
