@@ -51,6 +51,7 @@ builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
 builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
+builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
 builder.Services.AddScoped<IServicioSesion, ServicioSesion>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
