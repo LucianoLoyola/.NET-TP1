@@ -52,11 +52,18 @@ else{
         <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
 
 }
+
+<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+
 @code {
+
+    DialogoConfirmacion dialogo;
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Expediente> _lista = new List<Expediente>();
     protected override void OnInitialized()
     {
+
+        dialogo = new DialogoConfirmacion();
         _lista = CasoDeUsoListarExpedientes.Ejecutar();
         usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
         Console.WriteLine("usuarios en listado expediente");
@@ -83,7 +90,6 @@ else{
 
     }
 
-    DialogoConfirmacion dialogo = null!;
     Expediente? _ExpedienteParaEliminar = null;
 
     //ver otra manera de hacer, con EventCallback  (esta en la filmina)
@@ -111,7 +117,7 @@ else{
     }
 
     void VerTramites(int IdExp){
-        Navegador.NavigateTo($"listadoTramites/{IdExp}");
+        Navegador.NavigateTo($"listadoTramitesExp/{IdExp}");
     }
 
 }
