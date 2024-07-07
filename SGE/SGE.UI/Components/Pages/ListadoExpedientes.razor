@@ -15,6 +15,12 @@
     <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
     }
 else{
+    <div class="form-group">
+        <label for="idExpediente">Filtrar por ID de expediente:</label>
+        <input type="number" class="form-control" id="idExpediente" @bind="_idExpediente" placeholder="Ingrese el ID del expediente" min="1" required>
+        <span class="text-danger">@_errorMessage</span>
+    </div>
+    <button @onclick="FiltrarExpedientes">Filtrar</button>
     <table class="table">
         <thead>
             <tr>
@@ -48,13 +54,16 @@ else{
             }
         </tbody>
     </table>
-
         <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
 
 }
 @code {
+    private int _idExpediente;
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Expediente> _lista = new List<Expediente>();
+    DialogoConfirmacion dialogo = null!;
+    Expediente? _ExpedienteParaEliminar = null;
+    private string? _errorMessage;
     protected override void OnInitialized()
     {
         _lista = CasoDeUsoListarExpedientes.Ejecutar();
@@ -83,8 +92,23 @@ else{
 
     }
 
-    DialogoConfirmacion dialogo = null!;
-    Expediente? _ExpedienteParaEliminar = null;
+    // Filtrar la lista de expedientes según el ID ingresado
+    private void FiltrarExpedientes(){
+        if (_idExpediente <= 0){ 
+            _errorMessage = "Ingrese un ID válido.";
+            return;
+        }
+
+        _lista = CasoDeUsoListarExpedientes.Ejecutar();
+        var expedienteExistente = _lista.FirstOrDefault(e => e.Id == _idExpediente);
+        if (expedienteExistente == null){
+            _errorMessage = "El ID no corresponde a un expediente existente.";
+            return;
+        }
+
+        _lista = new List<Expediente> { expedienteExistente }; // Filtrar por el ID ingresado
+        _errorMessage = string.Empty; // Borra el mensaje de error si el ID es válido y existe
+    } 
 
     //ver otra manera de hacer, con EventCallback  (esta en la filmina)
     private void ConfirmarEliminacion(Expediente exp)
