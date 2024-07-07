@@ -2,10 +2,9 @@
 @using Microsoft.EntityFrameworkCore
 @using SGE.Repositorios
 @using SGE.Aplicacion
+@using SGE.Aplicacion.CasosDeUso
 @rendermode InteractiveServer
-@inject CasoDeUsoExpedienteAlta altaExpediente
-@inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
-@inject CasoDeUsoExpedienteModificacion modificacionExpediente
+@inject ModificarUserAccountUseCase modificarUserAccount
 @inject IServicioSesion sesion
 @inject SGEContext DbContext
 @inject NavigationManager Navigation
@@ -72,14 +71,7 @@ else
         var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
         if (userToUpdate != null)
         {
-            userToUpdate.UserName = user.UserName;
-            userToUpdate.Name = user.Name;
-            userToUpdate.Surname = user.Surname;
-            userToUpdate.Email = user.Email;
-            userToUpdate.Role = user.Role;
-
-            await DbContext.SaveChangesAsync();
-
+            modificarUserAccount.Ejecutar(userToUpdate);
             Console.WriteLine("Exito");
             Navigation.NavigateTo("/administracion");
         }
