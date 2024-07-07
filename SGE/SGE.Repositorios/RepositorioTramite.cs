@@ -76,7 +76,5 @@ public class RepositorioTramite : IRepositorioTramite
         throw new NotImplementedException();
     }
 
-    public Tramite GetTramitePorId(int id){
-        return db.Tramites.Where(t => t.Id == id).SingleOrDefault();
-    }
+    public Tramite GetTramitePorId(int id) => db.Tramites.Where(t => t.Id == id).SingleOrDefault();
 }
