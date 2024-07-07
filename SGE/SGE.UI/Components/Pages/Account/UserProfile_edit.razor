@@ -7,7 +7,9 @@
 @using global::SGE.Aplicacion
 @inject SGEContext DbContext
 @inject NavigationManager Navigation
-
+@using Microsoft.AspNetCore.Antiforgery;
+@attribute [RequireAntiforgeryToken]
+@using Microsoft.AspNetCore.Antiforgery;
 <h3>Perfil de Usuario</h3>
 
 @if (user == null)
@@ -16,7 +18,7 @@
 }
 else
 {
-<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="user" FormName="testForm" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <Antiforgery /> <!-- Agregar Antiforgery token -->
@@ -44,6 +46,7 @@ else
         </InputSelect>
     </div>
     <button type="submit">Guardar</button>
+    <AntiforgeryToken/>
 </EditForm>
 
 }

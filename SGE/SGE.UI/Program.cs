@@ -6,7 +6,7 @@ using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion;
-
+using Microsoft.AspNetCore.Antiforgery;
 //que hace esto?? es lo mismo que no pasarle nada?
 // Crear una instancia de DbContextOptions para SGEContext (le pasa las opciones al constructor)
 var connectionString = "Data Source=SGE.sqlite";
@@ -36,8 +36,8 @@ builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<CasoDeUsoListarExpedientes>()
     .AddTransient<CasoDeUsoExpedienteAlta>()
     .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
-    .AddTransient<CasoDeUsoExpedienteModificacion>();
-    // .AddTransient<CasoDeUsoExpedienteBaja>();
+    .AddTransient<CasoDeUsoExpedienteModificacion>()
+    .AddTransient<CasoDeUsoExpedienteBaja>();
     // .AddTransient<EliminarClienteUseCase>()
     // .AddTransient<ModificarClienteUseCase>()
     // .AddTransient<ObtenerClienteUseCase>();
@@ -55,14 +55,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/access-denied";
     });
 
-
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<ExpedienteValidador>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
-    builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+
 
 // Agregar el DbContext de SGEContext con la configuración de SQLite
 builder.Services.AddDbContext<SGEContext>(options =>
@@ -80,11 +79,10 @@ if (!app.Environment.IsDevelopment())
 
 
 
-
 app.UseStaticFiles();
-app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
