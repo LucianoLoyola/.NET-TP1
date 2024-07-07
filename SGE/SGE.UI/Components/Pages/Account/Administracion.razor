@@ -15,6 +15,8 @@
 
 <h3>Lista de Usuarios</h3>
 
+<a href="/userprofile_new" class="btn btn-primary">Alta de usuario</a>
+
 @if (UserAccounts != null && UserAccounts.Any())
 {
     <table class="table table-bordered table-striped">
@@ -34,6 +36,7 @@
                     <td>
                         <a href="/userprofile/@user.Id" class="btn btn-primary">Ver Perfil</a>
                         <a href="/userprofile_edit/@user.Id" class="btn btn-primary">Modificar</a>
+                        
                     </td>
                 </tr>
             }
