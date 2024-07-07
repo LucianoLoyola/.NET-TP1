@@ -6,7 +6,7 @@ using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion;
-
+using Microsoft.AspNetCore.Antiforgery;
 //que hace esto?? es lo mismo que no pasarle nada?
 // Crear una instancia de DbContextOptions para SGEContext (le pasa las opciones al constructor)
 var connectionString = "Data Source=SGE.sqlite";
@@ -36,6 +36,7 @@ builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<CasoDeUsoListarExpedientes>()
     .AddTransient<CasoDeUsoExpedienteAlta>()
     .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
+    .AddTransient<ModificarUserAccountUseCase>()
     .AddTransient<CasoDeUsoExpedienteModificacion>()
     .AddTransient<CasoDeUsoExpedienteBaja>();
     // .AddTransient<EliminarClienteUseCase>()
@@ -77,10 +78,12 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
+
+
 app.UseStaticFiles();
-app.UseAntiforgery();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
