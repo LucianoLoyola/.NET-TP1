@@ -1,6 +1,9 @@
-@page "/userprofile/{userId:int}"
+@page "/userprofile/{Id:int}"
+@rendermode InteractiveServer
+@using Microsoft.EntityFrameworkCore
 @using SGE.Aplicacion.ViewModels
 @using SGE.Repositorios
+@inject ObtenerUserAccountUseCase obtenerUsuario
 @using Microsoft.AspNetCore.Components.Authorization
 @using global::SGE.Aplicacion
 @inject SGEContext DbContext
@@ -26,10 +29,17 @@ else
                 <div>
                     <strong>Permisos:</strong>
                     <ul>
-                        @foreach (TipoPermiso permiso in Enum.GetValues(typeof(TipoPermiso)))
+                        @* @foreach (TipoPermiso permiso in Enum.GetValues(typeof(TipoPermiso)))
                         {
                             <div>
+                        
                                 <li>TipoPermiso</li>
+                            </div>
+                        } *@
+                        @foreach (var p in user.Permisos)
+                        {
+                            <div>
+                                <li>@p.tipoPermiso</li>
                             </div>
                         }
                     </ul>
@@ -45,12 +55,15 @@ else
 
 @code {
     [Parameter]
-    public int UserId { get; set; }
+    public int Id { get; set; }
 
     private UserAccount user { get; set; }
+    @* private List<Permiso> permisos; *@
 
     protected override async Task OnInitializedAsync()
     {
-        user = DbContext.Usuarios.FirstOrDefault(u => u.Id == UserId);
+        user = await DbContext.Usuarios.Include(u => u.Permisos).FirstOrDefaultAsync(u => u.Id == Id);
+        @* user = obtenerUsuario.Ejecutar(Id); //se debería implementar de esta manera, llamando al caso de uso
+        permisos = user.Permisos; *@
     }
 }

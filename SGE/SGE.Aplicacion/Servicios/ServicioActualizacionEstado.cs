@@ -8,16 +8,9 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
 
     public void actualizarEstadoExpediente(int idExpediente, IRepositorioExpediente repo, List<Tramite>? listaTramites)
     {
-        Expediente? expediente = null;
+        Expediente? expediente = repo.GetExpedientePorId(idExpediente);
         List<Expediente> lista = repo.ListarExpedientes();
         //busca expediente por id
-        foreach (Expediente exp in lista)
-        {
-            if(idExpediente == exp.Id)
-            {
-                expediente = exp;
-            }
-        }
         //si encuentra un expediente
         if(expediente != null)
         {

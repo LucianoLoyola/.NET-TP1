@@ -91,7 +91,7 @@ else{
     public int? Id { get; set; }    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     private Expediente _expediente;
     Tramite _tramite = new Tramite();
-    bool _esNuevoTramite = false;
+    bool _esNuevoTramite = true;
     private string _errorMessage; // Mensaje de error para mostrar en la página
 
     //lista de etiquetas para seleccionar
@@ -153,7 +153,7 @@ else{
         try
         {
             _errorMessage="";
-            modificacionTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.ExpedienteModificacion);
+            modificacionTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.TramiteModificacion);
             Siguiente();
         }
         catch (Exception error)

@@ -44,6 +44,7 @@ builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<CasoDeUsoExpedienteAlta>()
     .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
     .AddTransient<ModificarUserAccountUseCase>()
+    .AddTransient<ObtenerUserAccountUseCase>()
     .AddTransient<CasoDeUsoExpedienteModificacion>()
     .AddTransient<CasoDeUsoExpedienteBaja>();
     // .AddTransient<EliminarClienteUseCase>()
