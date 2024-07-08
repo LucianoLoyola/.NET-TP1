@@ -36,7 +36,6 @@
                     <td>
                         <a href="/userprofile/@user.Id" class="btn btn-primary">Ver Perfil</a>
                         <a href="/userprofile_edit/@user.Id" class="btn btn-primary">Modificar</a>
-                        
                     </td>
                 </tr>
             }
@@ -50,10 +49,9 @@ else
 
 @code {
     List<UserAccount> UserAccounts;
-
     protected override async Task OnInitializedAsync()
     {
         // Obtener todos los usuarios de la base de datos
-        UserAccounts = DbContext.Usuarios.ToList();
+        UserAccounts = DbContext.Usuarios.ToList(); 
     }
 }
