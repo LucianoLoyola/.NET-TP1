@@ -1,6 +1,6 @@
 @page "/listadoExpedientes"
 @using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles="Administrador,Usuario")]
+@attribute [Authorize(Roles = "Administrador,Usuario")]
 @using Microsoft.EntityFrameworkCore
 @using SGE.UI.Components
 @rendermode InteractiveServer
@@ -10,65 +10,69 @@
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject IServicioAutorizacion autorizacion
- 
+
 @*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
 
-@if (_lista.Count == 0){
-    <h3>Aún no existen expedientes</h3>
-    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
-        <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+@if (_lista.Count == 0)
+{
+        <h3>Aún no existen expedientes</h3>
+    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+    {
+                <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
     }
 }
-else{
-    <div class="form-group">
-        <label for="idExpediente">Filtrar por ID de expediente:</label>
-        <input type="number" class="form-control" id="idExpediente" @bind="_idExpediente" placeholder="Ingrese el ID del expediente" min="1" required>
-        <span class="text-danger">@_errorMessage</span>
-    </div>
-    <button @onclick="FiltrarExpedientes">Filtrar</button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>CARATULA</th>
-                <th>FECHA CREACION</th>
-                <th>FECHA MODIFICACION</th>
-                <th>ID USUARIO MODIF.</th>
-                <th>ESTADO</th>
-                <th>TRAMITES</th>
-            </tr>
-        </thead>
-        <tbody>
+else
+{
+        <div class="form-group">
+            <label for="idExpediente">Filtrar por ID de expediente:</label>
+            <input type="number" class="form-control" id="idExpediente" @bind="_idExpediente" placeholder="Ingrese el ID del expediente" min="1" required>
+            <span class="text-danger">@_errorMessage</span>
+        </div>
+        <button @onclick="FiltrarExpedientes">Filtrar</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CARATULA</th>
+                    <th>FECHA CREACION</th>
+                    <th>FECHA MODIFICACION</th>
+                    <th>ID USUARIO MODIF.</th>
+                    <th>ESTADO</th>
+                    <th>TRAMITES</th>
+                </tr>
+            </thead>
+            <tbody>
             @foreach (var exp in _lista)
             {
-                <tr>
-                    <td>@exp.Id</td>
-                    <td>@exp.caratula  </td>
-                    <td>@exp.fechaHoraCreacion</td>
-                    <td>@exp.fechaHoraUModificacion</td>
-                    <td>@exp.IdUsuarioMod</td>
-                    <td>@exp.estado</td>
-                    <td>
-                        <button class="btn btn-primary" @onclick= "()=>VerTramites(exp.Id)">Trámites</button>
-                    </td>
-                    <td>
-                            @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
-                        <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+                        <tr>
+                            <td>@exp.Id</td>
+                            <td>@exp.caratula  </td>
+                            <td>@exp.fechaHoraCreacion</td>
+                            <td>@exp.fechaHoraUModificacion</td>
+                            <td>@exp.IdUsuarioMod</td>
+                            <td>@exp.estado</td>
+                            <td>
+                                <button class="btn btn-primary" @onclick= "()=>VerTramites(exp.Id)">Trámites</button>
+                            </td>
+                            <td>
+                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+                                {
+                                    <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+                                }
 
-                            }
-
-                            @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
-                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
-
-                            }
-                    </td>
-                </tr>
+                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+                                {
+                                    <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
+                                }
+                            </td>
+                        </tr>
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
-        <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+    {
+                <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
     }
 
 }
@@ -114,22 +118,25 @@ else{
     }
 
     // Filtrar la lista de expedientes según el ID ingresado
-    private void FiltrarExpedientes(){
-        if (_idExpediente <= 0){ 
+    private void FiltrarExpedientes()
+    {
+        if (_idExpediente <= 0)
+        {
             _errorMessage = "Ingrese un ID válido.";
             return;
         }
 
         _lista = CasoDeUsoListarExpedientes.Ejecutar();
         var expedienteExistente = _lista.FirstOrDefault(e => e.Id == _idExpediente);
-        if (expedienteExistente == null){
+        if (expedienteExistente == null)
+        {
             _errorMessage = "El ID no corresponde a un expediente existente.";
             return;
         }
 
         _lista = new List<Expediente> { expedienteExistente }; // Filtrar por el ID ingresado
         _errorMessage = string.Empty; // Borra el mensaje de error si el ID es válido y existe
-    } 
+    }
 
     //ver otra manera de hacer, con EventCallback  (esta en la filmina)
     private void ConfirmarEliminacion(Expediente exp)
@@ -147,15 +154,18 @@ else{
         }
     }
 
-    void ModificarExpediente(Expediente exp){
+    void ModificarExpediente(Expediente exp)
+    {
         Navegador.NavigateTo($"expediente/{exp.Id}");
     }
 
-    void AgregarExpediente(){
+    void AgregarExpediente()
+    {
         Navegador.NavigateTo($"expediente/");
     }
 
-    void VerTramites(int IdExp){
+    void VerTramites(int IdExp)
+    {
         Navegador.NavigateTo($"listadoTramitesExp/{IdExp}");
     }
 
