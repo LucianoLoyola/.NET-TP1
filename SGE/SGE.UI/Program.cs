@@ -34,10 +34,18 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<EliminarUserAccountUseCase>()
+    .AddTransient<CasoDeUsoTramiteBaja>()
+    .AddTransient<CasoDeUsoTramiteAlta>()
+    .AddTransient<CasoDeUsoTramiteConsultaPorId>()
+    .AddTransient<CasoDeUsoTramiteConsultaPorEtiqueta>()
+    .AddTransient<CasoDeUsoTramiteModificacion>()
+    .AddTransient<CasoDeUsoListarTramites>()
+    .AddTransient<CasoDeUsoListarTramitesPorIdEx>()
     .AddTransient<CasoDeUsoListarExpedientes>()
     .AddTransient<CasoDeUsoExpedienteAlta>()
     .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
     .AddTransient<ModificarUserAccountUseCase>()
+    .AddTransient<ObtenerUserAccountUseCase>()
     .AddTransient<CasoDeUsoExpedienteModificacion>()
     .AddTransient<CasoDeUsoExpedienteBaja>();
     // .AddTransient<EliminarClienteUseCase>()
@@ -47,6 +55,7 @@ builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
 builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
+builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
 builder.Services.AddScoped<IServicioSesion, ServicioSesion>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -62,6 +71,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<ExpedienteValidador>();
+builder.Services.AddTransient<TramiteValidador>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
 
 

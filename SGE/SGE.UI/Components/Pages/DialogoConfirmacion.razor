@@ -10,9 +10,13 @@
    </div>
 }
 @code{
-    private bool visible = false;
     [Parameter]
     public string Mensaje {get;set;}="";
+
+    [Parameter] 
+    public EventCallback<bool> OnConfirmado { get; set; }
+
+    private bool visible = false;
 
     public void Mostrar()
     {
@@ -23,9 +27,6 @@
     {
         visible=false;
     }
-
-    [Parameter]
-    public EventCallback OnConfirmado{get;set;}
 
     void CerrarYconfirmar()
     {
