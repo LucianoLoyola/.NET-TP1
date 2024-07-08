@@ -48,9 +48,7 @@ builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<ObtenerUserAccountUseCase>()
     .AddTransient<CasoDeUsoExpedienteModificacion>()
     .AddTransient<CasoDeUsoExpedienteBaja>();
-    // .AddTransient<EliminarClienteUseCase>()
-    // .AddTransient<ModificarClienteUseCase>()
-    // .AddTransient<ObtenerClienteUseCase>();
+
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
 builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
