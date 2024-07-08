@@ -1,0 +1,112 @@
+﻿@page "/listadoTramites"
+@using Microsoft.EntityFrameworkCore
+@using SGE.UI.Components
+@rendermode InteractiveServer
+@inject CasoDeUsoListarTramites Tramites 
+@inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
+@inject NavigationManager Navegador
+@inject SGEContext DbContext
+@inject IServicioSesion sesion
+
+ 
+@*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
+
+@if (_lista.Count == 0){
+    <h3>Aún no existen tramites</h3>
+    <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
+    }
+else{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID EXPEDIENTE</th>
+                <th>ETIQUETA</th>
+                <th>CONTENIDO</th>
+                <th>FECHA CREACION</th>
+                <th>FECHA MODIFICACION</th>
+                <th>ID USUARIO MODIF.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tra in _lista)
+            {
+                <tr>
+                    <td>@tra.Id</td>
+                    <td>@tra.ExpedienteId  </td>
+                    <td>@tra.Etiqueta</td>
+                    <td>@tra.Contenido</td>
+                    <td>@tra.fechaHoraCreacion</td>
+                    <td>@tra.fechaHoraUltimaModificacion</td>
+                    <td>@tra.IdUsuarioMod</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
+                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+        <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
+
+}
+@code {
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
+    List<Tramite> _lista = new List<Tramite>();
+    protected override void OnInitialized()
+    {
+        _lista = Tramites.Ejecutar();
+        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
+        Console.WriteLine("usuarios en listado tramites");
+        foreach (var usuario in usuarios)
+        {
+            Console.WriteLine($"Usuario: {usuario.UserName}");
+
+            if (usuario.Permisos != null && usuario.Permisos.Any())
+            {
+                Console.WriteLine("Permisos:");
+
+                foreach (var permiso in usuario.Permisos)
+                {
+                    Console.WriteLine($" - {permiso.tipoPermiso}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Este usuario no tiene permisos asignados.");
+            }
+
+            Console.WriteLine(); // Separador entre usuarios
+        }
+
+    }
+
+    DialogoConfirmacion dialogo = null!;
+    Tramite? _TramiteParaEliminar = null;
+
+    //ver otra manera de hacer, con EventCallback  (esta en la filmina)
+    private void ConfirmarEliminacion(Tramite tra)
+    {
+        _TramiteParaEliminar = tra;
+        dialogo.Mensaje = $"¿Desea eliminar el tramite {tra.Id}?";
+        dialogo.Mostrar();
+    }
+    private void Eliminar()
+    {
+        if (_TramiteParaEliminar != null)
+        {
+            CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.TramiteBaja);
+            _lista = Tramites.Ejecutar(); //se actualiza la lista de tramites
+        }
+    }
+
+    void ModificarTramite(Tramite tra){
+        Navegador.NavigateTo($"tramite/{tra.Id}");
+    }
+
+    void AgregarTramite(){
+        Navegador.NavigateTo($"tramite/");
+    }
+
+}
