@@ -113,8 +113,19 @@ else
         return permisosActualizados;
     }
 
-    private Permiso BuscarPermisoPorTipo(TipoPermiso tipoPermiso, UserAccount userToUpdate){
-        if (userToUpdate.Permisos != null) return userToUpdate.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
-        else return null;
+    private Permiso BuscarPermisoPorTipo(TipoPermiso tipoPermiso, UserAccount userToUpdate)
+    {
+        if (userToUpdate.Permisos != null)
+        {
+            // Buscar el permiso que coincide con el tipo de permiso
+            var permiso = DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
+            return permiso;
+        }
+        else
+        {
+            // Inicializar una nueva lista de permisos vacía
+            userToUpdate.Permisos = new List<Permiso>();
+            return DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
+        }
     }
 }
