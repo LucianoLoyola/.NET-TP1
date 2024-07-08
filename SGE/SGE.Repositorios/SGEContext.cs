@@ -52,7 +52,6 @@ namespace SGE.Repositorios
 
                 entity.Property(e => e.Id).IsRequired();
                 entity.Property(e => e.tipoPermiso).IsRequired();
-                
             });
 
             modelBuilder.Entity<Tramite>(entity =>
@@ -80,7 +79,7 @@ namespace SGE.Repositorios
                 entity.Property(e => e.Password);
                 entity.Property(e => e.Role);
             });
-
+         }
         
 
             
