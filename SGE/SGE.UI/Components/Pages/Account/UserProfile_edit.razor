@@ -11,7 +11,6 @@
 @inject SGEContext DbContext
 @inject IServicioHash servicioHash
 @inject NavigationManager Navigation
-
 <h3>Editar Perfil</h3>
 
 @if (user == null)
@@ -25,11 +24,7 @@ else
             <label for="UserName">Nombre de Usuario:</label>
             <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
         </div>
-        
-        <div class="mb-3">
-            <label for="Email">Contraseña:</label>
-            <input type="password" id="Contraseña" class="form-control" @bind="user.Password" required />
-        </div>
+
         <div class="mb-3">
             <label for="Name">Nombre:</label>
             <input type="text" id="Name" class="form-control" @bind="user.Name" required />
@@ -61,21 +56,34 @@ else
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
+
+    <h4>Cambiar Contraseña</h4>
+    <form method="post" @onsubmit="HandlePasswordChange">
+        <div class="mb-3">
+            <label for="NewPassword">Nueva Contraseña:</label>
+            <input type="password" id="NewPassword" class="form-control" @bind="newPassword" />
+        </div>
+        <button type="submit" class="btn btn-secondary">Cambiar Contraseña</button>
+    </form>
 }
 
 @code {
     [Parameter] public int UserId { get; set; }
     private UserAccount user { get; set; } = new UserAccount();
+    private string newPassword { get; set; }
     private List<TipoPermiso> permisosSeleccionados = new List<TipoPermiso>(); // Crear lista de permisos seleccionados
-    protected override async Task OnInitializedAsync(){
+
+    protected override async Task OnInitializedAsync()
+    {
         user = await DbContext.Usuarios.FindAsync(UserId);
-        if (user == null){
+        if (user == null)
+        {
             Console.WriteLine("Falla al encontrar usuario");
             Navigation.NavigateTo("/error");
         }
-        else{
+        else
+        {
             Console.WriteLine($"Rol del usuario: {user.Role}");
-            user.Password= servicioHash.GetHashSha256(user.Password);
             StateHasChanged();
         }
     }
@@ -85,15 +93,19 @@ else
         if ((bool)e.Value) permisosSeleccionados.Add(permiso); // Agregar el permiso a la lista de permisos seleccionados
         else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
     }
-    private async Task HandleValidSubmit(){
-        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
-        if (userToUpdate != null){
-            // Mapear los permisos seleccionados a objetos Permiso
-            var permisosActualizados = MapPermisosSeleccionados(userToUpdate.Permisos, userToUpdate);
 
-            // Actualizar la lista de permisos del usuario
-            userToUpdate.Permisos = permisosActualizados;
-            userToUpdate.Password= servicioHash.GetHashSha256(userToUpdate.Password);
+    private async Task HandleValidSubmit()
+    {
+        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
+        if (userToUpdate != null)
+        {
+            // Actualizar solo los campos no relacionados con la contraseña
+            userToUpdate.UserName = user.UserName;
+            userToUpdate.Name = user.Name;
+            userToUpdate.Surname = user.Surname;
+            userToUpdate.Email = user.Email;
+            userToUpdate.Role = user.Role;
+            userToUpdate.Permisos = MapPermisosSeleccionados(userToUpdate.Permisos, userToUpdate);
 
             modificarUserAccount.Ejecutar(userToUpdate);
 
@@ -102,11 +114,27 @@ else
         }
     }
 
-    private List<Permiso> MapPermisosSeleccionados(List<Permiso> permisosUsuario, UserAccount userToUpdate){
+    private async Task HandlePasswordChange()
+    {
+        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
+        if (userToUpdate != null && !string.IsNullOrEmpty(newPassword))
+        {
+            userToUpdate.Password = servicioHash.GetHashSha256(newPassword);
+            modificarUserAccount.Ejecutar(userToUpdate);
+
+            Console.WriteLine("Contraseña cambiada con éxito");
+            Navigation.NavigateTo("/administracion");
+        }
+    }
+
+    private List<Permiso> MapPermisosSeleccionados(List<Permiso> permisosUsuario, UserAccount userToUpdate)
+    {
         var permisosActualizados = new List<Permiso>();
-        foreach (var tipoPermiso in permisosSeleccionados){
+        foreach (var tipoPermiso in permisosSeleccionados)
+        {
             var permiso = BuscarPermisoPorTipo(tipoPermiso, userToUpdate);
-            if (permiso != null){
+            if (permiso != null)
+            {
                 permisosActualizados.Add(permiso);
             }
         }

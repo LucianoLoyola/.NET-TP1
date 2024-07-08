@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using System.Security.Claims
+@inject EliminarUserAccountUseCase eliminarUsuario
 @inject SGEContext DbContext
 @inject NavigationManager navigationManager
 
@@ -36,6 +37,7 @@
                         <a href="/userprofile/@user.Id" class="btn btn-primary">Ver Perfil</a>
                         <a href="/userprofile_edit/@user.Id" class="btn btn-primary">Modificar</a>
                         <a href="/userprofile_delete/@user.Id" class="btn btn-primary">Eliminar</a>
+                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(user)">Eliminar</button>
                     </td>
                 </tr>
             }
@@ -48,11 +50,21 @@ else
 }
 
 @code {
+
     List<UserAccount> UserAccounts;
     protected override async Task OnInitializedAsync()
     {
         // Obtener todos los usuarios de la base de datos
         UserAccounts = DbContext.Usuarios.ToList(); 
     }
+
+    private void ConfirmarEliminacion(UserAccount user){
+        if(user!=null){
+            eliminarUsuario.Ejecutar(user.Id);
+            Console.Write("ELIMINADO");
+            UserAccounts = DbContext.Usuarios.ToList(); 
+        }
+    }
+
 
 }
