@@ -7,6 +7,8 @@
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
+@inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
+
 
  
 @*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
@@ -48,10 +50,15 @@ else{
         </tbody>
     </table>
 
-        <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
+        @* <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button> *@
+
+
+<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+
 
 }
 @code {
+    DialogoConfirmacion dialogo = null!;
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Tramite> _lista = new List<Tramite>();
     protected override void OnInitialized()
@@ -82,7 +89,7 @@ else{
 
     }
 
-    DialogoConfirmacion dialogo = null!;
+
     Tramite? _TramiteParaEliminar = null;
 
     //ver otra manera de hacer, con EventCallback  (esta en la filmina)
@@ -96,7 +103,8 @@ else{
     {
         if (_TramiteParaEliminar != null)
         {
-            CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.TramiteBaja);
+            Expediente expediente = consultaExpediente.Ejecutar(_TramiteParaEliminar.ExpedienteId);
+            CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id,expediente, sesion.GetUserId(), TipoPermiso.TramiteBaja);
             _lista = Tramites.Ejecutar(); //se actualiza la lista de tramites
         }
     }

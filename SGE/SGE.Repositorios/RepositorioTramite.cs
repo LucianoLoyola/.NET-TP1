@@ -66,15 +66,15 @@ public class RepositorioTramite : IRepositorioTramite
     //     throw new NotImplementedException();
     // }
 
-    List<Tramite> IRepositorioTramite.ListarTramites()
-    {
-        throw new NotImplementedException();
-    }
+    // List<Tramite> IRepositorioTramite.ListarTramites()
+    // {
+    //     throw new NotImplementedException();
+    // }
 
-    Tramite IRepositorioTramite.GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta)
-    {
-        throw new NotImplementedException();
-    }
+    // Tramite IRepositorioTramite.GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta)
+    // {
+    //     throw new NotImplementedException();
+    // }
 
     public Tramite GetTramitePorId(int id) => db.Tramites.Where(t => t.Id == id).SingleOrDefault();
 
