@@ -41,6 +41,16 @@
             <option value="Administrador">Administrador</option>
         </select>
     </div>
+    <div class="mb-3">
+        <label for="Permisos">Permisos:</label>
+        @foreach (TipoPermiso permiso in Enum.GetValues(typeof(TipoPermiso)))
+        {
+            <div>
+                <input type="checkbox" id="permiso-@permiso" @onchange="e => TogglePermiso(permiso, e)" />
+                <label for="permiso-@(permiso)">@(permiso)</label>
+            </div>
+        }
+    </div>
     
     <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
@@ -49,9 +59,13 @@
 @code {
     [Parameter]
     public int UserId { get; set; }
-
+    private List<TipoPermiso> permisosSeleccionados = new List<TipoPermiso>(); // Crear lista de permisos seleccionados
     private UserAccount user { get; set; } = new UserAccount();
-
+    private void TogglePermiso(TipoPermiso permiso, ChangeEventArgs e)
+    {
+        if ((bool)e.Value) permisosSeleccionados.Add(permiso); // Agregar el permiso a la lista de permisos seleccionados
+        else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
+    }
     private async Task HandleValidSubmit()
     {
 
@@ -59,14 +73,43 @@
             user.Role="Usuario";
         }
         user.Password=servicioHash.GetHashSha256(user.Password);
-        user.Permisos=new List<Permiso>(){
-                new Permiso(){tipoPermiso = TipoPermiso.Lectura}, // Asignar permiso de lectura
-        };
 
+        // Mapear los permisos seleccionados a objetos Permiso
+        var permisosActualizados = MapPermisosSeleccionados(user.Permisos, user);
 
+        // Actualizar la lista de permisos del usuario
+        user.Permisos = permisosActualizados;
+        
         agregarUsuario.Ejecutar(user);
         Console.WriteLine("Exito");
         Navigation.NavigateTo("/");
     
+    }
+
+    private List<Permiso> MapPermisosSeleccionados(List<Permiso> permisosUsuario, UserAccount userToUpdate){
+        var permisosActualizados = new List<Permiso>();
+        foreach (var tipoPermiso in permisosSeleccionados){
+            var permiso = BuscarPermisoPorTipo(tipoPermiso, userToUpdate);
+            if (permiso != null){
+                permisosActualizados.Add(permiso);
+            }
+        }
+        return permisosActualizados;
+    }
+
+    private Permiso BuscarPermisoPorTipo(TipoPermiso tipoPermiso, UserAccount userToUpdate)
+    {
+        if (userToUpdate.Permisos != null)
+        {
+            // Buscar el permiso que coincide con el tipo de permiso
+            var permiso = DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
+            return permiso;
+        }
+        else
+        {
+            // Inicializar una nueva lista de permisos vacía
+            userToUpdate.Permisos = new List<Permiso>();
+            return DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
+        }
     }
 }
