@@ -61,10 +61,6 @@
         user.Password=servicioHash.GetHashSha256(user.Password);
         user.Permisos=new List<Permiso>(){
                 new Permiso(){tipoPermiso = TipoPermiso.Lectura}, // Asignar permiso de lectura
-                new Permiso(){tipoPermiso = TipoPermiso.ExpedienteAlta},     // Asignar permiso de alta expediente para prueba
-                new Permiso(){tipoPermiso = TipoPermiso.ExpedienteModificacion},     // Asignar permiso de modificacion expediente para prueba
-                new Permiso(){tipoPermiso = TipoPermiso.ExpedienteBaja},     // Asignar permiso de modificacion expediente para prueba
-
         };
 
 
