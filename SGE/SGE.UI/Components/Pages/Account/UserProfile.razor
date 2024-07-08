@@ -1,8 +1,6 @@
 @page "/userprofile/{userId:int}"
 @using SGE.Aplicacion.ViewModels
-@using System.Security.Claims
 @using SGE.Repositorios
-@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using global::SGE.Aplicacion
 @inject SGEContext DbContext
@@ -11,14 +9,37 @@
 
 @if (user == null)
 {
-    <p>Usted no ha iniciado sesión</p>
+    <p class="text-danger">Usted no ha iniciado sesión.</p>
 }
 else
 {
-    <div>
-        <p>Nombre de Usuario: @user.UserName</p>
-        <p>Rol: @user.Role</p>
-        <!-- Otros detalles del usuario -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Información del Usuario</h5>
+            <p><strong>Nombre de Usuario:</strong> @user.UserName</p>
+            <p><strong>Nombre:</strong> @user.Name</p>
+            <p><strong>Apellido:</strong> @user.Surname</p>
+            <p><strong>Email:</strong> @user.Email</p>
+            <p><strong>Rol:</strong> @user.Role</p>
+            @if (user.Permisos != null && user.Permisos.Any())
+            {
+                <div>
+                    <strong>Permisos:</strong>
+                    <ul>
+                        @foreach (TipoPermiso permiso in Enum.GetValues(typeof(TipoPermiso)))
+                        {
+                            <div>
+                                <li>TipoPermiso</li>
+                            </div>
+                        }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <p>Este usuario no tiene permisos asignados.</p>
+            }
+        </div>
     </div>
 }
 
