@@ -1,6 +1,5 @@
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Entidades;
-
 namespace SGE.Repositorios;
 public class RepositorioUsuario : IRepositorioUsuario
 {
