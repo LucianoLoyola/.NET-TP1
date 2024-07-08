@@ -55,12 +55,12 @@ else
                                 <button class="btn btn-primary" @onclick= "()=>VerTramites(exp.Id)">Trámites</button>
                             </td>
                             <td>
-                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteModificacion))
                                 {
                                     <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
                                 }
 
-                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteBaja))
                                 {
                                     <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
                                 }
