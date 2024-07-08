@@ -9,13 +9,16 @@
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
+@inject IServicioAutorizacion autorizacion
  
 @*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
 
 @if (_lista.Count == 0){
     <h3>Aún no existen expedientes</h3>
-    <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
+        <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
     }
+}
 else{
     <div class="form-group">
         <label for="idExpediente">Filtrar por ID de expediente:</label>
@@ -49,14 +52,24 @@ else{
                         <button class="btn btn-primary" @onclick= "()=>VerTramites(exp.Id)">Trámites</button>
                     </td>
                     <td>
+                            @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
                         <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+
+                            }
+
+                            @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
                         <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
+
+                            }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(),TipoPermiso.ExpedienteAlta)){
         <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+    }
 
 }
 
