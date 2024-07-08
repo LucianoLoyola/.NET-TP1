@@ -46,6 +46,8 @@ else
 
     private UserAccount user { get; set; } = new UserAccount();
 
+    private string lastModifiedUserName= "";
+
     protected override async Task OnInitializedAsync()
     {
         user = await DbContext.Usuarios.FindAsync(UserId);
@@ -57,6 +59,7 @@ else
         else
         {
             Console.WriteLine($"Rol del usuario: {user.Role}");
+            lastModifiedUserName=user.UserName;
             StateHasChanged();
         }
     }
@@ -66,9 +69,17 @@ else
         var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
         if (userToUpdate != null)
         {
+            var direccionarLogout=false;
+            if(string.Compare(lastModifiedUserName,user.UserName)!=0){//Si usuario cambió
+                direccionarLogout=true;
+            }
             modificarUserAccount.Ejecutar(userToUpdate);
-            Console.WriteLine("Exito");
-            Navigation.NavigateTo("/");
+            if(direccionarLogout==true){
+                Navigation.NavigateTo("/logout");
+            }
+            else{
+                Navigation.NavigateTo("/");
+            }
         }
     }
 }

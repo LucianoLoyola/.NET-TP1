@@ -75,6 +75,7 @@ else
         }
         else{
             Console.WriteLine($"Rol del usuario: {user.Role}");
+            user.Password= servicioHash.GetHashSha256(user.Password);
             StateHasChanged();
         }
     }
