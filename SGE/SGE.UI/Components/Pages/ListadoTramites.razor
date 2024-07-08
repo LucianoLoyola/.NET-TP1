@@ -1,17 +1,16 @@
 ﻿@page "/listadoTramites"
 @using Microsoft.EntityFrameworkCore
 @using SGE.UI.Components
+@using SGE.Aplicacion
 @rendermode InteractiveServer
 @inject CasoDeUsoListarTramites Tramites 
+@inject CasoDeUsoTramiteConsultaPorEtiqueta TramitesPorEtiqueta
 @inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
 @inject NavigationManager Navegador
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject IServicioAutorizacion autorizacion
-
-
-
  
 @*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
 
@@ -20,6 +19,18 @@
     @* <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button> *@
     }
 else{
+    <div class="form-group">
+        <label for="etiquetaTramite">Filtrar por Etiqueta de Trámite:</label>
+            <select class="form-control" id="etiquetaTramite" @onchange="ActualizarEtiqueta">
+                <option value="">Seleccione una etiqueta</option>
+                @foreach (var etiqueta in Enum.GetValues(typeof(Etiqueta)))
+                {
+                    <option value="@etiqueta">@etiqueta</option>
+                }
+            </select>
+        <span class="text-danger">@_errorMessage</span>
+    </div>
+    <button @onclick="FiltrarTramites">Filtrar</button>
     <table class="table">
         <thead>
             <tr>
@@ -60,15 +71,16 @@ else{
 
         @* <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button> *@
 
-
-<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
-
-
+    @*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
 }
+
+
 @code {
     DialogoConfirmacion dialogo = null!;
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Tramite> _lista = new List<Tramite>();
+    private Etiqueta _etiquetaSeleccionada { get; set; }
+    private string? _errorMessage;
     protected override void OnInitialized()
     {
         _lista = Tramites.Ejecutar();
@@ -125,4 +137,33 @@ else{
         Navegador.NavigateTo($"tramite/");
     }
 
+    private void ActualizarEtiqueta(ChangeEventArgs e){
+        if (Enum.TryParse(e.Value.ToString(), out Etiqueta etiqueta)) _etiquetaSeleccionada = etiqueta;
+    }
+
+    // Filtrar la lista de trámites según la etiqueta seleccionada
+    private void FiltrarTramites()
+    {
+        _lista = Tramites.Ejecutar();
+
+        var tramiteExistente = _lista.FirstOrDefault(t => t.Etiqueta == _etiquetaSeleccionada);
+        if (tramiteExistente == null)
+        {
+            _errorMessage = "La etiqueta no corresponde a un tramite existente.";
+            return;
+        }
+
+        _lista = TramitesPorEtiqueta.Ejecutar(_lista, _etiquetaSeleccionada);
+        var tramitesFiltrados = _lista.Where(t => t.Etiqueta == _etiquetaSeleccionada).ToList();
+
+        if (!tramitesFiltrados.Any())
+        {
+            _errorMessage = "No hay trámites con la etiqueta seleccionada.";
+            _lista = new List<Tramite>(); // Limpia la lista de trámites para evitar resultados incorrectos
+            return;
+        }
+
+        _lista = tramitesFiltrados; // Filtrar por la etiqueta seleccionada
+        _errorMessage = string.Empty; // Borra el mensaje de error si la etiqueta es válida y existen trámites
+    }
 }

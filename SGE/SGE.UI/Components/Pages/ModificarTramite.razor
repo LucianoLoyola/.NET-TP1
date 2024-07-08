@@ -52,11 +52,6 @@ else{
 
     @* Formulario para modificar Tramite *@
     <form>
-        <div class="form-group">
-            <label for="valorAsegurado">Contenido:</label>
-            <input type="text" class="form-control" id="contenido" @bind="_tramite.Contenido" required>
-        </div>
-
         @* Campo para seleccionar la etiqueta del tramite *@
         <div class="form-group">
             <label for="etiqueta">Etiqueta del Tramite:</label>
@@ -66,6 +61,11 @@ else{
                     <option value="@etiqueta">@etiqueta</option>
                 }
             </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="valorAsegurado">Contenido:</label>
+            <input type="text" class="form-control" id="contenido" @bind="_tramite.Contenido" required>
         </div>
 
         <button class="btn btn-primary" @onclick="ActualizarTramite">Modificar Tramite</button>
@@ -91,7 +91,7 @@ else{
     public int? Id { get; set; }    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     private Expediente _expediente;
     Tramite _tramite = new Tramite();
-    bool _esNuevoTramite = true;
+    bool _esNuevoTramite = false;
     private string _errorMessage; // Mensaje de error para mostrar en la página
 
     //lista de etiquetas para seleccionar
