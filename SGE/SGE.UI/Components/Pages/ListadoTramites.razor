@@ -8,6 +8,8 @@
 @inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
+@inject IServicioAutorizacion autorizacion
+
 
 
  
@@ -42,8 +44,14 @@ else{
                     <td>@tra.fechaHoraUltimaModificacion</td>
                     <td>@tra.IdUsuarioMod</td>
                     <td>
-                        <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
-                        <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
+                        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteModificacion)){
+                            <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
+
+                        }
+                        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteBaja)){
+                            <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
+
+                        }
                     </td>
                 </tr>
             }
