@@ -114,14 +114,7 @@
                     new Permiso { tipoPermiso = TipoPermiso.TramiteBaja }
                 }
         };
-<<<<<<< HEAD
         agregarUsuario.Ejecutar(userAccount);
-=======
-
-        DbContext.Usuarios.Add(userAccount);
-        await DbContext.SaveChangesAsync();
-
->>>>>>> origin/main
         // Redirigir al usuario a la página de inicio de sesión
         navigationManager.NavigateTo("/login");
     }
