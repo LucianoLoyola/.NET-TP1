@@ -76,16 +76,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         user = await DbContext.Usuarios.FindAsync(UserId);
-        if (user == null)
-        {
-            Console.WriteLine("Falla al encontrar usuario");
-            Navigation.NavigateTo("/error");
-        }
-        else
-        {
-            Console.WriteLine($"Rol del usuario: {user.Role}");
-            StateHasChanged();
-        }
+        if (user == null) Navigation.NavigateTo("/error");
+        else StateHasChanged();
     }
 
     private void TogglePermiso(TipoPermiso permiso, ChangeEventArgs e)
@@ -109,7 +101,6 @@ else
 
             modificarUserAccount.Ejecutar(userToUpdate);
 
-            Console.WriteLine("Exito");
             Navigation.NavigateTo("/administracion");
         }
     }
@@ -122,7 +113,6 @@ else
             userToUpdate.Password = servicioHash.GetHashSha256(newPassword);
             modificarUserAccount.Ejecutar(userToUpdate);
 
-            Console.WriteLine("Contraseña cambiada con éxito");
             Navigation.NavigateTo("/administracion");
         }
     }

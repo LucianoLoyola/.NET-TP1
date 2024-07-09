@@ -36,16 +36,7 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
                     default:
                         break;
                 }
-                Console.WriteLine("Estado de expediente actualizado");
             }
-            else
-            {
-                Console.WriteLine("El expediente no tiene tramites asociados");
-            }
-        }
-        else
-        {
-            Console.WriteLine("No se encontró un expediente asociado al tramite");
         }
     }
 

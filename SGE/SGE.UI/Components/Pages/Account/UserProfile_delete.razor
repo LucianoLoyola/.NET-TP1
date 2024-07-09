@@ -44,17 +44,11 @@
                 eliminarUsuario.Ejecutar(user.Id);
                 // Refrescar la lista de usuarios después de eliminar
                 StateHasChanged();
-                Console.WriteLine("Usuario eliminado correctamente");
-            }
-            else
-            {
-                Console.WriteLine("Usuario no encontrado");
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al eliminar usuario: {ex.Message}");
-
         }
     }
 }
