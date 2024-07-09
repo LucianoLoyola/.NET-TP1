@@ -7,7 +7,13 @@ public class ObtenerUserAccountUseCase(IRepositorioUsuario repositorio):UserAcco
     public UserAccount? Ejecutar(int id)
     {
     //aquí podríamos insertar código de validación de cliente
-
-        return Repositorio.GetUsuario(id);
+        UserAccount? user=Repositorio.GetUsuario(id);
+        if (user == null){//si no se encontró expediente, excepción
+            throw new RepositorioException($"No se encontró un usuario con el ID {id}");
+        }
+        else{
+            return user;
+        }
+        
     }
 }
