@@ -14,7 +14,6 @@ public class CasoDeUsoTramiteConsultaPorId(IRepositorioTramite repo) : TramiteUs
         {//si no se encontró tramite, excepción
             throw new RepositorioException($"No se encontró un tramite con el ID {idTramite}");
         }
-        Console.WriteLine("Se encontró el tramite");
         return tramite;//devuelve el tramite 
     }
 }

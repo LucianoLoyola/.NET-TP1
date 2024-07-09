@@ -93,28 +93,6 @@ else
         dialogo = new DialogoConfirmacion();
         _lista = CasoDeUsoListarExpedientes.Ejecutar();
         usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
-        Console.WriteLine("usuarios en listado expediente");
-        foreach (var usuario in usuarios)
-        {
-            Console.WriteLine($"Usuario: {usuario.UserName}");
-
-            if (usuario.Permisos != null && usuario.Permisos.Any())
-            {
-                Console.WriteLine("Permisos:");
-
-                foreach (var permiso in usuario.Permisos)
-                {
-                    Console.WriteLine($" - {permiso.tipoPermiso}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Este usuario no tiene permisos asignados.");
-            }
-
-            Console.WriteLine(); // Separador entre usuarios
-        }
-
     }
 
     // Filtrar la lista de expedientes según el ID ingresado

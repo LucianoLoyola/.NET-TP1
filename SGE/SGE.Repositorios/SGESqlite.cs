@@ -13,7 +13,6 @@ public class SGESqlite
         context.Database.EnsureCreated();
         if (context.Database.EnsureCreated())
         {
-            Console.WriteLine("Se creó la base de datos");
             //Agregar acá sentencias para inicilizar la base de datos con contenido - CODE FIRST
             //context.Usuarios.Add(new UserAccount() { UserName = "Test",Email="test@gmail.com" });
             var connection = context.Database.GetDbConnection();

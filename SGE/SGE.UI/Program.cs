@@ -17,16 +17,6 @@ var options = new DbContextOptionsBuilder<SGEContext>()
 // Inicializar la base de datos si es necesario
 SGESqlite.Inicializar(options);
 
-// Usar el contexto para mostrar los datos de UserAccount
-// using (var context = new SGEContext(options))
-// {
-//     Console.WriteLine("-- Tabla UserAccount --");
-//     foreach (var a in context.Usuarios)
-//     {
-//         Console.WriteLine($"{a.Id} {a.UserName}");
-//     }
-// }
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar servicios y middleware

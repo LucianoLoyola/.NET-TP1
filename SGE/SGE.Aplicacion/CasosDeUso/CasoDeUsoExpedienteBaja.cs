@@ -19,17 +19,4 @@ public class CasoDeUsoExpedienteBaja(IRepositorioExpediente repo, IServicioAutor
             Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
         }
     }
-
-    // public void Ejecutar(int idExpediente, Permiso permiso){
-    //     if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario (deberia usar el contexto para obtener el usuario)
-    //     {
-    //         throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");
-    //     }
-    //     else try{//realiza la eliminación
-    //         repo.EliminarExpediente(idExpediente,listaT,EliminarTramite);
-    //     }
-    //     catch(RepositorioException repoException) {
-    //         Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
-    //     }
-    // }
 }
