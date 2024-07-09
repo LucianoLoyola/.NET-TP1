@@ -61,6 +61,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<ExpedienteValidador>();
 builder.Services.AddTransient<TramiteValidador>();
+builder.Services.AddTransient<UsuarioValidador>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
 
 
