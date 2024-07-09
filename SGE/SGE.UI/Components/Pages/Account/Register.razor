@@ -67,32 +67,16 @@
     public RegisterViewModel Model { get; set; } = new();
     private string? errorMessage;
 
-    private async Task HandleRegistration()
-    {
-        Console.WriteLine("HandleRegistration called");
-
+    private async Task HandleRegistration(){
         if (string.IsNullOrEmpty(Model.UserName) ||
             string.IsNullOrEmpty(Model.Password) ||
             string.IsNullOrEmpty(Model.Name) ||
             string.IsNullOrEmpty(Model.Surname) ||
-            string.IsNullOrEmpty(Model.Email))
-        {
-            errorMessage = "Todos los campos son obligatorios";
-            Console.WriteLine(errorMessage);
-            return;
-        }
-
-        Console.WriteLine("Passed validation checks");
+            string.IsNullOrEmpty(Model.Email)) return;
 
         // Verificar si el usuario ya existe
         var existingUser = DbContext.Usuarios.FirstOrDefault(x => x.UserName == Model.UserName);
-        if (existingUser != null)
-        {
-            errorMessage = "El usuario ya existe";
-            Console.WriteLine(errorMessage);
-            return;
-        }
-        Console.WriteLine("User does not exist");
+        if (existingUser != null) return;
 
         var hayUsuarios = DbContext.Usuarios.Any();
 
@@ -124,10 +108,8 @@
 
         DbContext.Usuarios.Add(userAccount);
         await DbContext.SaveChangesAsync();
-        Console.WriteLine("Saved changes to database");
 
         // Redirigir al usuario a la página de inicio de sesión
         navigationManager.NavigateTo("/login");
-        Console.WriteLine("Navigated to /login");
     }
 }

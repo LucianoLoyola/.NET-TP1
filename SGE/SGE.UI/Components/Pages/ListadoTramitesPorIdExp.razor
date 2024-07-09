@@ -85,36 +85,6 @@ else{
         tramitesExp = TramitesPorId.Ejecutar(IdExp);
         //listas de usuarios con sus permisos para debuggear
         usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
-        Console.WriteLine("usuarios en listado tramites");
-        foreach (var usuario in usuarios)
-        {
-            Console.WriteLine($"Usuario: {usuario.UserName}");
-
-            if (usuario.Permisos != null && usuario.Permisos.Any())
-            {
-                Console.WriteLine("Permisos:");
-
-                foreach (var permiso in usuario.Permisos)
-                {
-                    Console.WriteLine($" - {permiso.tipoPermiso}");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Este usuario no tiene permisos asignados.");
-            }
-
-            Console.WriteLine(); // Separador entre usuarios
-        }
-
-        Console.WriteLine("tramites:");
-        foreach (var tramite in tramitesExp)
-        {
-            Console.WriteLine($"Tramite: {tramite}");
-
-            Console.WriteLine(); // Separador entre usuarios
-        }
-
     }
 
 

@@ -51,14 +51,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         user = await DbContext.Usuarios.FindAsync(UserId);
-        if (user == null)
-        {
-            Console.WriteLine("Falla al encontrar usuario");
-            Navigation.NavigateTo("/error");
-        }
+        if (user == null) Navigation.NavigateTo("/error");
         else
         {
-            Console.WriteLine($"Rol del usuario: {user.Role}");
             lastModifiedUserName=user.UserName;
             StateHasChanged();
         }
