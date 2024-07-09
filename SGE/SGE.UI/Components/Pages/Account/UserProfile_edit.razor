@@ -7,6 +7,7 @@
 @using SGE.Aplicacion.CasosDeUso
 @rendermode InteractiveServer
 @inject ModificarUserAccountUseCase modificarUserAccount
+@inject ObtenerUserAccountUseCase obtenerUsuario
 @inject IServicioSesion sesion
 @inject SGEContext DbContext
 @inject IServicioHash servicioHash
@@ -88,7 +89,8 @@ else
 
     private async Task HandleValidSubmit()
     {
-        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
+        var userToUpdate= obtenerUsuario.Ejecutar(UserId);
+        
         if (userToUpdate != null)
         {
             // Actualizar solo los campos no relacionados con la contraseña
@@ -107,7 +109,8 @@ else
 
     private async Task HandlePasswordChange()
     {
-        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
+        var userToUpdate =obtenerUsuario.Ejecutar(UserId);
+        
         if (userToUpdate != null && !string.IsNullOrEmpty(newPassword))
         {
             userToUpdate.Password = servicioHash.GetHashSha256(newPassword);

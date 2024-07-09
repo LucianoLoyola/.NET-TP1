@@ -9,6 +9,8 @@
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using System.Security.Claims
 @inject EliminarUserAccountUseCase eliminarUsuario
+@inject ObtenerUserAccountUseCase obtenerUsuario
+@inject ListarUserAccountUseCase listarUsuarios
 @inject SGEContext DbContext
 @inject NavigationManager navigationManager
 
@@ -60,7 +62,7 @@ else
     {
         dialogo = new DialogoConfirmacion();
         // Obtener todos los usuarios de la base de datos
-        UserAccounts = DbContext.Usuarios.ToList(); 
+        UserAccounts= listarUsuarios.Ejecutar();
     }
 
     private void Eliminar()
@@ -69,7 +71,7 @@ else
         {
             eliminarUsuario.Ejecutar(_usuarioEliminar.Id);
             Console.Write("ELIMINADO");
-            UserAccounts = DbContext.Usuarios.ToList(); 
+            UserAccounts= listarUsuarios.Ejecutar();
         }
     }
     private void ConfirmarEliminacion(UserAccount user){

@@ -7,6 +7,7 @@
 @using SGE.Aplicacion.CasosDeUso
 @rendermode InteractiveServer
 @inject EliminarUserAccountUseCase eliminarUsuario
+@inject ObtenerUserAccountUseCase obtenerUsuario
 @inject IServicioSesion sesion
 @inject SGEContext DbContext
 @inject NavigationManager Navigation
@@ -38,7 +39,8 @@
         try
         {
             Console.WriteLine($"Intentando eliminar usuario con ID: {UserId}");
-            var user = await DbContext.Usuarios.FindAsync(UserId);
+            var user = obtenerUsuario.Ejecutar(UserId);
+
             if (user != null)
             {
                 eliminarUsuario.Ejecutar(user.Id);
