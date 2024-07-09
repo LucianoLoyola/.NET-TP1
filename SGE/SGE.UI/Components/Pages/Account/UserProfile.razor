@@ -62,6 +62,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        
         user = await DbContext.Usuarios.Include(u => u.Permisos).FirstOrDefaultAsync(u => u.Id == Id);
         @* user = obtenerUsuario.Ejecutar(Id); //se debería implementar de esta manera, llamando al caso de uso
         permisos = user.Permisos; *@

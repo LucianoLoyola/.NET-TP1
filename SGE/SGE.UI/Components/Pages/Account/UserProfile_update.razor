@@ -7,6 +7,7 @@
 @using SGE.Aplicacion.CasosDeUso
 @rendermode InteractiveServer
 @inject ModificarUserAccountUseCase modificarUserAccount
+@inject ObtenerUserAccountUseCase obtenerUsuario
 @inject IServicioSesion sesion
 @inject SGEContext DbContext
 @inject NavigationManager Navigation
@@ -50,7 +51,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        user = await DbContext.Usuarios.FindAsync(UserId);
+        user = obtenerUsuario.Ejecutar(UserId);
         if (user == null)
         {
             Console.WriteLine("Falla al encontrar usuario");
@@ -66,7 +67,7 @@ else
 
     private async Task HandleValidSubmit()
     {
-        var userToUpdate = await DbContext.Usuarios.FindAsync(UserId);
+        var userToUpdate = obtenerUsuario.Ejecutar(UserId);
         if (userToUpdate != null)
         {
             var direccionarLogout=false;

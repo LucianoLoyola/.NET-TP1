@@ -7,6 +7,8 @@
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using System.Security.Claims
 @inject SGEContext DbContext
+@inject AgregarUsuarioUseCase agregarUsuario
+@inject ListarUserAccountUseCase listarUsuarios
 @inject NavigationManager navigationManager
 @inject IServicioHash servicioHash
 
@@ -85,7 +87,8 @@
         Console.WriteLine("Passed validation checks");
 
         // Verificar si el usuario ya existe
-        var existingUser = DbContext.Usuarios.FirstOrDefault(x => x.UserName == Model.UserName);
+        var existingUser = listarUsuarios.Ejecutar().FirstOrDefault(x => x.UserName == Model.UserName);
+        
         if (existingUser != null)
         {
             errorMessage = "El usuario ya existe";
@@ -94,7 +97,7 @@
         }
         Console.WriteLine("User does not exist");
 
-        var hayUsuarios = DbContext.Usuarios.Any();
+        var hayUsuarios = listarUsuarios.Ejecutar().Any();
 
         // Crear una nueva cuenta de usuario
         var userAccount = new UserAccount
@@ -121,13 +124,8 @@
                     new Permiso { tipoPermiso = TipoPermiso.TramiteBaja }
                 }
         };
-
-        DbContext.Usuarios.Add(userAccount);
-        await DbContext.SaveChangesAsync();
-        Console.WriteLine("Saved changes to database");
-
+        agregarUsuario.Ejecutar(userAccount);
         // Redirigir al usuario a la página de inicio de sesión
         navigationManager.NavigateTo("/login");
-        Console.WriteLine("Navigated to /login");
     }
 }

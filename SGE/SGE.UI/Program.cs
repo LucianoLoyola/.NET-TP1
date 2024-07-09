@@ -34,6 +34,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<EliminarUserAccountUseCase>()
+    .AddTransient<ListarUserAccountUseCase>()
     .AddTransient<CasoDeUsoTramiteBaja>()
     .AddTransient<CasoDeUsoTramiteAlta>()
     .AddTransient<CasoDeUsoTramiteConsultaPorId>()
