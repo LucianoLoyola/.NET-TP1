@@ -34,6 +34,8 @@ public class ServicioActualizacionEstado : IServicioActualizacionEstado
                         repo.ModificarExpediente(expediente);
                         break;
                     default:
+                        expediente.estado = Estado.Recien_iniciado;
+                        repo.ModificarExpediente(expediente);
                         break;
                 }
             }
