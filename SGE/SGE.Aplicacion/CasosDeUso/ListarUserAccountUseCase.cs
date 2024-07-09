@@ -8,11 +8,8 @@ public class ListarUserAccountUseCase(IRepositorioUsuario repositorio):UserAccou
     {
     //aquí podríamos insertar código de validación de cliente
         List<UserAccount>? usuarios = Repositorio.GetUsuarios();
-        if(usuarios !=null){
-            throw new RepositorioException($"No se encontraron usuarios en la base de datos");
-        }
-        else{
+
             return usuarios;
-        }
+
     }
 }
