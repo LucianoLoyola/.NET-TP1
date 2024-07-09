@@ -17,9 +17,6 @@ public class CasoDeUsoTramiteAlta(IRepositorioTramite repoT,IRepositorioExpedien
                 tramite.fechaHoraCreacion = DateTime.Now;
                 tramite.fechaHoraUltimaModificacion = DateTime.Now;
                 tramite.IdUsuarioMod = idUsuario;
-                // Agregar el trámite a la lista, agrega el tramite al repositorio y actualiza el estado del expediente
-
-                // expediente.AgregarTramiteALista(expediente,tramite);
                 repoT.AgregarTramite(tramite);
                 servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE,expediente.listaTramites);
             }

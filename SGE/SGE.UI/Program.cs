@@ -7,6 +7,7 @@ using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion;
 using Microsoft.AspNetCore.Antiforgery;
+using ASP.Components;
 //que hace esto?? es lo mismo que no pasarle nada?
 // Crear una instancia de DbContextOptions para SGEContext (le pasa las opciones al constructor)
 var connectionString = "Data Source=SGE.sqlite";
