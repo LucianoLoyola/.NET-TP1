@@ -10,7 +10,7 @@ public class CasoDeUsoExpedienteBaja(IRepositorioExpediente repo, IServicioAutor
      public void Ejecutar(int idExpediente, int idUsuario, TipoPermiso permiso){
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {
-            throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");
+            throw new AutorizacionException("No tiene permiso para realizar la baja");
         }
         else try{//realiza la eliminación
             repo.EliminarExpediente(idExpediente);

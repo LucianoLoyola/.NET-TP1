@@ -8,7 +8,7 @@ public class CasoDeUsoExpedienteModificacion(IRepositorioExpediente repo, Expedi
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {
-            throw new AutorizacionException("El usuario no tiene permiso para realizar la modificacion");
+            throw new AutorizacionException("No tiene permiso para realizar la modificacion");
         }
         else if(!validador.Validar(expediente,idUsuario, out string mensajeError)){//valida el expediente
                 throw new ValidacionException(mensajeError); 

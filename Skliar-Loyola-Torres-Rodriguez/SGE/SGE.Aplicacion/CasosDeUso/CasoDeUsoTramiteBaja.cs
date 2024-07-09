@@ -7,7 +7,7 @@ public class CasoDeUsoTramiteBaja(IRepositorioTramite repoT, IRepositorioExpedie
     public void Ejecutar(int idTramite, Expediente expediente, int idUsuario, TipoPermiso permiso){
         try {
             if (!servicioAuth.PoseeElPermiso(idUsuario, permiso)){//verifica la autorizacion del usuario
-                throw new AutorizacionException("El usuario no tiene permiso para realizar la baja");
+                throw new AutorizacionException("No tiene permiso para realizar la baja");
             } else {//realiza el borrado
                 repoT.EliminarTramite(idTramite);
                 servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE,expediente.listaTramites);

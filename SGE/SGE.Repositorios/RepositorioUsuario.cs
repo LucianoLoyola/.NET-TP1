@@ -1,5 +1,6 @@
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Entidades;
+using Microsoft.EntityFrameworkCore;
 namespace SGE.Repositorios;
 public class RepositorioUsuario : IRepositorioUsuario
 {
@@ -10,7 +11,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         db = context;
     }
     public List<UserAccount> GetUsuarios(){
-        return db.Usuarios.ToList();
+        return db.Usuarios.Include(u => u.Permisos).ToList();
     }
     public UserAccount? GetUsuario(int id){
         return db.Usuarios.Where(u => u.Id == id).SingleOrDefault();
