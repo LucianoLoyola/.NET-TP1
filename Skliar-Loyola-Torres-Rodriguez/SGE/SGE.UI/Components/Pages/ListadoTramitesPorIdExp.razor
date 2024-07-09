@@ -1,0 +1,115 @@
+@page "/listadoTramitesExp/{IdExp:int?}"
+@using Microsoft.EntityFrameworkCore
+@using SGE.UI.Components
+@rendermode InteractiveServer
+@inject CasoDeUsoListarTramitesPorIdEx TramitesPorId 
+@inject CasoDeUsoTramiteBaja tramiteBaja
+@inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
+@inject NavigationManager Navegador
+@inject SGEContext DbContext
+@inject IServicioSesion sesion
+@inject IServicioAutorizacion autorizacion
+
+
+ 
+@*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
+
+@if (tramitesExp.Count == 0){
+    <h3>El expediente aún no tiene Trámites</h3>
+    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta)){
+        <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
+        
+    }
+    }
+
+else{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID EXPEDIENTE</th>
+                <th>ETIQUETA</th>
+                <th>CONTENIDO</th>
+                <th>FECHA CREACION</th>
+                <th>FECHA MODIFICACION</th>
+                <th>ID USUARIO MODIF.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tra in tramitesExp)
+            {
+                <tr>
+                    <td>@tra.Id</td>
+                    <td>@tra.ExpedienteId  </td>
+                    <td>@tra.Etiqueta</td>
+                    <td>@tra.Contenido</td>
+                    <td>@tra.fechaHoraCreacion</td>
+                    <td>@tra.fechaHoraUltimaModificacion</td>
+                    <td>@tra.IdUsuarioMod</td>
+                    <td>
+                        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteModificacion)){
+                            <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
+
+                        }
+                        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteBaja)){
+                            <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteAlta)){
+            <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button>
+
+        }
+
+}
+
+<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+
+
+@code {
+
+    Tramite? _TramiteParaEliminar = null;
+    Expediente? _ExpedienteParaModificar = null;
+    DialogoConfirmacion dialogo;
+    [Parameter] public int IdExp {get;set;}
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
+    List<Tramite> tramitesExp = new List<Tramite>();
+    protected override void OnInitialized()
+    {
+        _ExpedienteParaModificar = consultaExpediente.Ejecutar(IdExp);
+        dialogo = new DialogoConfirmacion();
+        tramitesExp = TramitesPorId.Ejecutar(IdExp);
+        //listas de usuarios con sus permisos para debuggear
+        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
+    }
+
+
+    //ver otra manera de hacer, con EventCallback  (esta en la filmina)
+    private void ConfirmarEliminacion(Tramite tra)
+    {
+        _TramiteParaEliminar = tra;
+        dialogo.Mensaje = $"¿Desea eliminar el tramite {tra.Id}?";
+        dialogo.Mostrar();
+    }
+    private void Eliminar()
+    {
+        if (_TramiteParaEliminar != null)
+        {
+            tramiteBaja.Ejecutar(_TramiteParaEliminar.Id, _ExpedienteParaModificar, sesion.GetUserId(), TipoPermiso.TramiteBaja);
+            tramitesExp = TramitesPorId.Ejecutar(IdExp); //se actualiza la lista de tramites
+        }
+    }
+
+    void ModificarTramite(Tramite tra){
+        Navegador.NavigateTo($"tramite/{IdExp}/{tra.Id}");
+    }
+
+    void AgregarTramite(){
+        Navegador.NavigateTo($"tramite/{IdExp}");
+    }
+
+}

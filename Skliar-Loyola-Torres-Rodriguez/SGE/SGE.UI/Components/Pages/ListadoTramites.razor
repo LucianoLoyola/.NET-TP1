@@ -1,0 +1,148 @@
+﻿@page "/listadoTramites"
+@using Microsoft.EntityFrameworkCore
+@using SGE.UI.Components
+@using SGE.Aplicacion
+@rendermode InteractiveServer
+@inject CasoDeUsoListarTramites Tramites 
+@inject CasoDeUsoTramiteConsultaPorEtiqueta TramitesPorEtiqueta
+@inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
+@inject NavigationManager Navegador
+@inject SGEContext DbContext
+@inject IServicioSesion sesion
+@inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
+@inject IServicioAutorizacion autorizacion
+ 
+@*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
+
+@if (_lista.Count == 0){
+    <h3>Aún no existen tramites</h3>
+    @* <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button> *@
+    }
+else{
+    <div class="form-group">
+        <label for="etiquetaTramite">Filtrar por Etiqueta de Trámite:</label>
+            <select class="form-control" id="etiquetaTramite" @onchange="ActualizarEtiqueta">
+                <option value="">Seleccione una etiqueta</option>
+                @foreach (var etiqueta in Enum.GetValues(typeof(Etiqueta)))
+                {
+                    <option value="@etiqueta">@etiqueta</option>
+                }
+            </select>
+        <span class="text-danger">@_errorMessage</span>
+    </div>
+    <button @onclick="FiltrarTramites">Filtrar</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID EXPEDIENTE</th>
+                <th>ETIQUETA</th>
+                <th>CONTENIDO</th>
+                <th>FECHA CREACION</th>
+                <th>FECHA MODIFICACION</th>
+                <th>ID USUARIO MODIF.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tra in _lista)
+            {
+                <tr>
+                    <td>@tra.Id</td>
+                    <td>@tra.ExpedienteId  </td>
+                    <td>@tra.Etiqueta</td>
+                    <td>@tra.Contenido</td>
+                    <td>@tra.fechaHoraCreacion</td>
+                    <td>@tra.fechaHoraUltimaModificacion</td>
+                    <td>@tra.IdUsuarioMod</td>
+                    <td>
+                        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteModificacion)){
+                            <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
+
+                        }
+                        @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.TramiteBaja)){
+                            <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+        @* <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button> *@
+
+    <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+}
+
+
+@code {
+    DialogoConfirmacion dialogo = null!;
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
+    List<Tramite> _lista = new List<Tramite>();
+    private Etiqueta _etiquetaSeleccionada { get; set; }
+    private string? _errorMessage;
+    protected override void OnInitialized()
+    {
+        _lista = Tramites.Ejecutar();
+        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
+    }
+
+
+    Tramite? _TramiteParaEliminar = null;
+
+    //ver otra manera de hacer, con EventCallback  (esta en la filmina)
+    private void ConfirmarEliminacion(Tramite tra)
+    {
+        _TramiteParaEliminar = tra;
+        dialogo.Mensaje = $"¿Desea eliminar el tramite {tra.Id}?";
+        dialogo.Mostrar();
+    }
+    private void Eliminar()
+    {
+        if (_TramiteParaEliminar != null)
+        {
+            Expediente expediente = consultaExpediente.Ejecutar(_TramiteParaEliminar.ExpedienteId);
+            CasoDeUsoTramiteBaja.Ejecutar(_TramiteParaEliminar.Id,expediente, sesion.GetUserId(), TipoPermiso.TramiteBaja);
+            _lista = Tramites.Ejecutar(); //se actualiza la lista de tramites
+        }
+    }
+
+    void ModificarTramite(Tramite tra){
+        Navegador.NavigateTo($"tramite/{tra.ExpedienteId}/{tra.Id}");
+    }
+
+    @* void AgregarTramite(){
+        Navegador.NavigateTo($"tramite/{tra.ExpedienteId}");
+    } *@
+
+
+    private void ActualizarEtiqueta(ChangeEventArgs e){
+        if (Enum.TryParse(e.Value.ToString(), out Etiqueta etiqueta)) _etiquetaSeleccionada = etiqueta;
+    }
+
+    // Filtrar la lista de trámites según la etiqueta seleccionada
+    private void FiltrarTramites()
+    {
+        _lista = Tramites.Ejecutar();
+
+        var tramiteExistente = _lista.FirstOrDefault(t => t.Etiqueta == _etiquetaSeleccionada);
+        if (tramiteExistente == null)
+        {
+            _errorMessage = "La etiqueta no corresponde a un tramite existente.";
+            return;
+        }
+
+        _lista = TramitesPorEtiqueta.Ejecutar(_lista, _etiquetaSeleccionada);
+        var tramitesFiltrados = _lista.Where(t => t.Etiqueta == _etiquetaSeleccionada).ToList();
+
+        if (!tramitesFiltrados.Any())
+        {
+            _errorMessage = "No hay trámites con la etiqueta seleccionada.";
+            _lista = new List<Tramite>(); // Limpia la lista de trámites para evitar resultados incorrectos
+            return;
+        }
+
+        _lista = tramitesFiltrados; // Filtrar por la etiqueta seleccionada
+        _errorMessage = string.Empty; // Borra el mensaje de error si la etiqueta es válida y existen trámites
+    }
+}

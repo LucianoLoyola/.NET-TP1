@@ -1,0 +1,179 @@
+@page "/tramite/{IdExp:int}/{Id:int?}"
+@using Microsoft.EntityFrameworkCore
+@using SGE.Aplicacion
+@rendermode InteractiveServer
+@inject CasoDeUsoTramiteAlta altaTramite
+@inject CasoDeUsoTramiteConsultaPorId consultaTramite
+@inject CasoDeUsoTramiteModificacion modificacionTramite
+@inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
+@inject NavigationManager Navegador
+@inject IServicioSesion sesion
+@inject SGEContext DbContext
+
+
+@if (_esNuevoTramite){
+
+
+    <h3>Agregar Trámite</h3>
+
+    @* Formulario para agregar Tramite *@
+    <form>
+        @* Campo para seleccionar la etiqueta del tramite *@
+        <div class="form-group">
+            <label for="etiqueta">Etiqueta del trámite:</label>
+            <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
+                @foreach (var etiqueta in etiquetas)
+                {
+                    <option value="@etiqueta">@etiqueta</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            @* no puede estar vacío *@
+            <label for="valorAsegurado">Contenido:</label>
+            <input type="text" class="form-control" id="contenido" @bind="_tramite.Contenido" required>
+        </div>
+
+        <button class="btn btn-primary" @onclick="CrearTramite">Agregar Tramite</button>
+
+
+    </form>
+
+    @* Componente para mostrar errores *@
+    @* <Excepcion @ref=dialogo /> *@
+
+    <p class="text-danger">@_errorMessage</p>
+}
+
+//codigo para la modificación de tramite----------------------------------
+else{
+
+    <h3>Modificar Tramite</h3>
+
+    @* Formulario para modificar Tramite *@
+    <form>
+        @* Campo para seleccionar la etiqueta del tramite *@
+        <div class="form-group">
+            <label for="etiqueta">Etiqueta del Tramite:</label>
+            <select id="etiqueta" class="form-control" @bind="_tramite.Etiqueta">
+                @foreach (var etiqueta in etiquetas)
+                {
+                    <option value="@etiqueta">@etiqueta</option>
+                }
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="valorAsegurado">Contenido:</label>
+            <input type="text" class="form-control" id="contenido" @bind="_tramite.Contenido" required>
+        </div>
+
+        <button class="btn btn-primary" @onclick="ActualizarTramite">Modificar Tramite</button>
+
+
+    </form>
+
+    @* Componente para mostrar errores *@
+    @* <Excepcion @ref=dialogo /> *@
+
+    @* <p class="text-danger">@_errorMessage</p> *@
+
+}
+
+
+
+
+@code {
+
+    [Parameter]
+    public int IdExp { get; set; }
+    [Parameter]
+    public int? Id { get; set; }    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
+    private Expediente _expediente;
+    Tramite _tramite = new Tramite();
+    bool _esNuevoTramite = true;
+    private string _errorMessage; // Mensaje de error para mostrar en la página
+
+    //lista de etiquetas para seleccionar
+    private List<Etiqueta> etiquetas = Enum.GetValues(typeof(Etiqueta)).Cast<Etiqueta>().ToList();
+    
+    @* public async Task RecuperarExpediente(){
+        _expediente = await DbContext.Expedientes.FirstOrDefaultAsync(e => e.Id == IdExp);
+    } *@
+
+    protected override void OnInitialized(){
+
+        _expediente = DbContext.Expedientes.FirstOrDefault(e => e.Id == IdExp);
+        if (_expediente == null)
+        {
+            throw new InvalidOperationException("El tramite no tiene expediente?");
+        }        
+
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Id != null)
+        {
+            int id = Id.HasValue ? Id.Value : -1; // los Id son a partir del 1
+            var tra_hallado = consultaTramite.Ejecutar(id);
+            if (tra_hallado != null)
+            {
+                _tramite = tra_hallado;
+                _esNuevoTramite = false;
+            }
+        }
+    }
+
+    void CrearTramite()
+    {
+        try
+        {
+            _errorMessage="";
+            altaTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.TramiteAlta);
+            Siguiente();
+        }
+        catch (Exception error)
+        {
+            _errorMessage = "No tiene permisos para agregar este tramite.";
+            Console.WriteLine($"Error al agregar tramite: {error.Message}");
+
+            var currentException = error;
+            while (currentException.InnerException != null)
+            {
+                currentException = currentException.InnerException;
+                Console.WriteLine($"Inner Exception: {currentException.Message}");
+            }
+
+        }
+    }
+
+    void ActualizarTramite()
+    {
+        try
+        {
+            _errorMessage="";
+            modificacionTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.TramiteModificacion);
+            Siguiente();
+        }
+        catch (Exception error)
+        {
+            _errorMessage = "No tiene permisos para modificar este tramite.";
+            Console.WriteLine($"Error al modificar tramite: {error.Message}");
+        }
+    }
+
+    void Siguiente()
+    {
+        try
+        {
+            Console.WriteLine("Navegando a /listadoTramites");
+            Navegador.NavigateTo("/listadoTramites");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al navegar: {ex.Message}");
+        }    
+        
+    }
+}    
