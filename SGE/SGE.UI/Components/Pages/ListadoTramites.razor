@@ -1,13 +1,10 @@
 ﻿@page "/listadoTramites"
-@using Microsoft.EntityFrameworkCore
-@using SGE.UI.Components
-@using SGE.Aplicacion
 @rendermode InteractiveServer
 @inject CasoDeUsoListarTramites Tramites 
+@inject ListarUserAccountUseCase listaUsuarios
 @inject CasoDeUsoTramiteConsultaPorEtiqueta TramitesPorEtiqueta
 @inject CasoDeUsoTramiteBaja CasoDeUsoTramiteBaja
 @inject NavigationManager Navegador
-@inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject IServicioAutorizacion autorizacion
@@ -80,14 +77,12 @@ else{
 
 @code {
     DialogoConfirmacion dialogo = null!;
-    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Tramite> _lista = new List<Tramite>();
     private Etiqueta _etiquetaSeleccionada { get; set; }
     private string? _errorMessage,_errorMessageAuthBaja;
     protected override void OnInitialized()
     {
         _lista = Tramites.Ejecutar();
-        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
     }
 
 
@@ -119,10 +114,6 @@ else{
     void ModificarTramite(Tramite tra){
         Navegador.NavigateTo($"tramite/{tra.ExpedienteId}/{tra.Id}");
     }
-
-    @* void AgregarTramite(){
-        Navegador.NavigateTo($"tramite/{tra.ExpedienteId}");
-    } *@
 
 
     private void ActualizarEtiqueta(ChangeEventArgs e){

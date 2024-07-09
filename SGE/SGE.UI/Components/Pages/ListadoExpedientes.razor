@@ -1,14 +1,10 @@
 @page "/listadoExpedientes"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrador,Usuario")]
-@using Microsoft.EntityFrameworkCore
-@using SGE.UI.Components
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
 @inject ListarUserAccountUseCase listarUsuarios
 @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
 @inject NavigationManager Navegador
-@inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject IServicioAutorizacion autorizacion
 

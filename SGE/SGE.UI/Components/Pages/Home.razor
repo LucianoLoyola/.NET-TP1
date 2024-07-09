@@ -1,18 +1,15 @@
 ﻿@page "/"
 @rendermode InteractiveServer
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles="Administrador,Usuario")]
-@using Microsoft.EntityFrameworkCore
-@using SGE.Repositorios
-@using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
-@inject SGEContext DbContext
+@inject ObtenerUserAccountUseCase getUsuario
+@inject IServicioSesion sesion
 @inject NavigationManager Navegador
 
 <div class="container mt-5">
     <div class="row">
         <div class="col-12">
-            <h2 class="fw-bold">Bienvenido a la Página</h2>
+            <h2 class="fw-bold">Bienvenido al Sistema de Gestión de Expedientes</h2>
         </div>
         <div class="col-12 mt-3">
             <div class="card">
@@ -43,25 +40,23 @@
     private ClaimsPrincipal user;
     private int UserId; 
     private string UserRole { get; set; }
-    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateTask;
         user = authState.User;
 
-        // Obtener el nombre de usuario del claim
-        var userName = user.Identity.Name;
+        @* // Obtener el nombre de usuario del claim
+        var userName = user.Identity.Name; *@
 
         // Obtener el rol del usuario desde la base de datos
-        var userData = DbContext.Usuarios.Where(u => u.UserName == userName).FirstOrDefault();
+        var userData = getUsuario.Ejecutar(sesion.GetUserId());
         if (userData != null)
         {
             UserRole = userData.Role;
             UserId = userData.Id;
         }
 
-        usuarios = await DbContext.Usuarios.Include(u => u.Permisos).ToListAsync();
     }
 
     private void VerPerfil()

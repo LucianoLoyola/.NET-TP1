@@ -1,13 +1,8 @@
 @page "/login"
-@using SGE.Aplicacion
-@using SGE.Repositorios
 @using SGE.Aplicacion.ViewModels
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
-@using System.Security.Claims
-@inject SGEContext DbContext
 @inject NavigationManager navigationManager
 @inject IServicioHash servicioHash
+@inject ObtenerUserAccountUseCase getUsuario
 
 
 <div class="row">
@@ -48,7 +43,7 @@
     private string? errorMessage;
     private async Task Authenticate() // Cambiado a Authenticate
     {
-        var userAccount = DbContext.Usuarios.Where(x => x.UserName == Model.UserName).FirstOrDefault();
+        var userAccount = getUsuario.Ejecutar(Model.UserName);
         if (userAccount is null || userAccount.Password != servicioHash.GetHashSha256(Model.Password))
         {
             errorMessage = "Usuario o contraseña invalido";

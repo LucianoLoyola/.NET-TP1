@@ -1,12 +1,10 @@
 @page "/listadoTramitesExp/{IdExp:int?}"
-@using Microsoft.EntityFrameworkCore
-@using SGE.UI.Components
 @rendermode InteractiveServer
 @inject CasoDeUsoListarTramitesPorIdEx TramitesPorId 
 @inject CasoDeUsoTramiteBaja tramiteBaja
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
+@inject ListarUserAccountUseCase listarUsuarios
 @inject NavigationManager Navegador
-@inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject IServicioAutorizacion autorizacion
 
@@ -80,7 +78,6 @@ else{
     Expediente? _ExpedienteParaModificar = null;
     DialogoConfirmacion dialogo;
     [Parameter] public int IdExp {get;set;}
-    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Tramite> tramitesExp = new List<Tramite>();
     private string? _errorMessageAuthBaja;
     protected override void OnInitialized()
@@ -88,8 +85,6 @@ else{
         _ExpedienteParaModificar = consultaExpediente.Ejecutar(IdExp);
         dialogo = new DialogoConfirmacion();
         tramitesExp = TramitesPorId.Ejecutar(IdExp);
-        //listas de usuarios con sus permisos para debuggear
-        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();
     }
 
 

@@ -16,6 +16,10 @@ public class RepositorioUsuario : IRepositorioUsuario
     public UserAccount? GetUsuario(int id){
         return db.Usuarios.Where(u => u.Id == id).SingleOrDefault();
     }
+    public UserAccount? GetUsuario(string userName){
+        return db.Usuarios.Where(u => u.UserName == userName).SingleOrDefault();
+    }
+    
     public void ModificarUsuario(UserAccount usuario){
         //La busca por Id
         var usr_existente = db.Usuarios.Find(usuario.Id) ?? throw new RepositorioException("No se encontro un usuario con ese id\n");

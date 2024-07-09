@@ -1,10 +1,6 @@
 @page "/userprofile_new"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles="Administrador")]
 @using Microsoft.EntityFrameworkCore
-@using SGE.Repositorios
-@using SGE.Aplicacion
-@using SGE.Aplicacion.CasosDeUso
 @rendermode InteractiveServer
 @inject AgregarUsuarioUseCase agregarUsuario
 @inject IServicioSesion sesion

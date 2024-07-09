@@ -1,17 +1,11 @@
 @page "/register"
-@using SGE.Aplicacion
-@using SGE.Aplicacion.Entidades
-@using SGE.Repositorios
 @using SGE.Aplicacion.ViewModels
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
 @using System.Security.Claims
 @inject SGEContext DbContext
 @inject AgregarUsuarioUseCase agregarUsuario
 @inject ListarUserAccountUseCase listarUsuarios
 @inject NavigationManager navigationManager
 @inject IServicioHash servicioHash
-
 @using System.Security.Cryptography;
 @using System.Text;
 

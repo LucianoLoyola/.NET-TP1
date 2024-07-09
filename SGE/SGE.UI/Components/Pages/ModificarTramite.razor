@@ -1,8 +1,5 @@
 @page "/tramite/{IdExp:int}/{Id:int?}"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles="Administrador,Usuario")]
-@using Microsoft.EntityFrameworkCore
-@using SGE.Aplicacion
 @rendermode InteractiveServer
 @inject CasoDeUsoTramiteAlta altaTramite
 @inject CasoDeUsoTramiteConsultaPorId consultaTramite
@@ -10,7 +7,6 @@
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject NavigationManager Navegador
 @inject IServicioSesion sesion
-@inject SGEContext DbContext
 
 @if (_isLoading)
 {
@@ -152,6 +148,7 @@ else
     {
         try
         {
+            Console.WriteLine("Navegando a /listadoTramites");
             Navegador.NavigateTo("/listadoTramites");
         }
         catch (Exception ex)
