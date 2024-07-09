@@ -13,7 +13,7 @@ public class RepositorioTramite : IRepositorioTramite
     }
 
     public void AgregarTramite(Tramite tramite){
-        if (tramite.Contenido == null) throw new Exception("El trámite debe tener contenido");
+        if (tramite.Contenido == null) throw new RepositorioException("El trámite debe tener contenido");
         db.Add(tramite);
         db.SaveChanges();
     }
@@ -22,7 +22,7 @@ public class RepositorioTramite : IRepositorioTramite
         //La busca por Id
         var tr_existente = db.Tramites.Find(tramite.Id);
 
-        if (tr_existente == null) throw new Exception("No se encontró el tramite\n");
+        if (tr_existente == null) throw new RepositorioException("No se encontró el tramite\n");
 
         tr_existente.ExpedienteId = tramite.ExpedienteId;
         tr_existente. Etiqueta = tramite.Etiqueta;
@@ -39,7 +39,7 @@ public class RepositorioTramite : IRepositorioTramite
 
     public void EliminarTramite(int id){
         var tr_existente = db.Tramites.Find(id);
-        if (tr_existente == null) throw new Exception("No se encontró el trámite con ese id");
+        if (tr_existente == null) throw new RepositorioException("No se encontró el trámite con ese id");
 
         db.Remove(tr_existente); //se borra realmente con el db.SaveChanges()
         db.SaveChanges();
@@ -50,31 +50,6 @@ public class RepositorioTramite : IRepositorioTramite
         if(tramite == null) return null;
         else return tramite;
     }
-
-    // void IRepositorioTramite.AgregarTramite(Tramite tramite, int idExpediente)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    // void IRepositorioTramite.ModificarTramite(Tramite tramite)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    // void IRepositorioTramite.EliminarTramite(int id)
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    // List<Tramite> IRepositorioTramite.ListarTramites()
-    // {
-    //     throw new NotImplementedException();
-    // }
-
-    // Tramite IRepositorioTramite.GetTramitePorEtiqueta(Tramite tramite, Etiqueta etiqueta)
-    // {
-    //     throw new NotImplementedException();
-    // }
 
     public Tramite GetTramitePorId(int id) => db.Tramites.Where(t => t.Id == id).SingleOrDefault();
 
