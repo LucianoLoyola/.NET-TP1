@@ -51,16 +51,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        user = obtenerUsuario.Ejecutar(UserId);
-        if (user == null)
-        {
-            Console.WriteLine("Falla al encontrar usuario");
-            Navigation.NavigateTo("/error");
-        }
-        else
-        {
+        try{
+            user = obtenerUsuario.Ejecutar(UserId);
             lastModifiedUserName=user.UserName;
             StateHasChanged();
+
+        }
+        catch(Exception error){
+            Console.WriteLine($"Error al modificar usuario: {error.Message}");
+        
         }
     }
 

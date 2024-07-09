@@ -83,6 +83,8 @@ else
     private string _errorMessageAuthEdit = string.Empty;
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
 
+    //se implementa una logica de delay (loading) para mostrar el mensaje de excepción de permiso
+    //quitando esto, funciona igual pero el mensaje se muestra por pocos milisegundos
     protected override async Task OnParametersSetAsync()
     {
         if (Id.HasValue)
@@ -148,7 +150,6 @@ else
     {
         try
         {
-            Console.WriteLine("Navegando a /listadoExpedientes");
             Navegador.NavigateTo("/listadoExpedientes");
         }
         catch (Exception ex)

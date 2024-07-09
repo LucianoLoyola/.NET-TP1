@@ -5,13 +5,14 @@ using SGE.Aplicacion.Interfaces;
 
 public class CasoDeUsoListarExpedientes(IRepositorioExpediente repo){
     public List<Expediente> Ejecutar(){
-        List<Expediente> listaExpedientes = repo.ListarExpedientes();
-        
-        if (listaExpedientes.Count == 0)
-        {
-            Console.WriteLine("No existen expedientes en el repositorio");
+        try{
+            List<Expediente> listaExpedientes = repo.ListarExpedientes();
+            return listaExpedientes;
+        }
+        catch(Exception error){
+            Console.WriteLine($"Error al listar expedientes: {error.Message}");
+            return null;
         }
         
-        return listaExpedientes;
     }
 }

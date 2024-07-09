@@ -6,15 +6,14 @@ using SGE.Aplicacion.Interfaces;
 
 public class CasoDeUsoListarTramites(IRepositorioTramite repo):TramiteUseCase(repo){
     public List<Tramite> Ejecutar(){
-        List<Tramite> listaTramites = repo.ListarTramites();
         
-        if (listaTramites.Count == 0)
-        {
-            Console.WriteLine("No existen tramites en el repositorio");
+        try{
+            List<Tramite> listaTramites = repo.ListarTramites();
+            return listaTramites;
         }
-        
-        return listaTramites;
+        catch(Exception error){
+            Console.WriteLine(error.Message);
+            return null;
+        }
     }
-
-    
 }

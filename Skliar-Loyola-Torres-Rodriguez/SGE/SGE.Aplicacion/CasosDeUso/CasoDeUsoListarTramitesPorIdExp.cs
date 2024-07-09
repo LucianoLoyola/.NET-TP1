@@ -6,11 +6,16 @@ using SGE.Aplicacion.Interfaces;
 
 public class CasoDeUsoListarTramitesPorIdEx(IRepositorioTramite repo):TramiteUseCase(repo){
     public List<Tramite> Ejecutar(int IdExp){
-        List<Tramite> listaTramitesIdExp = repo.ListarTramitesPorIdExp(IdExp);
-        
-        if (listaTramitesIdExp.Count == 0) Console.WriteLine("No existen tramites en el repositorio");
-        
-        return listaTramitesIdExp;
+
+        try{
+            List<Tramite> listaTramitesIdExp = repo.ListarTramitesPorIdExp(IdExp);        
+            return listaTramitesIdExp;
+
+        }
+        catch(Exception error){
+            Console.WriteLine($"Error al listar tramites: {error.Message}");
+            return null;
+        }
     }
 
     

@@ -103,14 +103,16 @@ else{
 
     protected override void OnInitialized(){
 
-        _expediente = DbContext.Expedientes.FirstOrDefault(e => e.Id == IdExp);
+        _expediente = consultaExpediente.Ejecutar(IdExp);
         if (_expediente == null)
         {
-            throw new InvalidOperationException("El tramite no tiene expediente?");
+            throw new InvalidOperationException("El tramite no tiene expediente, no debería poderse");
         }        
 
     }
 
+    //se implementa una logica de delay (loading) para mostrar el mensaje de excepción de permiso
+    //quitando esto, funciona igual pero el mensaje se muestra por pocos milisegundos
     protected override void OnParametersSet()
     {
         if (Id != null)
@@ -138,13 +140,6 @@ else{
             _errorMessage = "No tiene permisos para agregar este tramite.";
             Console.WriteLine($"Error al agregar tramite: {error.Message}");
 
-            var currentException = error;
-            while (currentException.InnerException != null)
-            {
-                currentException = currentException.InnerException;
-                Console.WriteLine($"Inner Exception: {currentException.Message}");
-            }
-
         }
     }
 
@@ -167,7 +162,6 @@ else{
     {
         try
         {
-            Console.WriteLine("Navegando a /listadoTramites");
             Navegador.NavigateTo("/listadoTramites");
         }
         catch (Exception ex)
