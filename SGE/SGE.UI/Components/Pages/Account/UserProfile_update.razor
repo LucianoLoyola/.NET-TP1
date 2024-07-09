@@ -1,4 +1,4 @@
-@page "/userprofile_update/{userId:int?}"
+@page "/userprofile_update/{UserId:int?}"
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles="Administrador,Usuario")]
 @using Microsoft.EntityFrameworkCore
@@ -20,25 +20,33 @@
 }
 else
 {
-<form method="post" @onsubmit="HandleValidSubmit">
-    <div class="mb-3">
-        <label for="UserName">Nombre de Usuario:</label>
-        <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
-    </div>
-    <div class="mb-3">
-        <label for="Name">Nombre:</label>
-        <input type="text" id="Name" class="form-control" @bind="user.Name" required />
-    </div>
-    <div class="mb-3">
-        <label for="Surname">Apellido:</label>
-        <input type="text" id="Surname" class="form-control" @bind="user.Surname" required />
-    </div>
-    <div class="mb-3">
-        <label for="Email">Email:</label>
-        <input type="email" id="Email" class="form-control" @bind="user.Email" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+    <EditForm Model="user" OnValidSubmit="Modificar" OnInvalidSubmit="Modificar">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="UserName">Nombre de Usuario:</label>
+            <InputText id="UserName" class="form-control" @bind-Value="user.UserName" required />
+        </div>
+        <div class="mb-3">
+            <label for="Name">Nombre:</label>
+            <InputText id="Name" class="form-control" @bind-Value="user.Name" required />
+        </div>
+        <div class="mb-3">
+            <label for="Surname">Apellido:</label>
+            <InputText id="Surname" class="form-control" @bind-Value="user.Surname" required />
+        </div>
+        <div class="mb-3">
+            <label for="Email">Email:</label>
+            <InputText id="Email" type="email" class="form-control" @bind-Value="user.Email" required />
+        </div>
+        <button class="btn btn-primary" @onclick="Modificar">Guardar</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
 }
 
 @code {
@@ -47,7 +55,8 @@ else
 
     private UserAccount user { get; set; } = new UserAccount();
 
-    private string lastModifiedUserName= "";
+    private string lastModifiedUserName = "";
+    private string errorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,27 +68,42 @@ else
         }
         else
         {
-            lastModifiedUserName=user.UserName;
+            lastModifiedUserName = user.UserName;
             StateHasChanged();
         }
     }
 
-    private async Task HandleValidSubmit()
+    void Modificar()
     {
-        var userToUpdate = obtenerUsuario.Ejecutar(UserId);
-        if (userToUpdate != null)
-        {
-            var direccionarLogout=false;
-            if(string.Compare(lastModifiedUserName,user.UserName)!=0){//Si usuario cambió
-                direccionarLogout=true;
-            }
-            modificarUserAccount.Ejecutar(userToUpdate);
-            if(direccionarLogout==true){
-                Navigation.NavigateTo("/logout");
-            }
-            else{
-                Navigation.NavigateTo("/");
+        errorMessage = "";  // Clear any previous error messages
+        try{
+
+        
+            var userToUpdate = obtenerUsuario.Ejecutar(UserId);
+            if (userToUpdate != null)
+            {
+                userToUpdate.UserName = user.UserName;
+                userToUpdate.Name = user.Name;
+                userToUpdate.Surname = user.Surname;
+                userToUpdate.Email = user.Email;
+                
+                modificarUserAccount.Ejecutar(userToUpdate);
+
+                if (string.Compare(lastModifiedUserName, user.UserName) != 0)
+                {
+                    Navigation.NavigateTo("/logout");
+                }
+                else
+                {
+                    Navigation.NavigateTo("/");
+                }
             }
         }
+        catch(Exception error){
+            Console.WriteLine($"Error al modificar usuario: {error.Message}");
+        }
     }
+
+
 }
+

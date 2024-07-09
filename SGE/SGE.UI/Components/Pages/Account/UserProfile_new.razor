@@ -13,7 +13,7 @@
 @inject IServicioHash servicioHash
 
 <h3>Nuevo Usuario</h3>
-<form method="post" @onsubmit="HandleValidSubmit">
+<form method="post" @onsubmit="AgregarUsuario">
     <div class="mb-3">
         <label for="UserName">Nombre de Usuario:</label>
         <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
@@ -52,7 +52,7 @@
         }
     </div>
     
-    <button type="submit" class="btn btn-primary">Guardar</button>
+        <button class="btn btn-primary" @onclick="AgregarUsuario">Agregar</button>
 </form>
 
 
@@ -66,22 +66,28 @@
         if ((bool)e.Value) permisosSeleccionados.Add(permiso); // Agregar el permiso a la lista de permisos seleccionados
         else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
     }
-    private async Task HandleValidSubmit()
+    void AgregarUsuario()
     {
+        try{
+            if(user.Role is null){
+                user.Role="Usuario";
+            }
+            user.Password=servicioHash.GetHashSha256(user.Password);
 
-        if(user.Role is null){
-            user.Role="Usuario";
+            // Mapear los permisos seleccionados a objetos Permiso
+            var permisosActualizados = MapPermisosSeleccionados(user.Permisos, user);
+
+            // Actualizar la lista de permisos del usuario
+            user.Permisos = permisosActualizados;
+            
+            agregarUsuario.Ejecutar(user);
+            Navigation.NavigateTo("/");
+
         }
-        user.Password=servicioHash.GetHashSha256(user.Password);
+        catch(Exception error){
+            Console.WriteLine($"Error al crear nuevo usuario: {error.Message}");
 
-        // Mapear los permisos seleccionados a objetos Permiso
-        var permisosActualizados = MapPermisosSeleccionados(user.Permisos, user);
-
-        // Actualizar la lista de permisos del usuario
-        user.Permisos = permisosActualizados;
-        
-        agregarUsuario.Ejecutar(user);
-        Navigation.NavigateTo("/");
+        }
     
     }
 

@@ -20,7 +20,7 @@
 }
 else
 {
-    <form method="post" @onsubmit="HandleValidSubmit">
+    <form method="post" @onsubmit="Modificar">
         <div class="mb-3">
             <label for="UserName">Nombre de Usuario:</label>
             <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
@@ -55,7 +55,7 @@ else
                 </div>
             }
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button class="btn btn-primary" @onclick="Modificar">Guardar</button>
     </form>
 
     <h4>Cambiar Contraseña</h4>
@@ -87,23 +87,31 @@ else
         else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
     }
 
-    private async Task HandleValidSubmit()
+
+    void Modificar()
     {
-        var userToUpdate= obtenerUsuario.Ejecutar(UserId);
-        
-        if (userToUpdate != null)
-        {
-            // Actualizar solo los campos no relacionados con la contraseña
-            userToUpdate.UserName = user.UserName;
-            userToUpdate.Name = user.Name;
-            userToUpdate.Surname = user.Surname;
-            userToUpdate.Email = user.Email;
-            userToUpdate.Role = user.Role;
-            userToUpdate.Permisos = MapPermisosSeleccionados(userToUpdate.Permisos, userToUpdate);
 
-            modificarUserAccount.Ejecutar(userToUpdate);
+        try{
+            var userToUpdate= obtenerUsuario.Ejecutar(UserId);
+            
+            if (userToUpdate != null)
+            {
+                // Actualizar solo los campos no relacionados con la contraseña
+                userToUpdate.UserName = user.UserName;
+                userToUpdate.Name = user.Name;
+                userToUpdate.Surname = user.Surname;
+                userToUpdate.Email = user.Email;
+                userToUpdate.Role = user.Role;
+                userToUpdate.Permisos = MapPermisosSeleccionados(userToUpdate.Permisos, userToUpdate);
 
-            Navigation.NavigateTo("/administracion");
+                modificarUserAccount.Ejecutar(userToUpdate);
+
+                Navigation.NavigateTo("/administracion");
+            }
+        }
+        catch(Exception error){
+            Console.WriteLine($"Error al modificar usuario: {error.Message}");
+
         }
     }
 
