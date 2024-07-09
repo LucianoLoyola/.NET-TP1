@@ -1,70 +1,80 @@
-@page "/login"
-@using SGE.Aplicacion
-@using SGE.Repositorios
-@using SGE.Aplicacion.ViewModels
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
-@using System.Security.Claims
-@inject SGEContext DbContext
-@inject NavigationManager navigationManager
-@inject IServicioHash servicioHash
+    @page "/login"
+    @using SGE.Aplicacion
+    @using SGE.Repositorios
+    @using SGE.Aplicacion.ViewModels
+    @using Microsoft.AspNetCore.Authentication
+    @using Microsoft.AspNetCore.Authentication.Cookies
+    @using System.Security.Claims
+    @rendermode InteractiveServer
+    @inject SGEContext DbContext
+    @inject NavigationManager navigationManager
+    @inject IServicioHash servicioHash
 
 
-<div class="row">
     <div class="row">
-    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
-        <EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="LoginForm">
-            <DataAnnotationsValidator />
-            <div class="mb-3 text-center flex-column">
-                <img src="/images/panel1.png" style="max-height:5rem;" />
-                <h3>LOGIN</h3>
-            </div>
-            <div class="mb-3">
-                <label>Usuario</label>
-                <InputText @bind-Value="Model.UserName" class="form-control" placeholder="Username" />
-                <ValidationMessage For="() => Model.UserName" />
-            </div>
-            <div class="mb-3">
-                <label>Contraseña</label>
-                <InputText @bind-Value="Model.Password" placeholder="Password" type="password" class="form-control" />
-                <ValidationMessage For="() => Model.Password" />
-            </div>
-            <div class="mb-3 text-center">
-                <span class="text-danger">@errorMessage</span>
-            </div>
+        <div class="row">
+        <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+            <EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="LoginForm">
+                <DataAnnotationsValidator />
+                <div class="mb-3 text-center flex-column">
+                    <img src="/images/panel1.png" style="max-height:5rem;" />
+                    <h3>LOGIN</h3>
+                </div>
+                <div class="mb-3">
+                    <label>Usuario</label>
+                    <InputText @bind-Value="Model.UserName" class="form-control" placeholder="Username" />
+                    <ValidationMessage For="() => Model.UserName" />
+                </div>
+                <div class="mb-3">
+                    <label>Contraseña</label>
+                    <InputText @bind-Value="Model.Password" placeholder="Password" type="password" class="form-control" />
+                    <ValidationMessage For="() => Model.Password" />
+                </div>
+                <div class="mb-3 text-center">
+                    <span class="text-danger">@_errorMessage</span>
+                </div>
+                <div class="mb-3 d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </EditForm>
             <div class="mb-3 d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button @onclick="()=>RecuperarContraseña()" class="btn btn-link">Recuperar contraseña</button>
             </div>
-        </EditForm>
+        </div>
     </div>
-</div>
 
-</div>
-@code {
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-    [SupplyParameterFromForm]
-    public LoginViewModel Model { get; set; } = new();
-    private string? errorMessage;
-    private async Task Authenticate() // Cambiado a Authenticate
-    {
-        var userAccount = DbContext.Usuarios.Where(x => x.UserName == Model.UserName).FirstOrDefault();
-        if (userAccount is null || userAccount.Password != servicioHash.GetHashSha256(Model.Password))
+    </div>
+    @code {
+        [CascadingParameter]
+        public HttpContext? HttpContext { get; set; }
+        [SupplyParameterFromForm]
+        public LoginViewModel Model { get; set; } = new();
+        private string? _errorMessage;    
+        private void RecuperarContraseña()
         {
-            errorMessage = "Usuario o contraseña invalido";
+            // Lógica para recuperar la contraseña (si es necesario)
+            // Mostrar un mensaje al usuario
+            _errorMessage = "Por favor, comuníquese con el administrador para restablecer su contraseña.";
             return;
         }
-        var claims = new List<Claim> {
-            new Claim(ClaimTypes.Name, Model.UserName),
-            new Claim(ClaimTypes.Role, userAccount.Role),
-            new Claim("UserId", userAccount.Id.ToString()) // agrego un claim para el id *@
+        private async Task Authenticate() // Cambiado a Authenticate
+        {
+            var userAccount = DbContext.Usuarios.Where(x => x.UserName == Model.UserName).FirstOrDefault();
+            if (userAccount is null || userAccount.Password != servicioHash.GetHashSha256(Model.Password))
+            {
+                _errorMessage = "Usuario o contraseña invalido";
+                return;
+            }
+            var claims = new List<Claim> {
+                new Claim(ClaimTypes.Name, Model.UserName),
+                new Claim(ClaimTypes.Role, userAccount.Role),
+                new Claim("UserId", userAccount.Id.ToString()) // agrego un claim para el id *@
 
-        };
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); // Usar el esquema de autenticación por defecto
-        var principal = new ClaimsPrincipal(identity);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-        navigationManager.NavigateTo("/");
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme); // Usar el esquema de autenticación por defecto
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            navigationManager.NavigateTo("/");
+        }
+
     }
-
-
-}
