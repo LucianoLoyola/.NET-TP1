@@ -1,11 +1,9 @@
-@page "/userprofile_delete/{UserId:int?}"
+@page "/userprofile_delete/{Id:int?}"
 @attribute [Authorize(Roles="Administrador")]
-@using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject EliminarUserAccountUseCase eliminarUsuario
 @inject ObtenerUserAccountUseCase obtenerUsuario
 @inject IServicioSesion sesion
-@inject SGEContext DbContext
 @inject NavigationManager Navigation
 
 <div class="row">
@@ -26,15 +24,14 @@
 
 @code {
     [Parameter]
-    public int UserId { get; set; }
-
+    public int Id { get; set; }
     private UserAccount user { get; set; } = new UserAccount();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var user = obtenerUsuario.Ejecutar(UserId);
+            var user = obtenerUsuario.Ejecutar(Id);
 
             if (user != null)
             {

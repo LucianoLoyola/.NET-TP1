@@ -1,10 +1,8 @@
 @page "/userprofile_new"
 @attribute [Authorize(Roles="Administrador")]
-@using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject AgregarUsuarioUseCase agregarUsuario
 @inject IServicioSesion sesion
-@inject SGEContext DbContext
 @inject NavigationManager Navigation
 @inject IServicioHash servicioHash
 
@@ -69,13 +67,7 @@
                 user.Role="Usuario";
             }
             user.Password=servicioHash.GetHashSha256(user.Password);
-
-            // Mapear los permisos seleccionados a objetos Permiso
-            var permisosActualizados = MapPermisosSeleccionados(user.Permisos, user);
-
-            // Actualizar la lista de permisos del usuario
-            user.Permisos = permisosActualizados;
-            
+            AgregarPermisos(user,permisosSeleccionados);      
             agregarUsuario.Ejecutar(user);
             Navigation.NavigateTo("/");
 
@@ -84,33 +76,48 @@
             Console.WriteLine($"Error al crear nuevo usuario: {error.Message}");
 
         }
-    
     }
 
-    private List<Permiso> MapPermisosSeleccionados(List<Permiso> permisosUsuario, UserAccount userToUpdate){
-        var permisosActualizados = new List<Permiso>();
-        foreach (var tipoPermiso in permisosSeleccionados){
-            var permiso = BuscarPermisoPorTipo(tipoPermiso, userToUpdate);
-            if (permiso != null){
-                permisosActualizados.Add(permiso);
-            }
+    private void AgregarPermisos(UserAccount user, List<TipoPermiso> listaTipoPermisos){
+        
+        List<Permiso> permisosActuales = user.Permisos;
+        foreach(TipoPermiso tp in listaTipoPermisos){
+            AgregarPermiso(tp,permisosActuales);
         }
-        return permisosActualizados;
+        user.Permisos= permisosActuales;
     }
 
-    private Permiso BuscarPermisoPorTipo(TipoPermiso tipoPermiso, UserAccount userToUpdate)
-    {
-        if (userToUpdate.Permisos != null)
+    //puede que no sea la solución mas eficiente
+    private void AgregarPermiso(TipoPermiso tipoPermiso, List<Permiso> permisosActuales){
+        
+        switch (tipoPermiso)
         {
-            // Buscar el permiso que coincide con el tipo de permiso
-            var permiso = DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
-            return permiso;
+            case TipoPermiso.Lectura:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.Lectura } );
+                break;
+            case TipoPermiso.ExpedienteAlta:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta } );
+                break;
+            case TipoPermiso.ExpedienteBaja:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja } );
+                break;
+            case TipoPermiso.ExpedienteModificacion:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion } );
+                break;
+            case TipoPermiso.TramiteAlta:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteAlta } );
+                break;
+            case TipoPermiso.TramiteBaja:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteBaja } );
+                break;
+            case TipoPermiso.TramiteModificacion:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion } );
+                break;
+            default:
+            break;
         }
-        else
-        {
-            // Inicializar una nueva lista de permisos vacía
-            userToUpdate.Permisos = new List<Permiso>();
-            return DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
-        }
+        
     }
+
+
 }

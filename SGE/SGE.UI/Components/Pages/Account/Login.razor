@@ -72,36 +72,10 @@
             return;
         }
         
+        sesion.SetUser(userAccount);
         navigationManager.NavigateTo("/");
 
     }
 
-}
-
-
-
-@code {
-    Usuario user=new Usuario();
-
-    string mail = "";
-    string pass = "";
-    void Ingresar()
-    {
-
-        if ((string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(password)))
-        {
-            textoAdvertencia = "Complete todos los campos";
-            StateHasChanged();
-            return;
-        }
-
-        Usuario? usuario = CasoDeUsoUsuarioIngresar.Ejecutar(mail, password);
-
-        if (usuario != null)
-        {
-            ServicioIniciar.setUsuario(usuario);
-            Navegador.NavigateTo("/");
-        }
-    }
 }
 

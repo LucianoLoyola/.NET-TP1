@@ -1,12 +1,9 @@
-@page "/userprofile_edit/{UserId:int?}"
-@using Microsoft.EntityFrameworkCore
+@page "/userprofile_edit/{Id:int?}"
 @attribute [Authorize(Roles = "Administrador")]
-@using Microsoft.EntityFrameworkCore
 @rendermode InteractiveServer
 @inject ModificarUserAccountUseCase modificarUserAccount
 @inject ObtenerUserAccountUseCase obtenerUsuario
 @inject IServicioSesion sesion
-@inject SGEContext DbContext
 @inject IServicioHash servicioHash
 @inject NavigationManager Navigation
 
@@ -58,7 +55,7 @@ else
     </form>
 
     <h4>Cambiar Contraseña</h4>
-    <form method="post" @onsubmit="HandlePasswordChange">
+    <form method="post" @onsubmit="CambiarContraseña">
         <div class="mb-3">
             <label for="NewPassword">Nueva Contraseña:</label>
             <input type="password" id="NewPassword" class="form-control" @bind="newPassword" />
@@ -68,30 +65,29 @@ else
 }
 
 @code {
-    [Parameter] public int UserId { get; set; }
+    [Parameter] public int Id { get; set; }
     private UserAccount user { get; set; } = new UserAccount();
     private string newPassword { get; set; }
-    private List<TipoPermiso> permisosSeleccionados = new List<TipoPermiso>(); // Crear lista de permisos seleccionados
+    private List<TipoPermiso> tipoPermisosSeleccionados = new List<TipoPermiso>(); // Crear lista de permisos seleccionados
 
     protected override async Task OnInitializedAsync()
     {
-        user = obtenerUsuario.Ejecutar(UserId);
-        if (user == null) Navigation.NavigateTo("/error");
-        else StateHasChanged();
+        user = obtenerUsuario.Ejecutar(Id);
+        if (user is not null) StateHasChanged();
+        
     }
 
-    private void TogglePermiso(TipoPermiso permiso, ChangeEventArgs e)
+    private void TogglePermiso(TipoPermiso tipoPermiso, ChangeEventArgs e)
     {
-        if ((bool)e.Value) permisosSeleccionados.Add(permiso); // Agregar el permiso a la lista de permisos seleccionados
-        else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
+        if ((bool)e.Value) tipoPermisosSeleccionados.Add(tipoPermiso); // Agregar el permiso a la lista de permisos seleccionados
+        else tipoPermisosSeleccionados.Remove(tipoPermiso); // Quitar el permiso de la lista de permisos seleccionados
     }
-
 
     void Modificar()
     {
 
         try{
-            var userToUpdate= obtenerUsuario.Ejecutar(UserId);
+            var userToUpdate= obtenerUsuario.Ejecutar(Id);
             
             if (userToUpdate != null)
             {
@@ -101,7 +97,7 @@ else
                 userToUpdate.Surname = user.Surname;
                 userToUpdate.Email = user.Email;
                 userToUpdate.Role = user.Role;
-                userToUpdate.Permisos = MapPermisosSeleccionados(userToUpdate.Permisos, userToUpdate);
+                AgregarPermisos(userToUpdate,tipoPermisosSeleccionados);
 
                 modificarUserAccount.Ejecutar(userToUpdate);
 
@@ -114,9 +110,51 @@ else
         }
     }
 
-    private async Task HandlePasswordChange()
+
+    private void AgregarPermisos(UserAccount user, List<TipoPermiso> listaTipoPermisos){
+        
+        List<Permiso> permisosActuales = user.Permisos;
+        foreach(TipoPermiso tp in listaTipoPermisos){
+            AgregarPermiso(tp,permisosActuales);
+        }
+        user.Permisos= permisosActuales;
+    }
+
+    //puede que no sea la solución mas eficiente
+    private void AgregarPermiso(TipoPermiso tipoPermiso, List<Permiso> permisosActuales){
+        
+        switch (tipoPermiso)
+        {
+            case TipoPermiso.Lectura:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.Lectura } );
+                break;
+            case TipoPermiso.ExpedienteAlta:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta } );
+                break;
+            case TipoPermiso.ExpedienteBaja:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja } );
+                break;
+            case TipoPermiso.ExpedienteModificacion:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion } );
+                break;
+            case TipoPermiso.TramiteAlta:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteAlta } );
+                break;
+            case TipoPermiso.TramiteBaja:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteBaja } );
+                break;
+            case TipoPermiso.TramiteModificacion:
+                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion } );
+                break;
+            default:
+            break;
+        }
+        
+    }
+
+    private void CambiarContraseña()
     {
-        var userToUpdate =obtenerUsuario.Ejecutar(UserId);
+        var userToUpdate =obtenerUsuario.Ejecutar(Id);
         
         if (userToUpdate != null && !string.IsNullOrEmpty(newPassword))
         {
@@ -127,33 +165,6 @@ else
         }
     }
 
-    private List<Permiso> MapPermisosSeleccionados(List<Permiso> permisosUsuario, UserAccount userToUpdate)
-    {
-        var permisosActualizados = new List<Permiso>();
-        foreach (var tipoPermiso in permisosSeleccionados)
-        {
-            var permiso = BuscarPermisoPorTipo(tipoPermiso, userToUpdate);
-            if (permiso != null)
-            {
-                permisosActualizados.Add(permiso);
-            }
-        }
-        return permisosActualizados;
     }
 
-    private Permiso BuscarPermisoPorTipo(TipoPermiso tipoPermiso, UserAccount userToUpdate)
-    {
-        if (userToUpdate.Permisos != null)
-        {
-            // Buscar el permiso que coincide con el tipo de permiso
-            var permiso = DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
-            return permiso;
-        }
-        else
-        {
-            // Inicializar una nueva lista de permisos vacía
-            userToUpdate.Permisos = new List<Permiso>();
-            return DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
-        }
-    }
 }
