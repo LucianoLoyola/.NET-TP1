@@ -99,7 +99,6 @@ else
 
         dialogo = new DialogoConfirmacion();
         _lista = CasoDeUsoListarExpedientes.Ejecutar();
-        usuarios = DbContext.Usuarios.Include(u => u.Permisos).ToList();    
     }
 
     // Filtrar la lista de expedientes según el ID ingresado

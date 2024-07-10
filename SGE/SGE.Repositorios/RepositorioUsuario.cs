@@ -11,13 +11,19 @@ public class RepositorioUsuario : IRepositorioUsuario
         db = context;
     }
     public List<UserAccount> GetUsuarios(){
-        return db.Usuarios.Include(u => u.Permisos).ToList();
+        List<UserAccount> lista = db.Usuarios.Include(u => u.Permisos).ToList();
+        if(!lista.Any()) throw new RepositorioException($"No existen usuarios");
+        else return lista;
     }
     public UserAccount? GetUsuario(int id){
-        return db.Usuarios.Where(u => u.Id == id).SingleOrDefault();
+        UserAccount user = db.Usuarios.Where(u => u.Id == id).SingleOrDefault();
+        if(user == null) throw new RepositorioException($"No se encontró un usuario con el Id {id}");
+        else return user;
     }
     public UserAccount? GetUsuario(string userName){
-        return db.Usuarios.Where(u => u.UserName == userName).SingleOrDefault();
+        UserAccount user = db.Usuarios.SingleOrDefault(u => u.UserName == userName);
+        if(user == null) throw new RepositorioException($"No se encontró un usuario con el Username {userName}");
+        else return user;
     }
     
     public void ModificarUsuario(UserAccount usuario){

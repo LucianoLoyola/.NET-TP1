@@ -1,32 +1,35 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace SGE.Aplicacion.CasosDeUso;
 
 using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
 public class ObtenerUserAccountUseCase(IRepositorioUsuario repositorio):UserAccountUseCase(repositorio)
 {
+    //obtener usuario por id
     public UserAccount? Ejecutar(int id)
     {
-    //aquí podríamos insertar código de validación de cliente
-        UserAccount? user=Repositorio.GetUsuario(id);
-        if (user == null){//si no se encontró expediente, excepción
-            throw new RepositorioException($"No se encontró un usuario con el ID {id}");
+        try{
+             UserAccount? user=Repositorio.GetUsuario(id);
+             return user;
         }
-        else{
-            return user;
+        catch(Exception error){
+            Console.WriteLine($"Error al obtener usuario: {error.Message}");
+            return null;
         }
         
     }
 
-        public UserAccount? Ejecutar(string userName)
+    //obtener usuario por username
+    public UserAccount? Ejecutar(string userName)
     {
-    //aquí podríamos insertar código de validación de cliente
-        UserAccount? user=Repositorio.GetUsuario(userName);
-        if (user == null){//si no se encontró expediente, excepción
-            throw new RepositorioException($"No se encontró un usuario con el Username {userName}");
+        try{
+             UserAccount? user=Repositorio.GetUsuario(userName);
+             return user;
         }
-        else{
-            return user;
+        catch(Exception error){
+            Console.WriteLine($"Error al obtener usuario: {error.Message}");
+            return null;
         }
-        
     }
 }

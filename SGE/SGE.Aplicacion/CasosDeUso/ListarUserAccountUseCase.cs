@@ -6,10 +6,13 @@ public class ListarUserAccountUseCase(IRepositorioUsuario repositorio):UserAccou
 {
     public List<UserAccount>? Ejecutar()
     {
-    //aquí podríamos insertar código de validación de cliente
-        List<UserAccount>? usuarios = Repositorio.GetUsuarios();
-
-            return usuarios;
-
+        try{
+             List<UserAccount>? usuarios = Repositorio.GetUsuarios();
+             return usuarios;
+        }
+        catch(Exception error){
+            Console.WriteLine($"Error al obtener usuarios: {error.Message}");
+            return null;
+        }
     }
 }
