@@ -25,6 +25,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<EliminarUserAccountUseCase>()
     .AddTransient<ListarUserAccountUseCase>()
+    .AddTransient<LoginUseCase>()
     .AddTransient<CasoDeUsoTramiteBaja>()
     .AddTransient<CasoDeUsoTramiteAlta>()
     .AddTransient<CasoDeUsoTramiteConsultaPorId>()
@@ -45,7 +46,6 @@ builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
 builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
-builder.Services.AddScoped<IServicioSesion, ServicioSesion>();
 builder.Services.AddScoped<IServicioSession, ServicioSession>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

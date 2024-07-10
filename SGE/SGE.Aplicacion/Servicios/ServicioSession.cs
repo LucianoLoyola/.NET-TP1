@@ -5,9 +5,9 @@ namespace SGE.Aplicacion;
 
 
 public class ServicioSession : IServicioSession{
-    public UserAccount? user {get;set;}
+    public UserAccount? User {get;set;}
     public void SetUser(UserAccount user){
-        this.user=user;
+        User=user;
     }
 
 
