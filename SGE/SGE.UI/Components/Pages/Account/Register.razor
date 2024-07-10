@@ -1,10 +1,8 @@
 @page "/register"
-@using SGE.Aplicacion.ViewModels
-@using System.Security.Claims
-@inject SGEContext DbContext
 @inject AgregarUsuarioUseCase agregarUsuario
 @inject ListarUserAccountUseCase listarUsuarios
 @inject ObtenerUserAccountUseCase getUsuario
+@inject LoginUseCase login
 @inject NavigationManager navigationManager
 @inject IServicioHash servicioHash
 @using System.Security.Cryptography;

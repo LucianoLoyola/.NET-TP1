@@ -25,7 +25,24 @@ public class RepositorioUsuario : IRepositorioUsuario
         if(user == null) throw new RepositorioException($"No se encontró un usuario con el Username {userName}");
         else return user;
     }
-    
+
+    public void Register(UserAccount user){
+        // using var db= new BaseContext();
+        db.Usuarios.Add(user);
+        db.SaveChanges();
+
+
+    }
+    public UserAccount? Login(string username,string password){
+        // using var db=new BaseContext();
+        UserAccount? user= db.Usuarios.Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
+        if(user != null){
+            return user;
+        }
+        else return null;
+
+    }
+
     public void ModificarUsuario(UserAccount usuario){
         //La busca por Id
         var usr_existente = db.Usuarios.Find(usuario.Id) ?? throw new RepositorioException("No se encontro un usuario con ese id\n");
