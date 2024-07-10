@@ -1,10 +1,6 @@
-@page "/userprofile_update/{userId:int?}"
-@using Microsoft.AspNetCore.Authorization
+@page "/userprofile_update/{UserId:int?}"
 @attribute [Authorize(Roles="Administrador,Usuario")]
 @using Microsoft.EntityFrameworkCore
-@using SGE.Repositorios
-@using SGE.Aplicacion
-@using SGE.Aplicacion.CasosDeUso
 @rendermode InteractiveServer
 @inject ModificarUserAccountUseCase modificarUserAccount
 @inject ObtenerUserAccountUseCase obtenerUsuario
@@ -20,25 +16,33 @@
 }
 else
 {
-<form method="post" @onsubmit="HandleValidSubmit">
-    <div class="mb-3">
-        <label for="UserName">Nombre de Usuario:</label>
-        <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
-    </div>
-    <div class="mb-3">
-        <label for="Name">Nombre:</label>
-        <input type="text" id="Name" class="form-control" @bind="user.Name" required />
-    </div>
-    <div class="mb-3">
-        <label for="Surname">Apellido:</label>
-        <input type="text" id="Surname" class="form-control" @bind="user.Surname" required />
-    </div>
-    <div class="mb-3">
-        <label for="Email">Email:</label>
-        <input type="email" id="Email" class="form-control" @bind="user.Email" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+    <EditForm Model="user" OnValidSubmit="Modificar" OnInvalidSubmit="Modificar">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="UserName">Nombre de Usuario:</label>
+            <InputText id="UserName" class="form-control" @bind-Value="user.UserName" required />
+        </div>
+        <div class="mb-3">
+            <label for="Name">Nombre:</label>
+            <InputText id="Name" class="form-control" @bind-Value="user.Name" required />
+        </div>
+        <div class="mb-3">
+            <label for="Surname">Apellido:</label>
+            <InputText id="Surname" class="form-control" @bind-Value="user.Surname" required />
+        </div>
+        <div class="mb-3">
+            <label for="Email">Email:</label>
+            <InputText id="Email" type="email" class="form-control" @bind-Value="user.Email" required />
+        </div>
+        <button class="btn btn-primary" @onclick="Modificar">Guardar</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
 }
 
 @code {
@@ -47,39 +51,52 @@ else
 
     private UserAccount user { get; set; } = new UserAccount();
 
-    private string lastModifiedUserName= "";
+    private string lastModifiedUserName = "";
+    private string errorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
-        user = obtenerUsuario.Ejecutar(UserId);
-        if (user == null)
-        {
-            Console.WriteLine("Falla al encontrar usuario");
-            Navigation.NavigateTo("/error");
-        }
-        else
-        {
-            lastModifiedUserName=user.UserName;
+        try{
+            user = obtenerUsuario.Ejecutar(UserId);
+            lastModifiedUserName = user.UserName;
             StateHasChanged();
+        }
+        catch(Exception ex){
+            Console.WriteLine($"{ex.Message}");
         }
     }
 
-    private async Task HandleValidSubmit()
+    void Modificar()
     {
-        var userToUpdate = obtenerUsuario.Ejecutar(UserId);
-        if (userToUpdate != null)
-        {
-            var direccionarLogout=false;
-            if(string.Compare(lastModifiedUserName,user.UserName)!=0){//Si usuario cambió
-                direccionarLogout=true;
-            }
-            modificarUserAccount.Ejecutar(userToUpdate);
-            if(direccionarLogout==true){
-                Navigation.NavigateTo("/logout");
-            }
-            else{
-                Navigation.NavigateTo("/");
+        errorMessage = "";  // Clear any previous error messages
+        try{
+
+        
+            var userToUpdate = obtenerUsuario.Ejecutar(UserId);
+            if (userToUpdate != null)
+            {
+                userToUpdate.UserName = user.UserName;
+                userToUpdate.Name = user.Name;
+                userToUpdate.Surname = user.Surname;
+                userToUpdate.Email = user.Email;
+                
+                modificarUserAccount.Ejecutar(userToUpdate);
+
+                if (string.Compare(lastModifiedUserName, user.UserName) != 0)
+                {
+                    Navigation.NavigateTo("/logout");
+                }
+                else
+                {
+                    Navigation.NavigateTo("/");
+                }
             }
         }
+        catch(Exception error){
+            Console.WriteLine($"Error al modificar usuario: {error.Message}");
+        }
     }
+
+
 }
+

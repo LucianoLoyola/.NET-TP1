@@ -5,6 +5,7 @@ namespace SGE.Aplicacion.Interfaces;
 public interface IRepositorioUsuario{
     List<UserAccount> GetUsuarios();
     UserAccount? GetUsuario(int id);
+    UserAccount? GetUsuario(string userName);
     void ModificarUsuario(UserAccount user);
     void EliminarUsuario(int id);
     void AgregarUsuario(UserAccount user);

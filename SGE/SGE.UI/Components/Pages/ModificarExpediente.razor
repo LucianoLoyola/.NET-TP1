@@ -1,26 +1,24 @@
 @page "/expediente/{Id:int?}"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles="Administrador,Usuario")]
-@using Microsoft.EntityFrameworkCore
-@using SGE.Aplicacion
 @rendermode InteractiveServer
 @inject CasoDeUsoExpedienteAlta altaExpediente
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject CasoDeUsoExpedienteModificacion modificacionExpediente
 @inject NavigationManager Navegador
 @inject IServicioSesion sesion
-@inject SGEContext DbContext
 
-
-@if (_esNuevoExpediente){
-
-
+@if (_isLoading)
+{
+    <p>Cargando...</p>
+}
+else if (_esNuevoExpediente)
+{
     <h3>Agregar Expediente</h3>
 
     @* Formulario para agregar Expediente *@
     <form>
         <div class="form-group">
-            <label for="valorAsegurado">Caratula:</label>
+            <label for="caratula">Caratula:</label>
             <input type="text" class="form-control" id="caratula" @bind="_expediente.caratula" required>
         </div>
 
@@ -36,25 +34,20 @@
         </div>
 
         <button class="btn btn-primary" @onclick="CrearExpediente">Agregar Expediente</button>
-
-
+        @if (!string.IsNullOrEmpty(_errorMessageAuthAlta))
+        {
+            <span class="text-danger">@_errorMessageAuthAlta</span>
+        }
     </form>
-
-    @* Componente para mostrar errores *@
-    @* <Excepcion @ref=dialogo /> *@
-
-    <p class="text-danger">@_errorMessage</p>
 }
-
-//codigo para la modificación----------------------------------
-else{
-
+else
+{
     <h3>Modificar Expediente</h3>
 
     @* Formulario para modificar Expediente *@
     <form>
         <div class="form-group">
-            <label for="valorAsegurado">Caratula:</label>
+            <label for="caratula">Caratula:</label>
             <input type="text" class="form-control" id="caratula" @bind="_expediente.caratula" required>
         </div>
 
@@ -70,51 +63,52 @@ else{
         </div>
 
         <button class="btn btn-primary" @onclick="ActualizarExpediente">Modificar Expediente</button>
-
-
+        @if (!string.IsNullOrEmpty(_errorMessageAuthEdit))
+        {
+            <span class="text-danger">@_errorMessageAuthEdit</span>
+        }
     </form>
-
-    @* Componente para mostrar errores *@
-    @* <Excepcion @ref=dialogo /> *@
-
-    <p class="text-danger">@_errorMessage</p>
-
 }
 
-
-
-
 @code {
-    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
-
     Expediente _expediente = new Expediente();
-    [Parameter] public int? Id {get;set;}
+    [Parameter] public int? Id { get; set; }
     bool _esNuevoExpediente = true;
-    private string _errorMessage; // Mensaje de error para mostrar en la página
-
-    //lista de estados para seleccionar
+    private bool _isLoading = true;
+    private string _errorMessageAuthAlta = string.Empty;
+    private string _errorMessageAuthEdit = string.Empty;
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
-    
-    protected override void OnInitialized(){
 
-        @* var usuarioActual = DbContext.Usuarios.Include(u => u.Permisos).FirstOrDefault(u => u.Id == sesion.GetUserId());
-        if (usuarioActual == null)
-        {
-            throw new InvalidOperationException("Usuario no encontrado.");
-        }         *@
-
-    }
-    protected override void OnParametersSet()
+    //se implementa una logica de delay (loading) para mostrar el mensaje de excepción de permiso
+    //quitando esto, funciona igual pero el mensaje se muestra por pocos milisegundos
+    protected override async Task OnParametersSetAsync()
     {
-        if (Id != null)
+        if (Id.HasValue)
         {
-            int id = Id.HasValue ? Id.Value : -1; // los Id son a partir del 1
-            var exp_hallado = consultaExpediente.Ejecutar(id);
-            if (exp_hallado != null)
+            try
             {
-                _expediente = exp_hallado;
-                _esNuevoExpediente = false;
+                await Task.Delay(1000); // Simulación de carga
+                var exp_hallado = consultaExpediente.Ejecutar(Id.Value);
+                if (exp_hallado != null)
+                {
+                    _expediente = exp_hallado;
+                    _esNuevoExpediente = false;
+                }
             }
+            catch (Exception ex)
+            {
+                _errorMessageAuthAlta = "Error al cargar el expediente.";
+                _errorMessageAuthEdit = "Error al cargar el expediente.";
+                Console.WriteLine($"Error al cargar expediente: {ex.Message}");
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+        else
+        {
+            _isLoading = false;
         }
     }
 
@@ -122,13 +116,13 @@ else{
     {
         try
         {
-            _errorMessage="";
+            _errorMessageAuthAlta = string.Empty;
             altaExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteAlta);
             Siguiente();
         }
         catch (Exception error)
         {
-            _errorMessage = "No tiene permisos para agregar este expediente.";
+            _errorMessageAuthAlta = "No tiene permisos para agregar este expediente.";
             Console.WriteLine($"Error al agregar expediente: {error.Message}");
         }
     }
@@ -137,29 +131,26 @@ else{
     {
         try
         {
-            _errorMessage="";
+            _errorMessageAuthEdit = string.Empty;
             modificacionExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteModificacion);
             Siguiente();
         }
         catch (Exception error)
         {
-            _errorMessage = "No tiene permisos para modificar este expediente.";
+            _errorMessageAuthEdit = "No tiene permisos para modificar este expediente.";
             Console.WriteLine($"Error al modificar expediente: {error.Message}");
         }
     }
-
 
     void Siguiente()
     {
         try
         {
-            Console.WriteLine("Navegando a /listadoExpedientes");
             Navegador.NavigateTo("/listadoExpedientes");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al navegar: {ex.Message}");
-        }    
-        
+        }
     }
-}    
+}

@@ -13,18 +13,23 @@ namespace SGE.Aplicacion.Entidades;
         
         [Column("user_name")]
         [MaxLength(100)]
+        [Required(ErrorMessage = "El nombre de usuario es requerido.")]
         public string? UserName { get; set; }
 
         [Column("name")]
         [MaxLength(100)]
+        [Required(ErrorMessage = "El nombre es requerido.")]
         public string? Name { get; set; }
 
         [Column("surname")]
         [MaxLength(100)]
+        [Required(ErrorMessage = "El apellido es requerido.")]
         public string? Surname { get; set; }
 
         [Column("email")]
         [MaxLength(100)]
+        [Required(ErrorMessage = "El mail es requerido.")]
+        [EmailAddress(ErrorMessage = "El email no es válido.")]
         public string? Email { get; set; }
 
         [Column("password")]

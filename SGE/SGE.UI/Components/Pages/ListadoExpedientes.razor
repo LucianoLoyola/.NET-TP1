@@ -1,13 +1,10 @@
 @page "/listadoExpedientes"
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Administrador,Usuario")]
-@using Microsoft.EntityFrameworkCore
-@using SGE.UI.Components
 @rendermode InteractiveServer
 @inject CasoDeUsoListarExpedientes CasoDeUsoListarExpedientes
+@inject ListarUserAccountUseCase listarUsuarios
 @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
 @inject NavigationManager Navegador
-@inject SGEContext DbContext
 @inject IServicioSesion sesion
 @inject IServicioAutorizacion autorizacion
 
@@ -16,17 +13,20 @@
 @if (_lista.Count == 0)
 {
         <h3>Aún no existen expedientes</h3>
-    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
-    {
         <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
-    }
+
+
+    //poniendo el if nisiquiera muestra el boton
+    @* @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+    {
+    } *@
 }
 else
 {
         <div class="form-group">
             <label for="idExpediente">Filtrar por ID de expediente:</label>
             <input type="number" class="form-control" id="idExpediente" @bind="_idExpediente" placeholder="Ingrese el ID del expediente" min="1" required>
-            <span class="text-danger">@_errorMessage</span>
+            <span class="text-danger">@_errorMessageId</span>
         </div>
         <button @onclick="FiltrarExpedientes">Filtrar</button>
         <table class="table">
@@ -55,7 +55,8 @@ else
                                 <button class="btn btn-primary" @onclick= "()=>VerTramites(exp.Id)">Trámites</button>
                             </td>
                             <td>
-                                @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteModificacion))
+                                @* con el if ni siquiera muestra los botones *@
+                                @* @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteModificacion))
                                 {
                                     <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
                                 }
@@ -63,17 +64,22 @@ else
                                 @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteBaja))
                                 {
                                     <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
-                                }
+                                } *@
+                                <button class="btn btn-primary" @onclick= "()=>ModificarExpediente(exp)">Editar</button>
+                                <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(exp)">Eliminar</button>
+                                <span class="text-danger">@_errorMessageAuthBaja</span>
                             </td>
                         </tr>
             }
             </tbody>
         </table>
 
-    @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
+    @* @if (autorizacion.PoseeElPermiso(sesion.GetUserId(), TipoPermiso.ExpedienteAlta))
     {
                 <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
-    }
+    } *@
+            <button class="btn btn-primary" @onclick= "()=>AgregarExpediente()">Agregar Expediente</button>
+
 
 }
 
@@ -86,7 +92,8 @@ else
     private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
     List<Expediente> _lista = new List<Expediente>();
     Expediente? _ExpedienteParaEliminar = null;
-    private string? _errorMessage;
+    private string? _errorMessageAuthBaja, _errorMessageId;
+
     protected override void OnInitialized()
     {
 
@@ -100,7 +107,7 @@ else
     {
         if (_idExpediente <= 0)
         {
-            _errorMessage = "Ingrese un ID válido.";
+            _errorMessageId = "Ingrese un ID válido.";
             return;
         }
 
@@ -108,12 +115,12 @@ else
         var expedienteExistente = _lista.FirstOrDefault(e => e.Id == _idExpediente);
         if (expedienteExistente == null)
         {
-            _errorMessage = "El ID no corresponde a un expediente existente.";
+            _errorMessageId = "El ID no corresponde a un expediente existente.";
             return;
         }
 
         _lista = new List<Expediente> { expedienteExistente }; // Filtrar por el ID ingresado
-        _errorMessage = string.Empty; // Borra el mensaje de error si el ID es válido y existe
+        _errorMessageId = string.Empty; // Borra el mensaje de error si el ID es válido y existe
     }
 
     //ver otra manera de hacer, con EventCallback  (esta en la filmina)
@@ -125,10 +132,16 @@ else
     }
     private void Eliminar()
     {
-        if (_ExpedienteParaEliminar != null)
-        {
-            CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.ExpedienteBaja);
-            _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
+        try{
+            if (_ExpedienteParaEliminar != null)
+            {
+                CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.ExpedienteBaja);
+                _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
+            }
+
+        }
+        catch(Exception error){
+            _errorMessageAuthBaja = error.Message;
         }
     }
 

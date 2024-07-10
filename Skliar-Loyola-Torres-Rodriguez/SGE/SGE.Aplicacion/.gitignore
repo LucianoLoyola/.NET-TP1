@@ -1,0 +1,36 @@
+# Archivos de compilación y archivos binarios
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Archivos generados por Visual Studio
+.vs/
+.vscode/
+
+# Carpetas de paquetes NuGet
+packages/
+
+# Archivos y carpetas generados por Rider (IDE de JetBrains)
+.idea/
+
+# Archivos generados por Rider o Visual Studio
+*.suo
+*.user
+*.sln.docstates
+# Ignorar todos los archivos llamados "desktop.ini"
+desktop.ini
+<<<<<<< HEAD
+=======
+SGE/SGE.Consola/obj/
+SGE/SGE.Aplicacion/obj/
+SGE/SGE.Repositorios/obj/
+SGE/SGE.Consola/bin/
+SGE/SGE.Aplicacion/bin/
+SGE/SGE.Repositorios/bin/
+>>>>>>> db648d752da6e2e39c036138de305c91f0ef27d0
+<<<<<<< HEAD
+obj/
+=======
+>>>>>>> main

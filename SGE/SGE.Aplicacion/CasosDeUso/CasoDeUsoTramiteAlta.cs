@@ -7,7 +7,7 @@ public class CasoDeUsoTramiteAlta(IRepositorioTramite repoT,IRepositorioExpedien
     public void Ejecutar(Tramite tramite, Expediente expediente ,int idUsuario, TipoPermiso permiso){
 
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso)){//verifica la autorizacion del usuario
-            throw new AutorizacionException("El usuario no tiene permiso para realizar el alta de un Trámite");
+            throw new AutorizacionException("No tiene permiso para realizar el alta de un Trámite");
         }
         else if(!validador.Validar(tramite,idUsuario, out string mensajeError)){//valida el tramite
                 throw new ValidacionException(mensajeError); 
@@ -21,7 +21,7 @@ public class CasoDeUsoTramiteAlta(IRepositorioTramite repoT,IRepositorioExpedien
 
                 // expediente.AgregarTramiteALista(expediente,tramite);
                 repoT.AgregarTramite(tramite);
-                servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE,expediente.listaTramites);
+                servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE);
             }
     }
 }

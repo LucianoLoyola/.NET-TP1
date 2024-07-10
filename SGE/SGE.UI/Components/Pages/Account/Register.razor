@@ -1,23 +1,17 @@
 @page "/register"
-@using SGE.Aplicacion
-@using SGE.Aplicacion.Entidades
-@using SGE.Repositorios
 @using SGE.Aplicacion.ViewModels
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
 @using System.Security.Claims
 @inject SGEContext DbContext
 @inject AgregarUsuarioUseCase agregarUsuario
 @inject ListarUserAccountUseCase listarUsuarios
 @inject NavigationManager navigationManager
 @inject IServicioHash servicioHash
-
 @using System.Security.Cryptography;
 @using System.Text;
 
 <div class="row">
     <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
-        <EditForm Model="@Model" OnValidSubmit="HandleRegistration" FormName="RegisterForm">
+        <EditForm Model="@Model" OnValidSubmit="Registrar" OnInvalidSubmit="Registrar" FormName="RegisterForm">
             <DataAnnotationsValidator />
             <div class="mb-3 text-center flex-column">
                 <img src="/images/panel1.png" style="max-height:5rem;" />
@@ -69,53 +63,61 @@
     public RegisterViewModel Model { get; set; } = new();
     private string? errorMessage;
 
-    private async Task HandleRegistration(){
-        if (string.IsNullOrEmpty(Model.UserName) ||
-            string.IsNullOrEmpty(Model.Password) ||
-            string.IsNullOrEmpty(Model.Name) ||
-            string.IsNullOrEmpty(Model.Surname) ||
-            string.IsNullOrEmpty(Model.Email)) return;
+    void Registrar(){
 
-        // Verificar si el usuario ya existe
-        var existingUser = listarUsuarios.Ejecutar().FirstOrDefault(x => x.UserName == Model.UserName);
-        
-        if (existingUser != null)
-        {
-            errorMessage = "El usuario ya existe";
-            Console.WriteLine(errorMessage);
-            return;
+        try{
+            if (string.IsNullOrEmpty(Model.UserName) ||
+                string.IsNullOrEmpty(Model.Password) ||
+                string.IsNullOrEmpty(Model.Name) ||
+                string.IsNullOrEmpty(Model.Surname) ||
+                string.IsNullOrEmpty(Model.Email)) 
+                throw new ValidacionException("Todos los campos deben estar completos");;
+
+            // Verificar si el usuario ya existe
+            var existingUser = listarUsuarios.Ejecutar().FirstOrDefault(x => x.UserName == Model.UserName);
+            
+            if (existingUser != null)
+            {
+                errorMessage = "El usuario ya existe";
+                Console.WriteLine(errorMessage);
+                return;
+            }
+
+            var hayUsuarios = listarUsuarios.Ejecutar().Any();
+
+            // Crear una nueva cuenta de usuario
+            var userAccount = new UserAccount
+            {
+                UserName = Model.UserName,
+                Password = servicioHash.GetHashSha256(Model.Password),
+                Role = hayUsuarios ? "Usuario" : "Administrador",
+                Name = Model.Name,
+                Surname = Model.Surname,
+                Email = Model.Email,
+                Permisos = hayUsuarios
+                    ? new List<Permiso>
+                    {
+                        new Permiso { tipoPermiso = TipoPermiso.Lectura } // Asignar permiso de lectura
+                    }
+                    : new List<Permiso>
+                    {
+                        new Permiso { tipoPermiso = TipoPermiso.Lectura }, // Asignar permiso de lectura
+                        new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta },
+                        new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion },
+                        new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja },
+                        new Permiso { tipoPermiso = TipoPermiso.TramiteAlta },
+                        new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion },
+                        new Permiso { tipoPermiso = TipoPermiso.TramiteBaja }
+                    }
+            };
+            agregarUsuario.Ejecutar(userAccount);
+            // Redirigir al usuario a la página de inicio de sesión
+            navigationManager.NavigateTo("/login");
+
         }
-        Console.WriteLine("User does not exist");
+        catch(Exception error){
+            Console.WriteLine($"Error al registrarse: {error.Message}");
 
-        var hayUsuarios = listarUsuarios.Ejecutar().Any();
-
-        // Crear una nueva cuenta de usuario
-        var userAccount = new UserAccount
-        {
-            UserName = Model.UserName,
-            Password = servicioHash.GetHashSha256(Model.Password),
-            Role = hayUsuarios ? "Usuario" : "Administrador",
-            Name = Model.Name,
-            Surname = Model.Surname,
-            Email = Model.Email,
-            Permisos = hayUsuarios
-                ? new List<Permiso>
-                {
-                    new Permiso { tipoPermiso = TipoPermiso.Lectura } // Asignar permiso de lectura
-                }
-                : new List<Permiso>
-                {
-                    new Permiso { tipoPermiso = TipoPermiso.Lectura }, // Asignar permiso de lectura
-                    new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta },
-                    new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion },
-                    new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja },
-                    new Permiso { tipoPermiso = TipoPermiso.TramiteAlta },
-                    new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion },
-                    new Permiso { tipoPermiso = TipoPermiso.TramiteBaja }
-                }
-        };
-        agregarUsuario.Ejecutar(userAccount);
-        // Redirigir al usuario a la página de inicio de sesión
-        navigationManager.NavigateTo("/login");
+        }
     }
 }
