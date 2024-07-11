@@ -1,8 +1,6 @@
 @page "/administracion"
 @rendermode InteractiveServer
-@attribute [Authorize(Roles="Administrador")]
 @using SGE.Aplicacion.ViewModels
-@using System.Security.Claims
 @inject EliminarUserAccountUseCase eliminarUsuario
 @inject ObtenerUserAccountUseCase obtenerUsuario
 @inject ListarUserAccountUseCase listarUsuarios
@@ -12,7 +10,7 @@
 
 <h3>Lista de Usuarios</h3>
 
-<a href="/userprofile_new" class="btn btn-primary">Alta de usuario</a>
+<a href="/userprofile_new" class="btn btn-primary">Agregar Nuevo Usuario</a>
 
 @if (UserAccounts != null && UserAccounts.Any())
 {
@@ -52,7 +50,7 @@ else
     List<UserAccount> UserAccounts;
     private UserAccount? _usuarioEliminar = null;
     DialogoConfirmacion dialogo;
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         dialogo = new DialogoConfirmacion();
         // Obtener todos los usuarios de la base de datos

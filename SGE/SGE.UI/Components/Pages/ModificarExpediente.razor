@@ -4,7 +4,7 @@
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject CasoDeUsoExpedienteModificacion modificacionExpediente
 @inject NavigationManager Navegador
-@inject IServicioSesion sesion
+@inject IServicioSession sesion
 
 @if (_isLoading)
 {
@@ -116,7 +116,7 @@ else
         try
         {
             _errorMessageAuthAlta = string.Empty;
-            altaExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteAlta);
+            altaExpediente.Ejecutar(_expediente, sesion.User.Id, TipoPermiso.ExpedienteAlta);
             Siguiente();
         }
         catch (Exception error)
@@ -131,7 +131,7 @@ else
         try
         {
             _errorMessageAuthEdit = string.Empty;
-            modificacionExpediente.Ejecutar(_expediente, sesion.GetUserId(), TipoPermiso.ExpedienteModificacion);
+            modificacionExpediente.Ejecutar(_expediente, sesion.User.Id, TipoPermiso.ExpedienteModificacion);
             Siguiente();
         }
         catch (Exception error)

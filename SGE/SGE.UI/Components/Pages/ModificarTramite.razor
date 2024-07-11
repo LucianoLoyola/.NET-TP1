@@ -5,7 +5,7 @@
 @inject CasoDeUsoTramiteModificacion modificacionTramite
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject NavigationManager Navegador
-@inject IServicioSesion sesion
+@inject IServicioSession sesion
 
 @if (_isLoading)
 {
@@ -118,7 +118,7 @@ else
         try
         {
             _errorMessage = string.Empty;
-            altaTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.TramiteAlta);
+            altaTramite.Ejecutar(_tramite, _expediente, sesion.User.Id, TipoPermiso.TramiteAlta);
             Siguiente();
         }
         catch (Exception error)
@@ -133,7 +133,7 @@ else
         try
         {
             _errorMessage = string.Empty;
-            modificacionTramite.Ejecutar(_tramite, _expediente, sesion.GetUserId(), TipoPermiso.TramiteModificacion);
+            modificacionTramite.Ejecutar(_tramite, _expediente, sesion.User.Id, TipoPermiso.TramiteModificacion);
             Siguiente();
         }
         catch (Exception error)

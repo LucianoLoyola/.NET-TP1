@@ -4,7 +4,7 @@
 @inject ListarUserAccountUseCase listarUsuarios
 @inject CasoDeUsoExpedienteBaja CasoDeUsoExpedienteBaja
 @inject NavigationManager Navegador
-@inject IServicioSesion sesion
+@inject IServicioSession sesion
 @inject IServicioAutorizacion autorizacion
 
 @*<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>*@
@@ -133,7 +133,7 @@ else
         try{
             if (_ExpedienteParaEliminar != null)
             {
-                CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id, sesion.GetUserId(), TipoPermiso.ExpedienteBaja);
+                CasoDeUsoExpedienteBaja.Ejecutar(_ExpedienteParaEliminar.Id, sesion.User.Id, TipoPermiso.ExpedienteBaja);
                 _lista = CasoDeUsoListarExpedientes.Ejecutar(); //se actualiza la lista de clientes
             }
 

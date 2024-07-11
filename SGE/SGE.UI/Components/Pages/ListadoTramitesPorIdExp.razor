@@ -5,7 +5,7 @@
 @inject CasoDeUsoExpedienteConsultaPorId consultaExpediente
 @inject ListarUserAccountUseCase listarUsuarios
 @inject NavigationManager Navegador
-@inject IServicioSesion sesion
+@inject IServicioSession sesion
 @inject IServicioAutorizacion autorizacion
 
 
@@ -100,7 +100,7 @@ else{
         try{
             if (_TramiteParaEliminar != null)
             {
-                tramiteBaja.Ejecutar(_TramiteParaEliminar.Id, _ExpedienteParaModificar, sesion.GetUserId(), TipoPermiso.TramiteBaja);
+                tramiteBaja.Ejecutar(_TramiteParaEliminar.Id, _ExpedienteParaModificar, sesion.User.Id, TipoPermiso.TramiteBaja);
                 tramitesExp = TramitesPorId.Ejecutar(IdExp); //se actualiza la lista de tramites
             }
 
