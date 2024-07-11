@@ -1,6 +1,7 @@
 @page "/administracion"
 @rendermode InteractiveServer
 @using SGE.Aplicacion.ViewModels
+@using SGE.UI.Components.Pages
 @inject EliminarUserAccountUseCase eliminarUsuario
 @inject ObtenerUserAccountUseCase obtenerUsuario
 @inject ListarUserAccountUseCase listarUsuarios
@@ -38,7 +39,7 @@
         </tbody>
     </table>
 
-    <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
+    <DialogoConfirmacion @ref="dialogo" Mensaje="@mensajeConfirmacion" OnConfirmado="OnConfirmarEliminacion" />
 }
 else
 {
@@ -46,32 +47,31 @@ else
 }
 
 @code {
-
-    List<UserAccount> UserAccounts;
+    private List<UserAccount> UserAccounts;
     private UserAccount? _usuarioEliminar = null;
-    DialogoConfirmacion dialogo;
+    private DialogoConfirmacion dialogo;
+    private string mensajeConfirmacion = "";
+
     protected override void OnInitialized()
     {
-        dialogo = new DialogoConfirmacion();
         // Obtener todos los usuarios de la base de datos
-        UserAccounts= listarUsuarios.Ejecutar();
+        UserAccounts = listarUsuarios.Ejecutar();
     }
 
-    private void Eliminar()
+    private void ConfirmarEliminacion(UserAccount user)
     {
-        if (_usuarioEliminar != null)
+        _usuarioEliminar = user;
+        mensajeConfirmacion = $"¿Desea eliminar el usuario {user.UserName}?";
+        dialogo.Mostrar();
+    }
+
+    private void OnConfirmarEliminacion(bool confirmado)
+    {
+        if (confirmado && _usuarioEliminar != null)
         {
             eliminarUsuario.Ejecutar(_usuarioEliminar.Id);
-            Console.Write("ELIMINADO");
-            UserAccounts= listarUsuarios.Ejecutar();
+            UserAccounts = listarUsuarios.Ejecutar();
         }
+        _usuarioEliminar = null;
     }
-    private void ConfirmarEliminacion(UserAccount user){
-        dialogo.Mensaje = $"¿Desea eliminar el usuario {user.UserName}?";
-        dialogo.Mostrar();
-
-        _usuarioEliminar = user;
-    }
-
-
 }

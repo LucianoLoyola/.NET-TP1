@@ -1,4 +1,5 @@
 @rendermode InteractiveServer
+
 @if (visible)
 {
    <div class="dialogo-contenedor">
@@ -9,37 +10,39 @@
        </div>
    </div>
 }
-@code{
-    [Parameter]
-    public string Mensaje {get;set;}="";
 
-    [Parameter] 
+@code {
+    [Parameter]
+    public string Mensaje { get; set; } = "";
+
+    [Parameter]
     public EventCallback<bool> OnConfirmado { get; set; }
 
     private bool visible = false;
 
     public void Mostrar()
     {
-        visible=true;
+        visible = true;
         StateHasChanged();
     }
+
     void Cerrar()
     {
-        visible=false;
-    }
-
-    void CerrarYconfirmar()
-    {
-        visible=false;
-        OnConfirmado.InvokeAsync();
+        visible = false;
+        StateHasChanged();
     }
 
     void Cerrar(bool confirmar)
-        {
+    {
         visible = false;
+        StateHasChanged();
         if (confirmar)
-            {
-            OnConfirmado.InvokeAsync();
-            }
+        {
+            OnConfirmado.InvokeAsync(true);
         }
+        else
+        {
+            OnConfirmado.InvokeAsync(false);
+        }
+    }
 }
