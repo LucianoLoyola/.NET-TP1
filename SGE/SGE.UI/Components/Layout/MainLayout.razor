@@ -48,6 +48,7 @@
             logueado = true;
             if(user.Role == "Administrador") admin = true;
         }
+
         servicioEvento.OnChange += HandleChange;
         HandleChange();
     }
@@ -55,7 +56,10 @@
     private void HandleChange()
     {
         user = sesion.User;
-        logueado = user != null;
+        if(user is not null) {
+            logueado = true;
+            if(user.Role == "Administrador") admin = true;
+        }
         StateHasChanged(); 
     }
 
