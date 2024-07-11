@@ -5,9 +5,31 @@ namespace SGE.Aplicacion;
 
 
 public class ServicioSession : IServicioSession{
-    public UserAccount? User {get;set;}
+    private readonly IServicioEvento _servicioEvento;
+    private UserAccount _user;
+
+
+    public ServicioSession(IServicioEvento servicioEvento)
+    {
+        _servicioEvento = servicioEvento;
+    }
+    public UserAccount User
+    {
+        get => _user;
+        set
+        {
+            _user = value;
+            _servicioEvento.Notificar();
+        }
+    }
+
     public void SetUser(UserAccount user){
         User=user;
+        _servicioEvento.Notificar();
+    }
+    public void ClearUser(){
+        User=null;
+        _servicioEvento.Notificar();
     }
 
 

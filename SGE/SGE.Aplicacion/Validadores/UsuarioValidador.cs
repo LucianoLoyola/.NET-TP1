@@ -33,16 +33,4 @@ public class UsuarioValidador
         return string.IsNullOrEmpty(mensajeError);
     }
 
-     public bool ValidarLogin(UserAccount user, string password,out string mensajeError, IServicioHash _servicioHash)
-    {
-        mensajeError="";
-        // if (user is null || (user.Password != servicioHash.GetHashSha256(password)))
-        if ( (user is null) || (user.Password != _servicioHash.GetHashSha256(password)) ){
-            mensajeError = "Usuario o contraseña invalido";
-            return false;
-        }
-        else return true;
-    }
-
-
 }

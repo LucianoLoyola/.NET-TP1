@@ -3,9 +3,9 @@
 
 @using SGE.Aplicacion.ViewModels
 @inject LoginUseCase login
-@inject IServicioSession sesion
 @inject IServicioEvento servicioEvento
-@inject IServicioHash servicioHash
+ @inject IServicioSession sesion
+@*@inject IServicioHash servicioHash *@
 @inject ObtenerUserAccountUseCase getUsuario
 @inject UsuarioValidador validador
 @inject NavigationManager navegador
@@ -64,18 +64,15 @@
     
     void LogIn()
     {
-        var userAccount = getUsuario.Ejecutar(Model.UserName);
-
-        if (!validador.ValidarLogin(userAccount, Model.Password, out _errorMessage, servicioHash))
-        {
+        if(login.Ejecutar(Model.UserName,Model.Password,sesion)){
+            navegador.NavigateTo("/");
+        }
+        else{
             _errorMessage = "Usuario o contraseña inválidos";
             return;
         }
-        
-        sesion.SetUser(userAccount);
-        servicioEvento.Notificar();
-        navegador.NavigateTo("/");
 
+        servicioEvento.Notificar(); 
     }
 
 }

@@ -11,6 +11,7 @@ public interface IRepositorioUsuario{
     void AgregarUsuario(UserAccount user);
 
     public void Register(UserAccount user);
-    public UserAccount? Login(string username,string password);
+    public bool Login(string username,string password,IServicioSession sesion);
+    public bool Logout(IServicioSession sesion);
     
 }

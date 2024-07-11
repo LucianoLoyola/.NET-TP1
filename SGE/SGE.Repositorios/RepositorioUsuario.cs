@@ -31,13 +31,23 @@ public class RepositorioUsuario : IRepositorioUsuario
         db.Usuarios.Add(user);
         db.SaveChanges();
     }
-    public UserAccount? Login(string username,string password){
+    public bool Login(string username,string password, IServicioSession sesion){
         // using var db=new BaseContext();
         UserAccount? user= db.Usuarios.Include(u => u.Permisos).Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
         if(user != null){
-            return user;
+            sesion.SetUser(user);
+            return true;
         }
-        else return null;
+        else{
+            sesion.SetUser(null);
+            return false;
+        } 
+    }
+    public bool Logout(IServicioSession sesion){
+        // using var db=new BaseContext();
+        sesion.SetUser(null);
+        return true;
+
     }
 
     public void ModificarUsuario(UserAccount usuario){

@@ -66,4 +66,9 @@
         StateHasChanged(); 
     }
 
+    public void Dispose()
+    {
+        servicioEvento.OnChange -= HandleChange;
+    }
+
 }

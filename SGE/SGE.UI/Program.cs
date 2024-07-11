@@ -5,6 +5,7 @@ using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var connectionString = "Data Source=SGE.sqlite";
 var options = new DbContextOptionsBuilder<SGEContext>()
@@ -23,6 +24,7 @@ builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<EliminarUserAccountUseCase>()
     .AddTransient<ListarUserAccountUseCase>()
     .AddTransient<LoginUseCase>()
+    .AddTransient<LogoutUseCase>()
     .AddTransient<ModificarUserAccountUseCase>()
     .AddTransient<ObtenerUserAccountUseCase>();
 
@@ -43,15 +45,18 @@ builder.Services.AddTransient<CasoDeUsoListarExpedientes>()
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioExpediente, RepositorioExpediente>();
 builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
+
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
-builder.Services.AddSingleton<IServicioSession, ServicioSession>();
+builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
+builder.Services.AddScoped<IServicioSession, ServicioSession>();
 builder.Services.AddScoped<IServicioEvento, ServicioEvento>();
 
 builder.Services.AddTransient<ExpedienteValidador>();
 builder.Services.AddTransient<TramiteValidador>();
 builder.Services.AddTransient<UsuarioValidador>();
-builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
+
+
 
 
 // Agregar el DbContext de SGEContext con la configuración de SQLite
@@ -59,13 +64,34 @@ builder.Services.AddDbContext<SGEContext>(options =>
     options.UseSqlite(connectionString));
 
 
+        // //configuraciones para las cookies
+        // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        //     .AddCookie(options =>
+        //     {
+        //         options.LoginPath = "/login";
+        //         options.LogoutPath = "/logout";
+        //         options.ExpireTimeSpan = TimeSpan.FromDays(14);
+        //         options.SlidingExpiration = true;
+        //     });
+
+        // builder.Services.AddAuthorization(options =>
+        // {
+        //     options.AddPolicy("Authenticated", policy => policy.RequireAuthenticatedUser());
+        // });
+
 var app = builder.Build();
 
-// // Configurar el pipeline de solicitudes HTTP
-// if (!app.Environment.IsDevelopment())
-// {
-//     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-// }
+    // // Configurar el pipeline de solicitudes HTTP
+    //     if (!app.Environment.IsDevelopment())
+    //     {
+    //         app.UseExceptionHandler("/Error");
+    //         app.UseHsts();
+    //     }
+
+    //     app.UseHttpsRedirection();
+    //     app.UseRouting();
+    //     app.UseAuthentication();
+    //     app.UseAuthorization();
 
 app.UseAntiforgery();
 app.UseStaticFiles();//
