@@ -16,12 +16,12 @@ public class RepositorioUsuario : IRepositorioUsuario
         else return lista;
     }
     public UserAccount? GetUsuario(int id){
-        UserAccount user = db.Usuarios.Where(u => u.Id == id).SingleOrDefault();
+        UserAccount user = db.Usuarios.Include(u => u.Permisos).Where(u => u.Id == id).SingleOrDefault();
         if(user == null) throw new RepositorioException($"No se encontró un usuario con el Id {id}");
         else return user;
     }
     public UserAccount? GetUsuario(string userName){
-        UserAccount user = db.Usuarios.SingleOrDefault(u => u.UserName == userName);
+        UserAccount user = db.Usuarios.Include(u => u.Permisos).SingleOrDefault(u => u.UserName == userName);
         if(user == null) throw new RepositorioException($"No se encontró un usuario con el Username {userName}");
         else return user;
     }
@@ -35,7 +35,7 @@ public class RepositorioUsuario : IRepositorioUsuario
     }
     public UserAccount? Login(string username,string password){
         // using var db=new BaseContext();
-        UserAccount? user= db.Usuarios.Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
+        UserAccount? user= db.Usuarios.Include(u => u.Permisos).Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
         if(user != null){
             return user;
         }

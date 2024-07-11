@@ -7,11 +7,7 @@
 @inject NavigationManager Navegador
 @inject IServicioSession sesion
 
-@if (_isLoading)
-{
-    <p>Cargando...</p>
-}
-else if (_esNuevoTramite)
+@if (_esNuevoTramite)
 {
     <h3>Agregar Trámite</h3>
 
@@ -77,7 +73,6 @@ else
     [Parameter]
     public int? Id { get; set; }
     
-    private bool _isLoading = true;
     private bool _esNuevoTramite = true;
     private string _errorMessage = string.Empty;
 
@@ -89,7 +84,6 @@ else
     {
         try
         {
-            await Task.Delay(1000); // Simulación de carga
             _expediente = consultaExpediente.Ejecutar(IdExp);
             
             if (Id.HasValue)
@@ -106,10 +100,6 @@ else
         {
             _errorMessage = $"Error al cargar los datos: {ex.Message}";
             Console.WriteLine($"Error al cargar los datos: {ex.Message}");
-        }
-        finally
-        {
-            _isLoading = false;
         }
     }
 
@@ -148,7 +138,7 @@ else
         try
         {
             Console.WriteLine("Navegando a /listadoTramites");
-            Navegador.NavigateTo("/listadoTramites");
+            InvokeAsync(() => Navegador.NavigateTo("/listadoTramites");
         }
         catch (Exception ex)
         {

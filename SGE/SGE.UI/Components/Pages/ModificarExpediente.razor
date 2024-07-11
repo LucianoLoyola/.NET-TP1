@@ -6,11 +6,7 @@
 @inject NavigationManager Navegador
 @inject IServicioSession sesion
 
-@if (_isLoading)
-{
-    <p>Cargando...</p>
-}
-else if (_esNuevoExpediente)
+@if (_esNuevoExpediente)
 {
     <h3>Agregar Expediente</h3>
 
@@ -73,20 +69,18 @@ else
     Expediente _expediente = new Expediente();
     [Parameter] public int? Id { get; set; }
     bool _esNuevoExpediente = true;
-    private bool _isLoading = true;
     private string _errorMessageAuthAlta = string.Empty;
     private string _errorMessageAuthEdit = string.Empty;
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
 
     //se implementa una logica de delay (loading) para mostrar el mensaje de excepción de permiso
     //quitando esto, funciona igual pero el mensaje se muestra por pocos milisegundos
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
         if (Id.HasValue)
         {
             try
             {
-                await Task.Delay(1000); // Simulación de carga
                 var exp_hallado = consultaExpediente.Ejecutar(Id.Value);
                 if (exp_hallado != null)
                 {
@@ -100,14 +94,6 @@ else
                 _errorMessageAuthEdit = "Error al cargar el expediente.";
                 Console.WriteLine($"Error al cargar expediente: {ex.Message}");
             }
-            finally
-            {
-                _isLoading = false;
-            }
-        }
-        else
-        {
-            _isLoading = false;
         }
     }
 

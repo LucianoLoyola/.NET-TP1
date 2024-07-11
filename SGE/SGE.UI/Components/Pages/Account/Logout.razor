@@ -22,7 +22,7 @@
     protected override void OnInitialized(){
 
         sesion.SetUser(null);  // Limpiar la sesión al cerrar sesión
-        navegador.NavigateTo("/login");
+        InvokeAsync(() => navegador.NavigateTo("/login"));
 
     }
 }
