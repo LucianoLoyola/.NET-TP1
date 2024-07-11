@@ -1,5 +1,6 @@
 @page "/logout"
-@inject NavigationManager navigationManager
+@inject NavigationManager navegador
+@inject IServicioSession sesion
 
 <div class="row">
     <div class="col-12">
@@ -17,13 +18,11 @@
 </div>
 
 @code{
-    @* [CascadingParameter]
-    public HttpContext HttpContext{get;set;} *@
 
-    protected override async Task OnInitializedAsync(){
-        @* if(HttpContext.User.Identity.IsAuthenticated){
-            await HttpContext.SignOutAsync();
-            navigationManager.NavigateTo("/logout",true);
-        } *@
+    protected override void OnInitialized(){
+
+        sesion.SetUser(null);  // Limpiar la sesión al cerrar sesión
+        navegador.NavigateTo("/login");
+
     }
 }

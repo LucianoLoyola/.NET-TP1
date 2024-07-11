@@ -47,6 +47,7 @@ builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
 builder.Services.AddScoped<IServicioSession, ServicioSession>();
+builder.Services.AddScoped<IServicioEvento, ServicioEvento>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -79,7 +80,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
-
 
 
 app.UseStaticFiles();

@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
-@using System.Security.Claims
-@inject SGEContext DbContext
+@inject IServicioSession sesion
+@inject IServicioEvento servicioEvento
 @inject ObtenerUserAccountUseCase getUsuario
 
 
@@ -11,20 +11,17 @@
 
     <main>
         <div class="top-row px-4">
-            <AuthorizeView>
-                <NotAuthorized>
+            @if (!logueado){
                     <a href="/login">Iniciar Sesión</a>
                     <a href="/register">Registrarse</a>
-                </NotAuthorized>
-                <Authorized>
-                    <a href="/userprofile_update/@userID">Actualizar perfil</a>
-                    @if (!string.IsNullOrEmpty(UserRole) && UserRole.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
-                        {
-                            <a href="/administracion">Administración</a>
-                        }
-                    <a href="/logout">Cerrar Sesión</a>
-                </Authorized>
-            </AuthorizeView>
+            }
+            @if (logueado){<a href="/userprofile_update/@user.Id">Actualizar perfil</a>}
+            @if (admin)
+                {
+                    <a href="/administracion">Administración</a>
+                }
+            @if(logueado) {<a href="/logout">Cerrar Sesión</a>}
+
         </div>
 
         <article class="content px-4">
@@ -41,25 +38,25 @@
 
 
 @code {
-    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    private ClaimsPrincipal user;
-    private string UserRole { get; set; }
-    private int userID {get; set;}
-
-    protected override async Task OnInitializedAsync()
+    UserAccount ?user;
+    private bool logueado = false;
+    private bool admin = false;
+    protected override void OnInitialized()
     {
-        var authState = await authenticationStateTask;
-        user = authState.User;
-
-        // Obtener el nombre de usuario del claim
-        var userName = user.Identity.Name;
-
-        // Obtener el rol del usuario desde la base de datos
-        var userData = DbContext.Usuarios.Where(u => u.UserName == userName).FirstOrDefault();
-        if (userData != null)
-        {
-            UserRole = userData.Role;
-            userID= userData.Id;
+        user = sesion.User;
+        if(user is not null) {
+            logueado = true;
+            if(user.Role == "Administrador") admin = true;
         }
+        servicioEvento.OnChange += HandleChange;
+        HandleChange();
     }
+
+    private void HandleChange()
+    {
+        user = sesion.User;
+        logueado = user != null;
+        StateHasChanged(); 
+    }
+
 }

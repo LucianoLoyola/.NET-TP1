@@ -1,10 +1,10 @@
 ﻿@page "/"
 @rendermode InteractiveServer
-@attribute [Authorize(Roles="Administrador,Usuario")]
-@using System.Security.Claims
 @inject ObtenerUserAccountUseCase getUsuario
 @inject IServicioSession sesion
+@inject IServicioEvento servicioEvento
 @inject NavigationManager Navegador
+
 
 <div class="container mt-5">
     <div class="row">
@@ -14,21 +14,17 @@
         <div class="col-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    <NotAuthorized>
-                        @if (!user.Identity.IsAuthenticated)
+                        @if (!logueado)
                         {
                             <p>No has iniciado sesión.</p>
                             <a href="/login" class="btn btn-primary">Iniciar sesión</a>
                         }
-                    </NotAuthorized>
-                    <Authorized>
-                        @if (user != null && user.Identity != null && user.Identity.IsAuthenticated)
+                        @if (logueado)
                         {
-                            <p>Sesión iniciada como <b>@user.Identity.Name</b></p>
-                            <p>Tu rol es: <b>@UserRole</b></p>
+                            <p>Sesión iniciada como <b>@user.UserName</b></p>
+                            <p>Tu rol es: <b>@user.Role</b></p>
                             <button class="btn btn-primary" @onclick="VerPerfil">Ver Perfil</button>
                         }
-                    </Authorized>
                 </div>
             </div>
         </div>
@@ -36,27 +32,19 @@
 </div>
 
 @code {
-    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    private ClaimsPrincipal user;
-    private int UserId; 
-    private string UserRole { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    UserAccount ?user;
+    private bool logueado = false;
+    protected override void OnInitialized()
     {
-        var authState = await authenticationStateTask;
-        user = authState.User;
 
-        var userData = sesion.User;
-        if (userData != null)
-        {
-            UserRole = userData.Role;
-            UserId = userData.Id;
-        }
-
+        user = sesion.User;
+        if(user is not null) logueado = true;
+        servicioEvento.Notify();
     }
 
     private void VerPerfil()
     {
-        Navegador.NavigateTo($"/userprofile/{UserId}");
+        Navegador.NavigateTo($"/userprofile/{user.Id}");
     }
 }

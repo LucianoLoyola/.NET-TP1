@@ -4,11 +4,11 @@
 @using SGE.Aplicacion.ViewModels
 @inject LoginUseCase login
 @inject IServicioSession sesion
+@inject IServicioEvento servicioEvento
 @inject IServicioHash servicioHash
 @inject ObtenerUserAccountUseCase getUsuario
 @inject UsuarioValidador validador
-@inject NavigationManager navigationManager
-
+@inject NavigationManager navegador
 
 
 <div class="row">
@@ -73,7 +73,7 @@
         }
         
         sesion.SetUser(userAccount);
-        navigationManager.NavigateTo("/");
+        navegador.NavigateTo("/");
 
     }
 
