@@ -11,7 +11,6 @@ var options = new DbContextOptionsBuilder<SGEContext>()
     .UseSqlite(connectionString)
     .Options;
 
-// Inicializar la base de datos si es necesario
 SGESqlite.Inicializar(options);
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,22 +18,25 @@ var builder = WebApplication.CreateBuilder(args);
 // Configurar servicios y middleware
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
 builder.Services.AddTransient<AgregarUsuarioUseCase>()
     .AddTransient<EliminarUserAccountUseCase>()
     .AddTransient<ListarUserAccountUseCase>()
     .AddTransient<LoginUseCase>()
-    .AddTransient<CasoDeUsoTramiteBaja>()
+    .AddTransient<ModificarUserAccountUseCase>()
+    .AddTransient<ObtenerUserAccountUseCase>();
+
+builder.Services.AddTransient<CasoDeUsoTramiteBaja>()
     .AddTransient<CasoDeUsoTramiteAlta>()
     .AddTransient<CasoDeUsoTramiteConsultaPorId>()
     .AddTransient<CasoDeUsoTramiteConsultaPorEtiqueta>()
     .AddTransient<CasoDeUsoTramiteModificacion>()
     .AddTransient<CasoDeUsoListarTramites>()
-    .AddTransient<CasoDeUsoListarTramitesPorIdEx>()
-    .AddTransient<CasoDeUsoListarExpedientes>()
+    .AddTransient<CasoDeUsoListarTramitesPorIdEx>();
+
+builder.Services.AddTransient<CasoDeUsoListarExpedientes>()
     .AddTransient<CasoDeUsoExpedienteAlta>()
     .AddTransient<CasoDeUsoExpedienteConsultaPorId>()
-    .AddTransient<ModificarUserAccountUseCase>()
-    .AddTransient<ObtenerUserAccountUseCase>()
     .AddTransient<CasoDeUsoExpedienteModificacion>()
     .AddTransient<CasoDeUsoExpedienteBaja>();
 
@@ -59,13 +61,14 @@ builder.Services.AddDbContext<SGEContext>(options =>
 
 var app = builder.Build();
 
-// Configurar el pipeline de solicitudes HTTP
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-}
+// // Configurar el pipeline de solicitudes HTTP
+// if (!app.Environment.IsDevelopment())
+// {
+//     app.UseExceptionHandler("/Error", createScopeForErrors: true);
+// }
 
 app.UseAntiforgery();
+app.UseStaticFiles();//
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

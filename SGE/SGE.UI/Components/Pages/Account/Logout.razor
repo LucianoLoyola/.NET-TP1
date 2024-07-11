@@ -1,7 +1,8 @@
 @page "/logout"
 @inject NavigationManager navegador
-@inject IServicioSession sesion
-@inject IServicioEvento servicioEvento
+@* @inject IServicioSession sesion
+@inject IServicioEvento servicioEvento *@
+@inject LogoutUseCase logout
 
 <div class="row">
     <div class="col-12">
@@ -21,9 +22,6 @@
 @code{
 
     protected override void OnInitialized(){
-
-        sesion.SetUser(null);  // Limpiar la sesión al cerrar sesión
-        servicioEvento.Notificar();
-
+        logout.Ejecutar();
     }
 }

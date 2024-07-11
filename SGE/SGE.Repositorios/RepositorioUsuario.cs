@@ -30,8 +30,6 @@ public class RepositorioUsuario : IRepositorioUsuario
         // using var db= new BaseContext();
         db.Usuarios.Add(user);
         db.SaveChanges();
-
-
     }
     public UserAccount? Login(string username,string password){
         // using var db=new BaseContext();
@@ -40,7 +38,6 @@ public class RepositorioUsuario : IRepositorioUsuario
             return user;
         }
         else return null;
-
     }
 
     public void ModificarUsuario(UserAccount usuario){
