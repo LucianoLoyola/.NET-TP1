@@ -1,7 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using SGE.Aplicacion;
-using SGE.Aplicacion.Entidades;
 namespace SGE.Repositorios;
 
 public class SGESqlite
@@ -13,7 +10,7 @@ public class SGESqlite
         context.Database.EnsureCreated();
         if (context.Database.EnsureCreated())
         {
-            //Agregar acá sentencias para inicilizar la base de datos con contenido - CODE FIRST
+            //Agregar acá sentencias para inicilizar la base de datos con contenido - también se utiliza CODE FIRST
             //context.Usuarios.Add(new UserAccount() { UserName = "Test",Email="test@gmail.com" });
             var connection = context.Database.GetDbConnection();
             connection.Open();

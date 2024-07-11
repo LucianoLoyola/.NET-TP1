@@ -34,6 +34,15 @@ namespace SGE.Repositorios
                     v => (TipoPermiso)Enum.Parse(typeof(TipoPermiso), v) // Convertir string a enumerativo
                 );
 
+            modelBuilder.Entity<Permiso>(entity =>
+            {
+                entity.ToTable("Permisos"); 
+
+                entity.Property(p => p.Id).IsRequired();
+                entity.Property(p => p.tipoPermiso).IsRequired(); 
+
+            });
+
             modelBuilder.Entity<Expediente>(entity =>
             {
                 entity.ToTable("Expedientes");

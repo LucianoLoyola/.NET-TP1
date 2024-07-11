@@ -5,7 +5,6 @@ using SGE.Aplicacion.Interfaces;
 public class CasoDeUsoExpedienteAlta(IRepositorioExpediente repo, ExpedienteValidador validador, IServicioAutorizacion servicioAuth){
     public void Ejecutar(Expediente expediente,int idUsuario, TipoPermiso permiso){
 
-        //el checkeo del permiso podría checkearse en UI, para no volver a buscar el usuario teniendolo en el contexto
         if (!servicioAuth.PoseeElPermiso(idUsuario, permiso))//verifica la autorizacion del usuario
         {
             throw new AutorizacionException("No tiene permiso para realizar el alta de un expediente");

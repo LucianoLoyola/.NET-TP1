@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using SGE.UI.Components;
 using SGE.Repositorios;
@@ -6,9 +5,7 @@ using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion;
-using Microsoft.AspNetCore.Antiforgery;
-//que hace esto?? es lo mismo que no pasarle nada?
-// Crear una instancia de DbContextOptions para SGEContext (le pasa las opciones al constructor)
+
 var connectionString = "Data Source=SGE.sqlite";
 var options = new DbContextOptionsBuilder<SGEContext>()
     .UseSqlite(connectionString)
@@ -48,18 +45,6 @@ builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
 builder.Services.AddSingleton<IServicioSession, ServicioSession>();
 builder.Services.AddScoped<IServicioEvento, ServicioEvento>();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.Cookie.Name = "auth_token";
-        options.LoginPath = "/login";
-        options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
-        options.AccessDeniedPath = "/access-denied";
-    });
-
-builder.Services.AddAuthorization();
-builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<ExpedienteValidador>();
 builder.Services.AddTransient<TramiteValidador>();
@@ -72,7 +57,6 @@ builder.Services.AddDbContext<SGEContext>(options =>
     options.UseSqlite(connectionString));
 
 
-
 var app = builder.Build();
 
 // Configurar el pipeline de solicitudes HTTP
@@ -81,10 +65,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
-
-app.UseStaticFiles();
-app.UseAuthentication();
-app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
