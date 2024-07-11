@@ -73,6 +73,7 @@
         }
         
         sesion.SetUser(userAccount);
+        servicioEvento.Notify();
         navegador.NavigateTo("/");
 
     }

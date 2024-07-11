@@ -1,9 +1,7 @@
 @page "/userprofile_edit/{Id:int?}"
-@attribute [Authorize(Roles = "Administrador")]
 @rendermode InteractiveServer
 @inject ModificarUserAccountUseCase modificarUserAccount
 @inject ObtenerUserAccountUseCase obtenerUsuario
-@inject IServicioSesion sesion
 @inject IServicioHash servicioHash
 @inject NavigationManager Navigation
 

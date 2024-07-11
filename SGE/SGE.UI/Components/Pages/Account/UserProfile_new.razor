@@ -1,8 +1,6 @@
 @page "/userprofile_new"
-@attribute [Authorize(Roles="Administrador")]
 @rendermode InteractiveServer
 @inject AgregarUsuarioUseCase agregarUsuario
-@inject IServicioSesion sesion
 @inject NavigationManager Navigation
 @inject IServicioHash servicioHash
 

@@ -1,9 +1,7 @@
 @page "/userprofile_delete/{Id:int?}"
-@attribute [Authorize(Roles="Administrador")]
 @rendermode InteractiveServer
 @inject EliminarUserAccountUseCase eliminarUsuario
 @inject ObtenerUserAccountUseCase obtenerUsuario
-@inject IServicioSesion sesion
 @inject NavigationManager Navigation
 
 <div class="row">
