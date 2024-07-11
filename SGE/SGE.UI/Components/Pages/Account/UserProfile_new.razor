@@ -78,7 +78,7 @@
 
     private void AgregarPermisos(UserAccount user, List<TipoPermiso> listaTipoPermisos){
         
-        List<Permiso> permisosActuales = user.Permisos;
+        List<Permiso> permisosActuales = user.Permisos ?? new List<Permiso>();
         foreach(TipoPermiso tp in listaTipoPermisos){
             AgregarPermiso(tp,permisosActuales);
         }
