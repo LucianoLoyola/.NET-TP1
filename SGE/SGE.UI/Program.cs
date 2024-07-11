@@ -49,13 +49,13 @@ builder.Services.AddScoped<IRepositorioTramite, RepositorioTramite>();
 builder.Services.AddScoped<IServicioHash, ServicioHash>();
 builder.Services.AddScoped<IServicioActualizacionEstado, ServicioActualizacionEstado>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacion>();
-builder.Services.AddScoped<IServicioSession, ServicioSession>();
-builder.Services.AddScoped<IServicioEvento, ServicioEvento>();
+builder.Services.AddTransient<IServicioEvento, ServicioEvento>();
 
 builder.Services.AddTransient<ExpedienteValidador>();
 builder.Services.AddTransient<TramiteValidador>();
 builder.Services.AddTransient<UsuarioValidador>();
 
+builder.Services.AddSingleton<IServicioSession, ServicioSession>();
 
 
 

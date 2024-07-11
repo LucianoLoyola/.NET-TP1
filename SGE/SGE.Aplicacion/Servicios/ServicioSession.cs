@@ -3,34 +3,33 @@ using SGE.Aplicacion.Interfaces;
 
 namespace SGE.Aplicacion;
 
-
-public class ServicioSession : IServicioSession{
+public class ServicioSession : IServicioSession
+{
     private readonly IServicioEvento _servicioEvento;
-    private UserAccount _user;
-
+    private UserAccount? _user;
 
     public ServicioSession(IServicioEvento servicioEvento)
     {
-        _servicioEvento = servicioEvento;
+        _servicioEvento = servicioEvento ?? throw new ArgumentNullException(nameof(servicioEvento));
     }
-    public UserAccount User
+
+    public UserAccount? User 
     {
         get => _user;
-        set
+        private set 
         {
             _user = value;
             _servicioEvento.Notificar();
         }
     }
 
-    public void SetUser(UserAccount user){
-        User=user;
-        _servicioEvento.Notificar();
-    }
-    public void ClearUser(){
-        User=null;
-        _servicioEvento.Notificar();
+    public void SetUser(UserAccount user)
+    {
+        User = user ?? throw new ArgumentNullException(nameof(user));
     }
 
-
+    public void ClearUser()
+    {
+        User = null;
+    }
 }

@@ -16,43 +16,55 @@
                 <img src="/images/panel1.png" style="max-height:5rem;" />
                 <h3>REGISTRO</h3>
             </div>
-            <div class="mb-3">
-                <label>Usuario</label>
-                <InputText @bind-Value="Model.UserName" class="form-control" placeholder="Username" />
-                <ValidationMessage For="() => Model.UserName" />
-            </div>
-            <div class="mb-3">
-                <label>Nombre</label>
-                <InputText @bind-Value="Model.Name" class="form-control" placeholder="Name" />
-                <ValidationMessage For="() => Model.Name" />
-            </div>
-            <div class="mb-3">
-                <label>Apellido</label>
-                <InputText @bind-Value="Model.Surname" class="form-control" placeholder="Surname" />
-                <ValidationMessage For="() => Model.Surname" />
-            </div>
-            <div class="mb-3">
-                <label>Email</label>
-                <InputText @bind-Value="Model.Email" class="form-control" placeholder="Email" />
-                <ValidationMessage For="() => Model.Email" />
-            </div>
-            <div class="mb-3">
-                <label>Contraseña</label>
-                <InputText @bind-Value="Model.Password" placeholder="Password" type="password" class="form-control" />
-                <ValidationMessage For="() => Model.Password" />
-            </div>
-            <div class="mb-3">
-                <label>Confirme su Contraseña</label>
-                <InputText @bind-Value="Model.ConfirmPassword" placeholder="Confirm Password" type="password" class="form-control" />
-                <ValidationMessage For="() => Model.ConfirmPassword" />
-            </div>
+            @if (mostrarForm){
+                <div class="mb-3">
+                    <label>Usuario</label>
+                    <InputText @bind-Value="Model.UserName" class="form-control" placeholder="Username" />
+                    <ValidationMessage For="() => Model.UserName" />
+                </div>
+                <div class="mb-3">
+                    <label>Nombre</label>
+                    <InputText @bind-Value="Model.Name" class="form-control" placeholder="Name" />
+                    <ValidationMessage For="() => Model.Name" />
+                </div>
+                <div class="mb-3">
+                    <label>Apellido</label>
+                    <InputText @bind-Value="Model.Surname" class="form-control" placeholder="Surname" />
+                    <ValidationMessage For="() => Model.Surname" />
+                </div>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <InputText @bind-Value="Model.Email" class="form-control" placeholder="Email" />
+                    <ValidationMessage For="() => Model.Email" />
+                </div>
+                <div class="mb-3">
+                    <label>Contraseña</label>
+                    <InputText @bind-Value="Model.Password" placeholder="Password" type="password" class="form-control" />
+                    <ValidationMessage For="() => Model.Password" />
+                </div>
+                <div class="mb-3">
+                    <label>Confirme su Contraseña</label>
+                    <InputText @bind-Value="Model.ConfirmPassword" placeholder="Confirm Password" type="password" class="form-control" />
+                    <ValidationMessage For="() => Model.ConfirmPassword" />
+                </div>
+            }
+            @if(!mostrarForm){
+                <div class="mb-3 d-grid gap-2">
+                    <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+                </div>
+            }
 
             <div class="mb-3 text-center">
                 <span class="text-danger">@errorMessage</span>
+                <span class="text-success">@successMessage</span>
             </div>
+
+            @if(mostrarForm){
             <div class="mb-3 d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Registrar</button>
             </div>
+            }
+
         </EditForm>
     </div>
 </div>
@@ -60,7 +72,8 @@
 @code {
     [SupplyParameterFromForm]
     public RegisterViewModel Model { get; set; } = new();
-    private string? errorMessage;
+    private bool mostrarForm = true;
+    private string? errorMessage,successMessage;
 
     void Registrar(){
 
@@ -98,9 +111,12 @@
                     new Permiso { tipoPermiso = TipoPermiso.TramiteBaja }
                 }
         };
+
         agregarUsuario.Ejecutar(userAccount);
-        // Redirigir al usuario a la página de inicio de sesión
-        navigationManager.NavigateTo("/login");
+        mostrarForm = false;
+        successMessage = "Se ha registrado con exito!";
+
+        @* navigationManager.NavigateTo("/login"); *@
 
     }
 }

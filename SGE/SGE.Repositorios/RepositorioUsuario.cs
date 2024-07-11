@@ -39,13 +39,13 @@ public class RepositorioUsuario : IRepositorioUsuario
             return true;
         }
         else{
-            sesion.SetUser(null);
+            sesion.ClearUser();
             return false;
         } 
     }
     public bool Logout(IServicioSession sesion){
         // using var db=new BaseContext();
-        sesion.SetUser(null);
+        sesion.ClearUser();
         return true;
 
     }
