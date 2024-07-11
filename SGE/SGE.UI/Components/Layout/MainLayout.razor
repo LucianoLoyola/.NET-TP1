@@ -58,8 +58,11 @@
         user = sesion.User;
         if(user is not null) {
             logueado = true;
-            if(user.Role == "Administrador") admin = true;
-        }
+            if(user.Role == "Administrador") admin = true;   
+        }else{
+            logueado = false;
+            admin = false;
+        } 
         StateHasChanged(); 
     }
 

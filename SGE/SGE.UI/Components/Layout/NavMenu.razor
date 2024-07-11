@@ -55,10 +55,10 @@
     private void HandleChange()
     {
         user = sesion.User;
-        if(user is not null) {
-            logueado = true;
-        }
+        if(user is not null) logueado = true;
+        else logueado = false;
         StateHasChanged(); 
     }
+
 
 }

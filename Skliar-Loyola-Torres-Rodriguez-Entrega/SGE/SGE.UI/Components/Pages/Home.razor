@@ -1,0 +1,71 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles="Administrador,Usuario")]
+@using Microsoft.EntityFrameworkCore
+@using SGE.Repositorios
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inject SGEContext DbContext
+@inject NavigationManager Navegador
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="fw-bold">Bienvenido a la Página</h2>
+        </div>
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-body">
+                    <NotAuthorized>
+                        @if (!user.Identity.IsAuthenticated)
+                        {
+                            <p>No has iniciado sesión.</p>
+                            <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+                        }
+                    </NotAuthorized>
+                    <Authorized>
+                        @if (user != null && user.Identity != null && user.Identity.IsAuthenticated)
+                        {
+                            <p>Sesión iniciada como <b>@user.Identity.Name</b></p>
+                            <p>Tu rol es: <b>@UserRole</b></p>
+                            <button class="btn btn-primary" @onclick="VerPerfil">Ver Perfil</button>
+                        }
+                    </Authorized>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private ClaimsPrincipal user;
+    private int UserId; 
+    private string UserRole { get; set; }
+    private List<UserAccount> usuarios;  // Lista de usuarios para imprimir en consola
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateTask;
+        user = authState.User;
+
+        // Obtener el nombre de usuario del claim
+        var userName = user.Identity.Name;
+
+        // Obtener el rol del usuario desde la base de datos
+        var userData = DbContext.Usuarios.Where(u => u.UserName == userName).FirstOrDefault();
+        if (userData != null)
+        {
+            UserRole = userData.Role;
+            UserId = userData.Id;
+        }
+
+        usuarios = await DbContext.Usuarios.Include(u => u.Permisos).ToListAsync();
+    }
+
+    private void VerPerfil()
+    {
+        Navegador.NavigateTo($"/userprofile/{UserId}");
+    }
+}

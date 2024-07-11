@@ -1,0 +1,152 @@
+@page "/userprofile_edit/{userId:int?}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Administrador")]
+@using Microsoft.EntityFrameworkCore
+@using SGE.Repositorios
+@using SGE.Aplicacion
+@using SGE.Aplicacion.CasosDeUso
+@rendermode InteractiveServer
+@inject ModificarUserAccountUseCase modificarUserAccount
+@inject ObtenerUserAccountUseCase obtenerUsuario
+@inject IServicioSesion sesion
+@inject SGEContext DbContext
+@inject IServicioHash servicioHash
+@inject NavigationManager Navigation
+<h3>Editar Perfil</h3>
+
+@if (user == null)
+{
+    <p>El usuario no existe</p>
+}
+else
+{
+    <form method="post" @onsubmit="HandleValidSubmit">
+        <div class="mb-3">
+            <label for="UserName">Nombre de Usuario:</label>
+            <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="Name">Nombre:</label>
+            <input type="text" id="Name" class="form-control" @bind="user.Name" required />
+        </div>
+        <div class="mb-3">
+            <label for="Surname">Apellido:</label>
+            <input type="text" id="Surname" class="form-control" @bind="user.Surname" required />
+        </div>
+        <div class="mb-3">
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" class="form-control" @bind="user.Email" required />
+        </div>
+        <div class="mb-3">
+            <label for="Role">Rol:</label>
+            <select id="Role" class="form-control" @bind="user.Role" required>
+                <option value="Usuario">Usuario</option>
+                <option value="Administrador">Administrador</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="Permisos">Permisos:</label>
+            @foreach (TipoPermiso permiso in Enum.GetValues(typeof(TipoPermiso)))
+            {
+                <div>
+                    <input type="checkbox" id="permiso-@permiso" @onchange="e => TogglePermiso(permiso, e)" />
+                    <label for="permiso-@(permiso)">@(permiso)</label>
+                </div>
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+
+    <h4>Cambiar Contraseña</h4>
+    <form method="post" @onsubmit="HandlePasswordChange">
+        <div class="mb-3">
+            <label for="NewPassword">Nueva Contraseña:</label>
+            <input type="password" id="NewPassword" class="form-control" @bind="newPassword" />
+        </div>
+        <button type="submit" class="btn btn-secondary">Cambiar Contraseña</button>
+    </form>
+}
+
+@code {
+    [Parameter] public int UserId { get; set; }
+    private UserAccount user { get; set; } = new UserAccount();
+    private string newPassword { get; set; }
+    private List<TipoPermiso> permisosSeleccionados = new List<TipoPermiso>(); // Crear lista de permisos seleccionados
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await DbContext.Usuarios.FindAsync(UserId);
+        if (user == null) Navigation.NavigateTo("/error");
+        else StateHasChanged();
+    }
+
+    private void TogglePermiso(TipoPermiso permiso, ChangeEventArgs e)
+    {
+        if ((bool)e.Value) permisosSeleccionados.Add(permiso); // Agregar el permiso a la lista de permisos seleccionados
+        else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var userToUpdate= obtenerUsuario.Ejecutar(UserId);
+        
+        if (userToUpdate != null)
+        {
+            // Actualizar solo los campos no relacionados con la contraseña
+            userToUpdate.UserName = user.UserName;
+            userToUpdate.Name = user.Name;
+            userToUpdate.Surname = user.Surname;
+            userToUpdate.Email = user.Email;
+            userToUpdate.Role = user.Role;
+            userToUpdate.Permisos = MapPermisosSeleccionados(userToUpdate.Permisos, userToUpdate);
+
+            modificarUserAccount.Ejecutar(userToUpdate);
+
+            Navigation.NavigateTo("/administracion");
+        }
+    }
+
+    private async Task HandlePasswordChange()
+    {
+        var userToUpdate =obtenerUsuario.Ejecutar(UserId);
+        
+        if (userToUpdate != null && !string.IsNullOrEmpty(newPassword))
+        {
+            userToUpdate.Password = servicioHash.GetHashSha256(newPassword);
+            modificarUserAccount.Ejecutar(userToUpdate);
+
+            Navigation.NavigateTo("/administracion");
+        }
+    }
+
+    private List<Permiso> MapPermisosSeleccionados(List<Permiso> permisosUsuario, UserAccount userToUpdate)
+    {
+        var permisosActualizados = new List<Permiso>();
+        foreach (var tipoPermiso in permisosSeleccionados)
+        {
+            var permiso = BuscarPermisoPorTipo(tipoPermiso, userToUpdate);
+            if (permiso != null)
+            {
+                permisosActualizados.Add(permiso);
+            }
+        }
+        return permisosActualizados;
+    }
+
+    private Permiso BuscarPermisoPorTipo(TipoPermiso tipoPermiso, UserAccount userToUpdate)
+    {
+        if (userToUpdate.Permisos != null)
+        {
+            // Buscar el permiso que coincide con el tipo de permiso
+            var permiso = DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
+            return permiso;
+        }
+        else
+        {
+            // Inicializar una nueva lista de permisos vacía
+            userToUpdate.Permisos = new List<Permiso>();
+            return DbContext.Permisos.FirstOrDefault(p => p.tipoPermiso == tipoPermiso);
+        }
+    }
+}

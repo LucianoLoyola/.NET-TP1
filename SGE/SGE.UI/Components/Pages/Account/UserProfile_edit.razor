@@ -52,7 +52,8 @@ else
         <button class="btn btn-primary" @onclick="Modificar">Guardar</button>
     </form>
 
-    <h4>Cambiar Contraseña</h4>
+    <br><br>
+    <h4>Cambiar Contraseña del Usuario</h4>
     <form method="post" @onsubmit="CambiarContraseña">
         <div class="mb-3">
             <label for="NewPassword">Nueva Contraseña:</label>
@@ -60,6 +61,7 @@ else
         </div>
         <button type="submit" class="btn btn-secondary">Cambiar Contraseña</button>
     </form>
+    <br><br>
 }
 
 @code {
@@ -111,38 +113,38 @@ else
 
     private void AgregarPermisos(UserAccount user, List<TipoPermiso> listaTipoPermisos){
         
-        List<Permiso> permisosActuales = user.Permisos;
+        List<Permiso> nuevosPermisos = new List<Permiso>();
         foreach(TipoPermiso tp in listaTipoPermisos){
-            AgregarPermiso(tp,permisosActuales);
+            AgregarPermiso(tp,nuevosPermisos);
         }
-        user.Permisos= permisosActuales;
+        user.Permisos= nuevosPermisos;
     }
 
     //puede que no sea la solución mas eficiente
-    private void AgregarPermiso(TipoPermiso tipoPermiso, List<Permiso> permisosActuales){
+    private void AgregarPermiso(TipoPermiso tipoPermiso, List<Permiso> nuevosPermisos){
         
         switch (tipoPermiso)
         {
             case TipoPermiso.Lectura:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.Lectura } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.Lectura } );
                 break;
             case TipoPermiso.ExpedienteAlta:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta } );
                 break;
             case TipoPermiso.ExpedienteBaja:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja } );
                 break;
             case TipoPermiso.ExpedienteModificacion:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion } );
                 break;
             case TipoPermiso.TramiteAlta:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteAlta } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteAlta } );
                 break;
             case TipoPermiso.TramiteBaja:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteBaja } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteBaja } );
                 break;
             case TipoPermiso.TramiteModificacion:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion } );
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion } );
                 break;
             default:
             break;
@@ -161,8 +163,6 @@ else
 
             Navigation.NavigateTo("/administracion");
         }
-    }
-
     }
 
 }

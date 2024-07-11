@@ -1,0 +1,84 @@
+@page "/userprofile_update/{userId:int?}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles="Administrador,Usuario")]
+@using Microsoft.EntityFrameworkCore
+@using SGE.Repositorios
+@using SGE.Aplicacion
+@using SGE.Aplicacion.CasosDeUso
+@rendermode InteractiveServer
+@inject ModificarUserAccountUseCase modificarUserAccount
+@inject ObtenerUserAccountUseCase obtenerUsuario
+@inject IServicioSesion sesion
+@inject SGEContext DbContext
+@inject NavigationManager Navigation
+
+<h3>Actualizar Perfil</h3>
+
+@if (user == null)
+{
+    <p>El usuario no existe</p>
+}
+else
+{
+<form method="post" @onsubmit="HandleValidSubmit">
+    <div class="mb-3">
+        <label for="UserName">Nombre de Usuario:</label>
+        <input type="text" id="UserName" class="form-control" @bind="user.UserName" required />
+    </div>
+    <div class="mb-3">
+        <label for="Name">Nombre:</label>
+        <input type="text" id="Name" class="form-control" @bind="user.Name" required />
+    </div>
+    <div class="mb-3">
+        <label for="Surname">Apellido:</label>
+        <input type="text" id="Surname" class="form-control" @bind="user.Surname" required />
+    </div>
+    <div class="mb-3">
+        <label for="Email">Email:</label>
+        <input type="email" id="Email" class="form-control" @bind="user.Email" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+}
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+
+    private UserAccount user { get; set; } = new UserAccount();
+
+    private string lastModifiedUserName= "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try{
+            user = obtenerUsuario.Ejecutar(UserId);
+            lastModifiedUserName=user.UserName;
+            StateHasChanged();
+
+        }
+        catch(Exception error){
+            Console.WriteLine($"Error al modificar usuario: {error.Message}");
+        
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var userToUpdate = obtenerUsuario.Ejecutar(UserId);
+        if (userToUpdate != null)
+        {
+            var direccionarLogout=false;
+            if(string.Compare(lastModifiedUserName,user.UserName)!=0){//Si usuario cambió
+                direccionarLogout=true;
+            }
+            modificarUserAccount.Ejecutar(userToUpdate);
+            if(direccionarLogout==true){
+                Navigation.NavigateTo("/logout");
+            }
+            else{
+                Navigation.NavigateTo("/");
+            }
+        }
+    }
+}
