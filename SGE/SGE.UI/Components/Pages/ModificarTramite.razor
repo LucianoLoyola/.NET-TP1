@@ -137,8 +137,8 @@ else
     {
         try
         {
-            Console.WriteLine("Navegando a /listadoTramites");
-            InvokeAsync(() => Navegador.NavigateTo("/listadoTramites");
+            @* InvokeAsync() => Navegador.NavigateTo("/listadoTramites"); *@
+            Navegador.NavigateTo("/listadoTramites");
         }
         catch (Exception ex)
         {

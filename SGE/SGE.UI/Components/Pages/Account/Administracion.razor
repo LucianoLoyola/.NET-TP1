@@ -39,7 +39,7 @@
         </tbody>
     </table>
 
-    <DialogoConfirmacion @ref="dialogo" Mensaje="@mensajeConfirmacion" OnConfirmado="OnConfirmarEliminacion" />
+    <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 }
 else
 {
@@ -47,31 +47,32 @@ else
 }
 
 @code {
-    private List<UserAccount> UserAccounts;
-    private UserAccount? _usuarioEliminar = null;
-    private DialogoConfirmacion dialogo;
-    private string mensajeConfirmacion = "";
 
+    List<UserAccount> UserAccounts;
+    private UserAccount? _usuarioEliminar = null;
+    DialogoConfirmacion dialogo;
     protected override void OnInitialized()
     {
+        dialogo = new DialogoConfirmacion();
         // Obtener todos los usuarios de la base de datos
-        UserAccounts = listarUsuarios.Ejecutar();
+        UserAccounts= listarUsuarios.Ejecutar();
     }
 
-    private void ConfirmarEliminacion(UserAccount user)
+    private void Eliminar()
     {
-        _usuarioEliminar = user;
-        mensajeConfirmacion = $"¿Desea eliminar el usuario {user.UserName}?";
-        dialogo.Mostrar();
-    }
-
-    private void OnConfirmarEliminacion(bool confirmado)
-    {
-        if (confirmado && _usuarioEliminar != null)
+        if (_usuarioEliminar != null)
         {
             eliminarUsuario.Ejecutar(_usuarioEliminar.Id);
-            UserAccounts = listarUsuarios.Ejecutar();
+            Console.Write("ELIMINADO");
+            UserAccounts= listarUsuarios.Ejecutar();
         }
-        _usuarioEliminar = null;
     }
+    private void ConfirmarEliminacion(UserAccount user){
+        dialogo.Mensaje = $"¿Desea eliminar el usuario {user.UserName}?";
+        dialogo.Mostrar();
+
+        _usuarioEliminar = user;
+    }
+
+
 }

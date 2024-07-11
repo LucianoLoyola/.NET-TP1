@@ -2,7 +2,7 @@ public class ServicioEvento : IServicioEvento
 {
     public event Action OnChange;
 
-    public void Notify()
+    public void Notificar()
     {
         OnChange?.Invoke();
     }
