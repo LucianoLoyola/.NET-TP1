@@ -62,18 +62,26 @@ else{
                         } *@
                         <button class="btn btn-primary" @onclick= "()=>ModificarTramite(tra)">Editar</button>
                         <button class="btn btn-danger" @onclick="()=>ConfirmarEliminacion(tra)">Eliminar</button>
-                        <span class="text-danger">@_errorMessageAuthBaja</span>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 
+                <span class="text-danger">@_errorMessageAuthBaja</span>
+
         @* <button class="btn btn-primary" @onclick= "()=>AgregarTramite()">Agregar Tramite</button> *@
 
     <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 }
 
+@* <style>
+    .error-message {
+        display: block;
+        margin-top: 10px;
+        color: red;
+    }
+</style> *@
 
 @code {
     DialogoConfirmacion dialogo = null!;
@@ -108,6 +116,7 @@ else{
         }
         catch(Exception error){
             _errorMessageAuthBaja = error.Message;
+            return;
         }
     }
 
