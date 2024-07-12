@@ -36,24 +36,45 @@ public class RepositorioUsuario : IRepositorioUsuario
         }
     }
 
+    // public bool Login(string username,string password, IServicioSession sesion){
+    //     using var db=new SGEContext();{
+    //         UserAccount? user= db.Usuarios.Include(u => u.Permisos).Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
+    //         if(user != null){
+    //             sesion.SetUser(user);
+    //             return true;
+    //         }
+    //         else{
+    //             sesion.ClearUser();
+    //             return false;
+    //         } 
+
+    //     }
+    // }
     public bool Login(string username,string password, IServicioSession sesion){
         using var db=new SGEContext();{
-            UserAccount? user= db.Usuarios.Include(u => u.Permisos).Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
+            UserAccount? user= db.Usuarios.Include(u => u.Permisos).Where(u => u.UserName == username).SingleOrDefault();
             if(user != null){
-                sesion.SetUser(user);
-                return true;
+                user= db.Usuarios.Include(u => u.Permisos).Where(u => u.Password == password).SingleOrDefault();
+                if(user != null){
+                    sesion.SetUser(user);
+                    return true;
+                }
+                else{
+                    sesion.ClearUser();
+                    throw new RepositorioException("Usuario o Contraseña Incorrectos");
+                    return false;
+                }
             }
             else{
                 sesion.ClearUser();
+                throw new RepositorioException($"No se encontró un usuario con el Username {username}");
                 return false;
             } 
 
         }
-        // using var db=new BaseContext();
     }
     public bool Logout(IServicioSession sesion){
         using var db=new SGEContext();{
-            // using var db=new BaseContext();
             sesion.ClearUser();
             return true;
 

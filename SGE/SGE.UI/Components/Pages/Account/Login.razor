@@ -64,11 +64,21 @@
     
     void LogIn()
     {
-        if(login.Ejecutar(Model.UserName,Model.Password,sesion)){
-            navegador.NavigateTo("/");
+        try{
+            if(login.Ejecutar(Model.UserName,Model.Password,sesion)){
+                navegador.NavigateTo("/");
+            }
+            else{
+                _errorMessage = "Usuario o contraseña inválidos";
+                return;
+            }
         }
-        else{
-            _errorMessage = "Usuario o contraseña inválidos";
+        catch(ValidacionException e){
+            _errorMessage=e.Message;
+            return;
+        }
+        catch(RepositorioException e){
+            _errorMessage=e.Message;
             return;
         }
 

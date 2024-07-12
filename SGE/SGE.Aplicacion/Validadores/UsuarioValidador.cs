@@ -13,7 +13,9 @@ public class UsuarioValidador
         var errores = new StringBuilder();
 
         if (string.IsNullOrWhiteSpace(user.UserName))
-            errores.AppendLine("El nombre de usuario no puede estar vacío.");
+            errores.AppendLine("El nombre de usuario no puede estar vacío.\n");
+        else if (user.UserName.Length > 20)
+        errores.AppendLine("El nombre de usuario no puede exceder los 20 caracteres.");
         
         if (string.IsNullOrWhiteSpace(user.Name))
             errores.AppendLine("El nombre no puede estar vacío.");
@@ -25,7 +27,9 @@ public class UsuarioValidador
             errores.AppendLine("El email no puede estar vacío.");
         
         if (string.IsNullOrWhiteSpace(user.Password))
-            errores.AppendLine("La contraseña no puede estar vacía.");
+            errores.AppendLine("La contraseña no puede estar vacía.\n");
+        else if (user.Password.Length > 20)
+        errores.AppendLine("La contraseña no puede exceder los 20 caracteres.");
 
         mensajeError = errores.ToString();
         return string.IsNullOrEmpty(mensajeError);
@@ -37,6 +41,8 @@ public class UsuarioValidador
 
         if (string.IsNullOrWhiteSpace(user.UserName))
             errores.AppendLine("El nombre de usuario no puede estar vacío.\n");
+        else if (user.UserName.Length > 20)
+        errores.AppendLine("El nombre de usuario no puede exceder los 20 caracteres.");
         
         if (string.IsNullOrWhiteSpace(user.Name))
             errores.AppendLine("El nombre no puede estar vacío \n");
@@ -49,10 +55,30 @@ public class UsuarioValidador
         
         if (string.IsNullOrWhiteSpace(user.Password))
             errores.AppendLine("La contraseña no puede estar vacía.\n");
+        else if (user.Password.Length > 20)
+        errores.AppendLine("La contraseña no puede exceder los 20 caracteres.");
 
         mensajeError = errores.ToString();
         return string.IsNullOrEmpty(mensajeError);
     }
+
+public bool Validar(string userName, string password, out string mensajeError)
+{
+    var errores = new StringBuilder();
+
+    if (string.IsNullOrWhiteSpace(userName))
+        errores.AppendLine("El nombre de usuario no puede estar vacío.");
+    else if (userName.Length > 20)
+        errores.AppendLine("El nombre de usuario no puede exceder los 20 caracteres.");
+
+    if (string.IsNullOrWhiteSpace(password))
+        errores.AppendLine("La contraseña no puede estar vacía.");
+    else if (password.Length > 20)
+        errores.AppendLine("La contraseña no puede exceder los 20 caracteres.");
+
+    mensajeError = errores.ToString();
+    return string.IsNullOrEmpty(mensajeError);
+}
 
 
 }
