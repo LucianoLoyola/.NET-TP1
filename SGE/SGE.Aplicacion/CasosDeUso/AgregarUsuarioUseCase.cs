@@ -59,7 +59,6 @@ public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValid
                 newUser.Role="Usuario";
             }
             newUser.Password=servicioHash.GetHashSha256(newUser.Password);
-            AgregarPermisos(newUser,tipoPermisos);
         // Crear una nueva cuenta de usuario
             var userAccount = new UserAccount
             {
@@ -69,6 +68,7 @@ public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValid
                 Surname = newUser.Surname,
                 Email = newUser.Email,
             };
+            AgregarPermisos(userAccount,tipoPermisos);
 
             Repositorio.AgregarUsuario(userAccount);
         }

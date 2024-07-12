@@ -21,9 +21,6 @@ public class UsuarioValidador
         if (string.IsNullOrWhiteSpace(user.Surname))
             errores.AppendLine("El apellido no puede estar vacío.");
         
-        if (string.IsNullOrWhiteSpace(user.Role))
-            errores.AppendLine("El rol no puede estar vacío.");
-        
         if (string.IsNullOrWhiteSpace(user.Email))
             errores.AppendLine("El email no puede estar vacío.");
         

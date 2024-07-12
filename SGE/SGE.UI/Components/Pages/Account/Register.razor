@@ -76,6 +76,7 @@
     public RegisterViewModel Model { get; set; } = new();
     private bool mostrarForm = true;
     private string? errorMessage,successMessage = "";
+    private bool hayUsuarios = false;
 
     void Registrar(){
         
@@ -86,7 +87,9 @@
             return;
         }
 
-        var hayUsuarios = listarUsuarios.Ejecutar().Any();
+        if(listarUsuarios.Ejecutar() is not null){
+            var hayUsuarios = true;
+        } 
         try{
             agregarUsuario.Ejecutar(Model,hayUsuarios);
             mostrarForm = false;
