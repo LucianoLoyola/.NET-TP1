@@ -4,7 +4,7 @@ using SGE.Aplicacion.Entidades;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 
-public class ModificarUserAccountUseCase(IRepositorioUsuario repositorio, UsuarioValidador validador, ServicioHash servicioHash):UserAccountUseCase(repositorio)
+public class ModificarUserAccountUseCase(IRepositorioUsuario repositorio, UsuarioValidador validador, IServicioHash servicioHash):UserAccountUseCase(repositorio)
 {
     public void Ejecutar(UserAccount userAccount, string newPassword)
     {

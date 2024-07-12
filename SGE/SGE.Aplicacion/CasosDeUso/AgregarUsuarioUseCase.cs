@@ -5,7 +5,7 @@ using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion.ViewModels;
 
-public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValidador validador, ServicioHash servicioHash):UserAccountUseCase(repositorio)
+public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValidador validador, IServicioHash servicioHash):UserAccountUseCase(repositorio)
 {
     public void Ejecutar(RegisterViewModel newUser, bool hayUsuarios)
     {
