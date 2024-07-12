@@ -3,9 +3,9 @@ namespace SGE.Repositorios;
 
 public class SGESqlite
 {
-    public static void Inicializar(DbContextOptions<SGEContext> options)
+    public static void Inicializar()
     {
-        using var context = new SGEContext(options);
+        using var context = new SGEContext();
         //context.Database.EnsureDeleted(); //HABILITAR ESTA LINEA PARA BORRAR BD
         context.Database.EnsureCreated();
         if (context.Database.EnsureCreated())

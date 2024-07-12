@@ -12,9 +12,9 @@ namespace SGE.Repositorios
 
         public DbSet<Permiso> Permisos{get; set;}
 
-        public SGEContext(DbContextOptions<SGEContext> options) : base(options)
-        {
-        }
+        // public SGEContext(DbContextOptions<SGEContext> options) : base(options)
+        // {
+        // }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

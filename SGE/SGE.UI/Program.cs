@@ -1,18 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using SGE.UI.Components;
 using SGE.Repositorios;
 using SGE.Aplicacion.CasosDeUso;
 using SGE.Aplicacion.Interfaces;
 using SGE.Aplicacion.Servicios;
 using SGE.Aplicacion;
-using Microsoft.AspNetCore.Authentication.Cookies;
+// using Microsoft.AspNetCore.Authentication.Cookies;
 
-var connectionString = "Data Source=SGE.sqlite";
-var options = new DbContextOptionsBuilder<SGEContext>()
-    .UseSqlite(connectionString)
-    .Options;
-
-SGESqlite.Inicializar(options);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,12 +51,6 @@ builder.Services.AddTransient<UsuarioValidador>();
 builder.Services.AddSingleton<IServicioSession, ServicioSession>();
 
 
-
-// Agregar el DbContext de SGEContext con la configuración de SQLite
-builder.Services.AddDbContext<SGEContext>(options =>
-    options.UseSqlite(connectionString));
-
-
         // //configuraciones para las cookies
         // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         //     .AddCookie(options =>
@@ -78,6 +65,8 @@ builder.Services.AddDbContext<SGEContext>(options =>
         // {
         //     options.AddPolicy("Authenticated", policy => policy.RequireAuthenticatedUser());
         // });
+
+SGESqlite.Inicializar();
 
 var app = builder.Build();
 

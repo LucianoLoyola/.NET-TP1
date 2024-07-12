@@ -59,10 +59,9 @@ else
         </div>
 
         <button class="btn btn-primary" @onclick="ActualizarTramite">Modificar Trámite</button>
-        @if (!string.IsNullOrEmpty(_errorMessage))
-        {
-            <span class="text-danger">@_errorMessage</span>
-        }
+
+        <span class="text-danger">@_errorMessage</span>
+        
     </form>
 }
 
@@ -74,7 +73,7 @@ else
     public int? Id { get; set; }
     
     private bool _esNuevoTramite = true;
-    private string _errorMessage = string.Empty;
+    private string _errorMessage = "";
 
     private Expediente _expediente;
     private Tramite _tramite = new Tramite();
@@ -109,7 +108,7 @@ else
         {
             _errorMessage = string.Empty;
             altaTramite.Ejecutar(_tramite, _expediente, sesion.User.Id, TipoPermiso.TramiteAlta);
-            Siguiente();
+            @* Siguiente(); *@
         }
         catch (Exception error)
         {
@@ -122,9 +121,8 @@ else
     {
         try
         {
-            _errorMessage = string.Empty;
+            _errorMessage = "";
             modificacionTramite.Ejecutar(_tramite, _expediente, sesion.User.Id, TipoPermiso.TramiteModificacion);
-            Siguiente();
         }
         catch (Exception error)
         {
@@ -133,16 +131,4 @@ else
         }
     }
 
-    void Siguiente()
-    {
-        try
-        {
-            @* InvokeAsync() => Navegador.NavigateTo("/listadoTramites"); *@
-            Navegador.NavigateTo("/listadoTramites");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al navegar: {ex.Message}");
-        }
-    }
 }
