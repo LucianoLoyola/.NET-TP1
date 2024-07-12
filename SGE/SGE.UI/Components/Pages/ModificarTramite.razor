@@ -107,15 +107,17 @@ else
         {
             _errorMessage = string.Empty;
             altaTramite.Ejecutar(_tramite, _expediente, sesion.User.Id, TipoPermiso.TramiteAlta);
-            @* Siguiente(); *@
+            Navegador.NavigateTo($"/listadoTramitesExp/{IdExp}");
         }
         catch (AutorizacionException e)
         {
             _errorMessage = e.Message;
+            return;
         }
         catch (ValidacionException e)
         {
             _errorMessage = e.Message;
+            return;
         }
     }
 
@@ -129,10 +131,12 @@ else
         catch (AutorizacionException e)
         {
             _errorMessage = e.Message;
+            return;
         }
         catch (ValidacionException e)
         {
             _errorMessage = e.Message;
+            return;
         }
     }
 

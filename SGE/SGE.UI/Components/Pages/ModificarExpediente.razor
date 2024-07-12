@@ -29,12 +29,9 @@
         </div>
 
         <button class="btn btn-primary" @onclick="CrearExpediente">Agregar Expediente</button>
-        @if (!string.IsNullOrEmpty(_errorMessageAlta))
-        {
-            <span class="text-danger">@_errorMessageAlta</span>
-        }
     </form>
 }
+
 else
 {
     <h3>Modificar Expediente</h3>
@@ -58,19 +55,18 @@ else
         </div>
 
         <button class="btn btn-primary" @onclick="ActualizarExpediente">Modificar Expediente</button>
-        @if (!string.IsNullOrEmpty(_errorMessageEdit))
-        {
-            <span class="text-danger">@_errorMessageEdit</span>
-        }
     </form>
 }
+
+<span class="text-danger">@_errorMessageAlta</span>
+<span class="text-danger">@_errorMessageEdit</span>
+<span class="text-success">@successMessage</span>
 
 @code {
     Expediente _expediente = new Expediente();
     [Parameter] public int? Id { get; set; }
     bool _esNuevoExpediente = true;
-    private string _errorMessageAlta = string.Empty;
-    private string _errorMessageEdit = string.Empty;
+    private string _errorMessageAlta, _errorMessageEdit, successMessage= string.Empty;
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
 
     //se implementa una logica de delay (loading) para mostrar el mensaje de excepción de permiso
@@ -92,25 +88,32 @@ else
             {
                 _errorMessageAlta = "Error al cargar el expediente.";
                 _errorMessageEdit = "Error al cargar el expediente.";
+    
             }
         }
     }
 
-    void CrearExpediente()
+    async Task CrearExpediente()
     {
         try
         {
             _errorMessageAlta = string.Empty;
             altaExpediente.Ejecutar(_expediente, sesion.User.Id, TipoPermiso.ExpedienteAlta);
+            successMessage = "Expediente Agregado";
+            await Task.Delay(2000);
             Siguiente();
         }
         catch (AutorizacionException e)
         {
             _errorMessageAlta = e.Message;
+            await Task.Delay(2000);
+            return;
         }
         catch (ValidacionException e)
         {
             _errorMessageAlta = e.Message;
+            await Task.Delay(2000);
+            return;
         }
     }
 
@@ -125,10 +128,12 @@ else
         catch (AutorizacionException e)
         {
             _errorMessageEdit = e.Message;
+            return;
         }
         catch (ValidacionException e)
         {
             _errorMessageEdit = e.Message;
+            return;
         }
     }
 
