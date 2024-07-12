@@ -13,7 +13,6 @@ public class CasoDeUsoListarTramites(IRepositorioTramite repo):TramiteUseCase(re
         }
         catch(Exception error){
             throw;
-            //Console.WriteLine(error.Message);
             return null;
         }
     }

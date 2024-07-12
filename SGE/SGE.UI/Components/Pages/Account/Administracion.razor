@@ -38,6 +38,10 @@
             }
         </tbody>
     </table>
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+                <span class="text-success">@successMessage</span>
+            </div>
 
     <DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar"/>
 }
@@ -51,6 +55,7 @@ else
     List<UserAccount> UserAccounts;
     private UserAccount? _usuarioEliminar = null;
     DialogoConfirmacion dialogo;
+    private string? errorMessage,successMessage = "";
     protected override void OnInitialized()
     {
         dialogo = new DialogoConfirmacion();
@@ -62,15 +67,19 @@ else
     {
         if (_usuarioEliminar != null)
         {
-            eliminarUsuario.Ejecutar(_usuarioEliminar.Id);
-            //Console.Write("ELIMINADO");
-            UserAccounts= listarUsuarios.Ejecutar();
+            try{
+                eliminarUsuario.Ejecutar(_usuarioEliminar.Id);
+                UserAccounts= listarUsuarios.Ejecutar();
+                successMessage = $"Usuario {_usuarioEliminar.UserName} Eliminado";
+            }   
+            catch(RepositorioException e){
+                errorMessage = e.Message;
+            } 
         }
     }
     private void ConfirmarEliminacion(UserAccount user){
         dialogo.Mensaje = $"¿Desea eliminar el usuario {user.UserName}?";
         dialogo.Mostrar();
-
         _usuarioEliminar = user;
     }
 

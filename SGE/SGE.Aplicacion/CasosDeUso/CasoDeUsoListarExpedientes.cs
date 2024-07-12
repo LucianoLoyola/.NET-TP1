@@ -11,7 +11,6 @@ public class CasoDeUsoListarExpedientes(IRepositorioExpediente repo){
         }
         catch(Exception error){
             throw;
-            //Console.WriteLine(error.Message);
             return null;
         }
         

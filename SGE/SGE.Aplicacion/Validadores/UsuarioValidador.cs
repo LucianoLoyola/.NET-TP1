@@ -39,19 +39,19 @@ public class UsuarioValidador
         var errores = new StringBuilder();
 
         if (string.IsNullOrWhiteSpace(user.UserName))
-            errores.AppendLine("El nombre de usuario no puede estar vacío.");
+            errores.AppendLine("El nombre de usuario no puede estar vacío.\n");
         
         if (string.IsNullOrWhiteSpace(user.Name))
-            errores.AppendLine("El nombre no puede estar vacío.");
+            errores.AppendLine("El nombre no puede estar vacío \n");
         
         if (string.IsNullOrWhiteSpace(user.Surname))
-            errores.AppendLine("El apellido no puede estar vacío.");
+            errores.AppendLine("El apellido no puede estar vacío.\n");
                 
         if (string.IsNullOrWhiteSpace(user.Email))
-            errores.AppendLine("El email no puede estar vacío.");
+            errores.AppendLine("El email no puede estar vacío.\n");
         
         if (string.IsNullOrWhiteSpace(user.Password))
-            errores.AppendLine("La contraseña no puede estar vacía.");
+            errores.AppendLine("La contraseña no puede estar vacía.\n");
 
         mensajeError = errores.ToString();
         return string.IsNullOrEmpty(mensajeError);

@@ -34,13 +34,11 @@
             if (user != null)
             {
                 eliminarUsuario.Ejecutar(user.Id);
-                // Refrescar la lista de usuarios después de eliminar
                 StateHasChanged();
             }
         }
         catch (Exception ex)
         {
-            //Console.WriteLine($"Error al eliminar usuario: {ex.Message}");
         }
     }
 }

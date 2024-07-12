@@ -1,12 +1,12 @@
 @page "/register"
+
+@using SGE.Aplicacion.ViewModels
+
 @inject AgregarUsuarioUseCase agregarUsuario
 @inject ListarUserAccountUseCase listarUsuarios
 @inject ObtenerUserAccountUseCase getUsuario
 @inject LoginUseCase login
 @inject NavigationManager navigationManager
-@inject IServicioHash servicioHash
-@using System.Security.Cryptography;
-@using System.Text;
 
 <div class="row">
     <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
@@ -55,7 +55,6 @@
             }
 
             <div class="mb-3 text-center">
-                <span class="text-danger">@errorMessage</span>
                 <span class="text-success">@successMessage</span>
             </div>
 
@@ -67,6 +66,9 @@
 
         </EditForm>
     </div>
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+            </div>
 </div>
 
 @code {
@@ -85,9 +87,15 @@
         }
 
         var hayUsuarios = listarUsuarios.Ejecutar().Any();
-        agregarUsuario.Ejecutar(Model,hayUsuarios);
-        mostrarForm = false;
-        successMessage = "Se ha registrado con exito!";
+        try{
+            agregarUsuario.Ejecutar(Model,hayUsuarios);
+            mostrarForm = false;
+            successMessage = "Se ha registrado con exito!";
+
+        }
+        catch(Exception e){
+            errorMessage = e.Message;
+        }
 
         @* navigationManager.NavigateTo("/login"); *@
 

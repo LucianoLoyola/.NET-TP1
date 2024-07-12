@@ -14,7 +14,6 @@ public class CasoDeUsoTramiteBaja(IRepositorioTramite repoT, IRepositorioExpedie
             }
         } catch (RepositorioException ex) {
             throw;
-            //Console.WriteLine(ex.Message);
             // Si se genera una excepción, no es necesario llamar a los métodos de actualización
         }
     }

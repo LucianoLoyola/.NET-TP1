@@ -6,31 +6,31 @@
 
 <h3>Actualizar Perfil</h3>
 
-@if (user == null)
+@if (updated == null)
 {
     <p>El usuario no existe</p>
 }
 else
 {
-    <EditForm Model="user" OnValidSubmit="Modificar" OnInvalidSubmit="Modificar">
+    <EditForm Model="updated" OnValidSubmit="Modificar" OnInvalidSubmit="Modificar">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
         <div class="mb-3">
             <label for="UserName">Nombre de Usuario:</label>
-            <InputText id="UserName" class="form-control" @bind-Value="user.UserName" required />
+            <InputText id="UserName" class="form-control" @bind-Value="updated.UserName" required />
         </div>
         <div class="mb-3">
             <label for="Name">Nombre:</label>
-            <InputText id="Name" class="form-control" @bind-Value="user.Name" required />
+            <InputText id="Name" class="form-control" @bind-Value="updated.Name" required />
         </div>
         <div class="mb-3">
             <label for="Surname">Apellido:</label>
-            <InputText id="Surname" class="form-control" @bind-Value="user.Surname" required />
+            <InputText id="Surname" class="form-control" @bind-Value="updated.Surname" required />
         </div>
         <div class="mb-3">
             <label for="Email">Email:</label>
-            <InputText id="Email" type="email" class="form-control" @bind-Value="user.Email" required />
+            <InputText id="Email" type="email" class="form-control" @bind-Value="updated.Email" required />
         </div>
         <button class="btn btn-primary" @onclick="Modificar">Guardar</button>
     </EditForm>
@@ -39,46 +39,44 @@ else
     {
         <div class="alert alert-danger">@errorMessage</div>
     }
+    <span class="text-success">@successMessage</span>
 }
 
 @code {
     [Parameter]
     public int UserId { get; set; }
 
-    private UserAccount user { get; set; } = new UserAccount();
+    private UserAccount updated { get; set; } = new UserAccount();
 
     private string lastModifiedUserName = "";
-    private string errorMessage = "";
-
+    private string? errorMessage,successMessage = "";
     protected override async Task OnInitializedAsync()
     {
         try{
-            user = obtenerUsuario.Ejecutar(UserId);
-            lastModifiedUserName = user.UserName;
+            updated = obtenerUsuario.Ejecutar(UserId);
+            lastModifiedUserName = updated.UserName;
             StateHasChanged();
         }
-        catch(Exception ex){
-            //Console.WriteLine($"{ex.Message}");
+        catch(RepositorioException e){
+            errorMessage=e.Message;
+        }
+        catch(Exception e){
+            errorMessage=e.Message;
         }
     }
 
     void Modificar()
     {
-        errorMessage = "";  // Clear any previous error messages
+        errorMessage = ""; 
         try{
 
-        
             var userToUpdate = obtenerUsuario.Ejecutar(UserId);
             if (userToUpdate != null)
             {
-                userToUpdate.UserName = user.UserName;
-                userToUpdate.Name = user.Name;
-                userToUpdate.Surname = user.Surname;
-                userToUpdate.Email = user.Email;
                 
-                modificarUserAccount.Ejecutar(userToUpdate);
+                modificarUserAccount.Ejecutar(updated);
 
-                if (string.Compare(lastModifiedUserName, user.UserName) != 0)
+                if (string.Compare(lastModifiedUserName, updated.UserName) != 0)
                 {
                     Navigation.NavigateTo("/logout");
                 }
@@ -88,8 +86,14 @@ else
                 }
             }
         }
-        catch(Exception error){
-            //Console.WriteLine($"Error al modificar usuario: {error.Message}");
+        catch(AutorizacionException e){
+            errorMessage=e.Message;
+        }
+        catch(ValidacionException e){
+            errorMessage=e.Message;
+        }
+        catch(RepositorioException e){
+            errorMessage=e.Message;
         }
     }
 

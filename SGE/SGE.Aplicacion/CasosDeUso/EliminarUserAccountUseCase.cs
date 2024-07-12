@@ -6,8 +6,6 @@ public class EliminarUserAccountUseCase(IRepositorioUsuario repositorio):UserAcc
 {
     public void Ejecutar(int id)
     {
-    //aquí podríamos insertar código de validación de cliente
-
         Repositorio.EliminarUsuario(id);
     }
 }

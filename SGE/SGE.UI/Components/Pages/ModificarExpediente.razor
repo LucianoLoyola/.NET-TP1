@@ -29,9 +29,9 @@
         </div>
 
         <button class="btn btn-primary" @onclick="CrearExpediente">Agregar Expediente</button>
-        @if (!string.IsNullOrEmpty(_errorMessageAuthAlta))
+        @if (!string.IsNullOrEmpty(_errorMessageAlta))
         {
-            <span class="text-danger">@_errorMessageAuthAlta</span>
+            <span class="text-danger">@_errorMessageAlta</span>
         }
     </form>
 }
@@ -58,9 +58,9 @@ else
         </div>
 
         <button class="btn btn-primary" @onclick="ActualizarExpediente">Modificar Expediente</button>
-        @if (!string.IsNullOrEmpty(_errorMessageAuthEdit))
+        @if (!string.IsNullOrEmpty(_errorMessageEdit))
         {
-            <span class="text-danger">@_errorMessageAuthEdit</span>
+            <span class="text-danger">@_errorMessageEdit</span>
         }
     </form>
 }
@@ -69,8 +69,8 @@ else
     Expediente _expediente = new Expediente();
     [Parameter] public int? Id { get; set; }
     bool _esNuevoExpediente = true;
-    private string _errorMessageAuthAlta = string.Empty;
-    private string _errorMessageAuthEdit = string.Empty;
+    private string _errorMessageAlta = string.Empty;
+    private string _errorMessageEdit = string.Empty;
     private List<Estado> estados = Enum.GetValues(typeof(Estado)).Cast<Estado>().ToList();
 
     //se implementa una logica de delay (loading) para mostrar el mensaje de excepción de permiso
@@ -90,9 +90,8 @@ else
             }
             catch (Exception ex)
             {
-                _errorMessageAuthAlta = "Error al cargar el expediente.";
-                _errorMessageAuthEdit = "Error al cargar el expediente.";
-                //Console.WriteLine($"Error al cargar expediente: {ex.Message}");
+                _errorMessageAlta = "Error al cargar el expediente.";
+                _errorMessageEdit = "Error al cargar el expediente.";
             }
         }
     }
@@ -101,14 +100,17 @@ else
     {
         try
         {
-            _errorMessageAuthAlta = string.Empty;
+            _errorMessageAlta = string.Empty;
             altaExpediente.Ejecutar(_expediente, sesion.User.Id, TipoPermiso.ExpedienteAlta);
             Siguiente();
         }
-        catch (Exception error)
+        catch (AutorizacionException e)
         {
-            _errorMessageAuthAlta = "No tiene permisos para agregar este expediente.";
-            //Console.WriteLine($"Error al agregar expediente: {error.Message}");
+            _errorMessageAlta = e.Message;
+        }
+        catch (ValidacionException e)
+        {
+            _errorMessageAlta = e.Message;
         }
     }
 
@@ -116,26 +118,22 @@ else
     {
         try
         {
-            _errorMessageAuthEdit = string.Empty;
+            _errorMessageEdit = string.Empty;
             modificacionExpediente.Ejecutar(_expediente, sesion.User.Id, TipoPermiso.ExpedienteModificacion);
             Siguiente();
         }
-        catch (Exception error)
+        catch (AutorizacionException e)
         {
-            _errorMessageAuthEdit = "No tiene permisos para modificar este expediente.";
-            //Console.WriteLine($"Error al modificar expediente: {error.Message}");
+            _errorMessageEdit = e.Message;
+        }
+        catch (ValidacionException e)
+        {
+            _errorMessageEdit = e.Message;
         }
     }
 
     void Siguiente()
     {
-        try
-        {
-            Navegador.NavigateTo("/listadoExpedientes");
-        }
-        catch (Exception ex)
-        {
-            //Console.WriteLine($"Error al navegar: {ex.Message}");
-        }
+        Navegador.NavigateTo("/listadoExpedientes");
     }
 }

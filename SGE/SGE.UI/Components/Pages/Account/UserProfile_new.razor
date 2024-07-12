@@ -46,6 +46,11 @@
     
         <button class="btn btn-primary" @onclick="AgregarUsuario">Agregar</button>
 </form>
+<br><br>
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+                <span class="text-success">@successMessage</span>
+            </div>
 
 
 @code {
@@ -58,6 +63,8 @@
         if ((bool)e.Value) permisosSeleccionados.Add(permiso); // Agregar el permiso a la lista de permisos seleccionados
         else permisosSeleccionados.Remove(permiso); // Quitar el permiso de la lista de permisos seleccionados
     }
+
+    private string? errorMessage,successMessage = "";
     void AgregarUsuario()
     {
         try{
@@ -66,9 +73,14 @@
             Navigation.NavigateTo("/");
 
         }
-        catch(Exception error){
-            //Console.WriteLine($"Error al crear nuevo usuario: {error.Message}");
-
+        catch(AutorizacionException e){
+            errorMessage=e.Message;
+        }
+        catch(ValidacionException e){
+            errorMessage=e.Message;
+        }
+        catch(RepositorioException e){
+            errorMessage=e.Message;
         }
     }
 

@@ -12,7 +12,6 @@ public class CasoDeUsoListarTramitesPorIdEx(IRepositorioTramite repo):TramiteUse
         }
         catch(Exception error){
             throw;
-            //Console.WriteLine(error.Message);
             return null;
         }
 
