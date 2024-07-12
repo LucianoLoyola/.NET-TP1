@@ -76,7 +76,7 @@
     private string? errorMessage,successMessage = "";
 
     void Registrar(){
-
+        
         var existingUser = getUsuario.Ejecutar(Model.UserName);
         if (existingUser != null)
         {
@@ -84,16 +84,10 @@
             return;
         }
 
-        try{
-            var hayUsuarios = listarUsuarios.Ejecutar().Any();
-            agregarUsuario.Ejecutar(Model,hayUsuarios);
-            mostrarForm = false;
-            successMessage = "Se ha registrado con exito!";
-
-        }
-        catch(Exception e){
-            errorMessage = e.Message;
-        }
+        var hayUsuarios = listarUsuarios.Ejecutar().Any();
+        agregarUsuario.Ejecutar(Model,hayUsuarios);
+        mostrarForm = false;
+        successMessage = "Se ha registrado con exito!";
 
         @* navigationManager.NavigateTo("/login"); *@
 

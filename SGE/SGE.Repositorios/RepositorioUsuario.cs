@@ -36,14 +36,6 @@ public class RepositorioUsuario : IRepositorioUsuario
         }
     }
 
-    public void Register(UserAccount user){
-        using var db=new SGEContext();{
-            // using var db= new BaseContext();
-            db.Usuarios.Add(user);
-            db.SaveChanges();
-
-        }
-    }
     public bool Login(string username,string password, IServicioSession sesion){
         using var db=new SGEContext();{
             UserAccount? user= db.Usuarios.Include(u => u.Permisos).Where(u => u.UserName == username && u.Password== password).SingleOrDefault();
@@ -89,6 +81,13 @@ public class RepositorioUsuario : IRepositorioUsuario
             var usr_existente = db.Usuarios.Find(id);
             if (usr_existente == null) throw new RepositorioException("No se encontro usuario con ese id");
             db.Remove(usr_existente); //se borra realmente con el db.SaveChanges()
+            db.SaveChanges();
+
+        }
+    }
+    public void Register(UserAccount user){
+        using var db=new SGEContext();{
+            db.Usuarios.Add(user);
             db.SaveChanges();
 
         }

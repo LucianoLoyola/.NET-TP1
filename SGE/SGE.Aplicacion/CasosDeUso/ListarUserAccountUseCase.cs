@@ -11,7 +11,7 @@ public class ListarUserAccountUseCase(IRepositorioUsuario repositorio):UserAccou
              return usuarios;
         }
         catch(Exception error){
-            throw;
+            
             //Console.WriteLine($"Error al obtener usuarios: {error.Message}");
             return null;
         }

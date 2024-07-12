@@ -41,8 +41,10 @@ public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValid
 
             Repositorio.AgregarUsuario(userAccount);
         }
+        catch(RepositorioException error){
+            //Console.WriteLine($"Error al registrarse: {error.Message}");
+        }
         catch(Exception error){
-            throw;
             //Console.WriteLine($"Error al registrarse: {error.Message}");
         }
         
@@ -71,6 +73,10 @@ public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValid
             };
 
             Repositorio.AgregarUsuario(userAccount);
+        }
+        catch(RepositorioException error){
+            
+            //Console.WriteLine($"Error al registrarse: {error.Message}");
         }
         catch(Exception error){
             throw;
