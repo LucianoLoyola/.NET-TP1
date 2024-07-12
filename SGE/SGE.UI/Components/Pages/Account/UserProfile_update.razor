@@ -70,9 +70,9 @@ else
         errorMessage = ""; 
         try{
 
-            var userToUpdate = obtenerUsuario.Ejecutar(UserId);
+            @* var userToUpdate = obtenerUsuario.Ejecutar(UserId);
             if (userToUpdate != null)
-            {
+            { *@
                 
                 modificarUserAccount.Ejecutar(updated);
 
@@ -84,7 +84,7 @@ else
                 {
                     Navigation.NavigateTo("/");
                 }
-            }
+            @* } *@
         }
         catch(AutorizacionException e){
             errorMessage=e.Message;

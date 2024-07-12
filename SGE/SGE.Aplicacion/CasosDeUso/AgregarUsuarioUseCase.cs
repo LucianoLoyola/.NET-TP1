@@ -67,6 +67,7 @@ public class AgregarUsuarioUseCase(IRepositorioUsuario repositorio, UsuarioValid
                 Name = newUser.Name,
                 Surname = newUser.Surname,
                 Email = newUser.Email,
+                Role = newUser.Role
             };
             AgregarPermisos(userAccount,tipoPermisos);
 

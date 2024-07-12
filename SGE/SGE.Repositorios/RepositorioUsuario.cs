@@ -97,6 +97,24 @@ public class RepositorioUsuario : IRepositorioUsuario
 
         }
     }
+
+    public void ModificarUsuario(UserAccount usuario, List<TipoPermiso> tipoPermisos){
+        using var db=new SGEContext();{
+            //La busca por Id
+            var usr_existente = db.Usuarios.Include(u => u.Permisos).Where(u => u.Id == usuario.Id).SingleOrDefault() ?? throw new RepositorioException("No se encontro un usuario con ese id\n");
+            usr_existente.UserName = usuario.UserName;
+            usr_existente.Password = usuario.Password;
+            usr_existente.Role = usuario.Role;
+            usr_existente.Email= usuario.Email;
+            usr_existente.Name= usuario.Name;
+            usr_existente.Surname= usuario.Surname;
+            usr_existente.Permisos.Clear();
+            AgregarPermisos(usr_existente,tipoPermisos);
+
+            db.SaveChanges();
+
+        }
+    }
     public void EliminarUsuario(int id){
         using var db=new SGEContext();{
             var usr_existente = db.Usuarios.Find(id);
@@ -119,4 +137,50 @@ public class RepositorioUsuario : IRepositorioUsuario
             db.SaveChanges();
         }
     }
+
+    private void AgregarPermisos(UserAccount user, List<TipoPermiso> listaTipoPermisos){
+        
+        List<Permiso> nuevosPermisos = new List<Permiso>();
+        foreach(TipoPermiso tp in listaTipoPermisos){
+            AgregarPermiso(tp,nuevosPermisos);
+        }
+        user.Permisos= nuevosPermisos;
+    }
+
+    //puede que no sea la solución mas eficiente
+    private void AgregarPermiso(TipoPermiso tipoPermiso, List<Permiso> nuevosPermisos){
+        
+        switch (tipoPermiso)
+        {
+            case TipoPermiso.Lectura:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.Lectura } );
+                break;
+            case TipoPermiso.ExpedienteAlta:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta } );
+                break;
+            case TipoPermiso.ExpedienteBaja:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja } );
+                break;
+            case TipoPermiso.ExpedienteModificacion:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion } );
+                break;
+            case TipoPermiso.TramiteAlta:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteAlta } );
+                break;
+            case TipoPermiso.TramiteBaja:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteBaja } );
+                break;
+            case TipoPermiso.TramiteModificacion:
+                nuevosPermisos.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion } );
+                break;
+            default:
+            break;
+        }
+        
+    }
+
+
+
+
+
 }

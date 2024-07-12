@@ -91,9 +91,9 @@ else
     {
 
         try{
-            var userToUpdate= obtenerUsuario.Ejecutar(Id);
-            
-            if (userToUpdate != null)
+
+            @* var userToUpdate= obtenerUsuario.Ejecutar(Id); *@
+            @* if (userToUpdate != null) *@
             {
                 // Actualizar solo los campos no relacionados con la contraseña
                 modificarUserAccount.Ejecutar(updated,tipoPermisosSeleccionados);
@@ -101,26 +101,36 @@ else
                 Navigation.NavigateTo("/administracion");
             }
         }
-        catch(AutorizacionException e){
-            errorMessage=e.Message;
-        }
         catch(ValidacionException e){
             errorMessage=e.Message;
+            return;
         }
         catch(RepositorioException e){
             errorMessage=e.Message;
+            return;
         }
     }
     private void CambiarContraseña()
     {
-        var userToUpdate =obtenerUsuario.Ejecutar(Id);
+        @* var userToUpdate =obtenerUsuario.Ejecutar(Id);
         
         if (userToUpdate != null && !string.IsNullOrEmpty(newPassword))
-        {
-            modificarUserAccount.Ejecutar(userToUpdate,newPassword);
+        { *@
+        try{
+                modificarUserAccount.Ejecutar(updated,newPassword);
 
-            Navigation.NavigateTo("/administracion");
+                Navigation.NavigateTo("/administracion");
+
         }
+        catch(ValidacionException e){
+            errorMessage=e.Message;
+            return;
+        }
+        catch(RepositorioException e){
+            errorMessage=e.Message;
+            return;
+        }
+        @* } *@
     }
 
 }

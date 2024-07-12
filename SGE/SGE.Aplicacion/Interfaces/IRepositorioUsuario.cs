@@ -7,6 +7,7 @@ public interface IRepositorioUsuario{
     UserAccount? GetUsuario(int id);
     UserAccount? GetUsuario(string userName);
     void ModificarUsuario(UserAccount user);
+    void ModificarUsuario(UserAccount usuario, List<TipoPermiso> tipoPermisos);
     void EliminarUsuario(int id);
     void AgregarUsuario(UserAccount user);
 
