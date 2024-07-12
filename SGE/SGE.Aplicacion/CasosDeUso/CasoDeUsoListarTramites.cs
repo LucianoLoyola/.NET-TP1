@@ -12,7 +12,8 @@ public class CasoDeUsoListarTramites(IRepositorioTramite repo):TramiteUseCase(re
             return listaTramites;
         }
         catch(Exception error){
-            Console.WriteLine(error.Message);
+            throw;
+            //Console.WriteLine(error.Message);
             return null;
         }
     }

@@ -14,7 +14,8 @@ public class ObtenerUserAccountUseCase(IRepositorioUsuario repositorio):UserAcco
              return user;
         }
         catch(Exception error){
-            Console.WriteLine($"Error al obtener usuario: {error.Message}");
+            throw;
+            //Console.WriteLine($"Error al obtener usuario: {error.Message}");
             return null;
         }
         
@@ -28,7 +29,8 @@ public class ObtenerUserAccountUseCase(IRepositorioUsuario repositorio):UserAcco
              return user;
         }
         catch(Exception error){
-            Console.WriteLine($"Error al obtener usuario: {error.Message}");
+            throw;
+            //Console.WriteLine($"Error al obtener usuario: {error.Message}");
             return null;
         }
     }

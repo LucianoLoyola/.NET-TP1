@@ -98,7 +98,7 @@ else
         catch (Exception ex)
         {
             _errorMessage = $"Error al cargar los datos: {ex.Message}";
-            Console.WriteLine($"Error al cargar los datos: {ex.Message}");
+            //Console.WriteLine($"Error al cargar los datos: {ex.Message}");
         }
     }
 
@@ -113,7 +113,7 @@ else
         catch (Exception error)
         {
             _errorMessage = "No tiene permisos para agregar este trámite.";
-            Console.WriteLine($"Error al agregar trámite: {error.Message}");
+            //Console.WriteLine($"Error al agregar trámite: {error.Message}");
         }
     }
 
@@ -127,7 +127,7 @@ else
         catch (Exception error)
         {
             _errorMessage = "No tiene permisos para modificar este trámite.";
-            Console.WriteLine($"Error al modificar trámite: {error.Message}");
+            //Console.WriteLine($"Error al modificar trámite: {error.Message}");
         }
     }
 

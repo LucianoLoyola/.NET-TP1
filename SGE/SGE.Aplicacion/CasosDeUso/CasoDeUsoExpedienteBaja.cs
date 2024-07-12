@@ -16,7 +16,8 @@ public class CasoDeUsoExpedienteBaja(IRepositorioExpediente repo, IServicioAutor
             repo.EliminarExpediente(idExpediente);
         }
         catch(RepositorioException repoException) {
-            Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
+            throw;
+            //Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
         }
     }
 }

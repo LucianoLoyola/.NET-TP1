@@ -10,7 +10,8 @@ public class CasoDeUsoListarExpedientes(IRepositorioExpediente repo){
             return listaExpedientes;
         }
         catch(Exception error){
-            Console.WriteLine(error.Message);
+            throw;
+            //Console.WriteLine(error.Message);
             return null;
         }
         

@@ -18,7 +18,8 @@ public class CasoDeUsoExpedienteModificacion(IRepositorioExpediente repo, Expedi
                 repo.ModificarExpediente(expediente);
             }
              catch(RepositorioException repoException) {
-                Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
+                throw;
+                //Console.WriteLine($"Operación cancelada - Objeto Inexistente\n{repoException.Message}");
             }
     }
 }

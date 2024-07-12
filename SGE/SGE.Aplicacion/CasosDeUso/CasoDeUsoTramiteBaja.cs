@@ -13,7 +13,8 @@ public class CasoDeUsoTramiteBaja(IRepositorioTramite repoT, IRepositorioExpedie
                 servicioUpdate.actualizarEstadoExpediente(expediente.Id,repoE);
             }
         } catch (RepositorioException ex) {
-            Console.WriteLine(ex.Message);
+            throw;
+            //Console.WriteLine(ex.Message);
             // Si se genera una excepción, no es necesario llamar a los métodos de actualización
         }
     }

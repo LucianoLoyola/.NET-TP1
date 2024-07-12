@@ -92,7 +92,7 @@ else
             {
                 _errorMessageAuthAlta = "Error al cargar el expediente.";
                 _errorMessageAuthEdit = "Error al cargar el expediente.";
-                Console.WriteLine($"Error al cargar expediente: {ex.Message}");
+                //Console.WriteLine($"Error al cargar expediente: {ex.Message}");
             }
         }
     }
@@ -108,7 +108,7 @@ else
         catch (Exception error)
         {
             _errorMessageAuthAlta = "No tiene permisos para agregar este expediente.";
-            Console.WriteLine($"Error al agregar expediente: {error.Message}");
+            //Console.WriteLine($"Error al agregar expediente: {error.Message}");
         }
     }
 
@@ -123,7 +123,7 @@ else
         catch (Exception error)
         {
             _errorMessageAuthEdit = "No tiene permisos para modificar este expediente.";
-            Console.WriteLine($"Error al modificar expediente: {error.Message}");
+            //Console.WriteLine($"Error al modificar expediente: {error.Message}");
         }
     }
 
@@ -135,7 +135,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al navegar: {ex.Message}");
+            //Console.WriteLine($"Error al navegar: {ex.Message}");
         }
     }
 }
