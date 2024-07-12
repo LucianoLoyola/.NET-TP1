@@ -9,7 +9,17 @@ public class ModificarUserAccountUseCase(IRepositorioUsuario repositorio, Usuari
     public void Ejecutar(UserAccount userAccount, string newPassword)
     {
         userAccount.Password = servicioHash.GetHashSha256(newPassword);
-    //aquí podríamos insertar código de validación de cliente
+        if(!validador.Validar(userAccount,out string mensajeError)){
+            throw new ValidacionException(mensajeError);
+        }
+        else{
+            Repositorio.ModificarUsuario(userAccount);
+        }
+    }
+
+
+    public void Ejecutar(UserAccount userAccount)
+    {
         if(!validador.Validar(userAccount,out string mensajeError)){
             throw new ValidacionException(mensajeError);
         }
