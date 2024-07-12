@@ -61,12 +61,8 @@
     void AgregarUsuario()
     {
         try{
-            if(user.Role is null){
-                user.Role="Usuario";
-            }
-            user.Password=servicioHash.GetHashSha256(user.Password);
-            AgregarPermisos(user,permisosSeleccionados);      
-            agregarUsuario.Ejecutar(user);
+
+            agregarUsuario.Ejecutar(user,permisosSeleccionados);
             Navigation.NavigateTo("/");
 
         }
@@ -75,47 +71,5 @@
 
         }
     }
-
-    private void AgregarPermisos(UserAccount user, List<TipoPermiso> listaTipoPermisos){
-        
-        List<Permiso> permisosActuales = user.Permisos ?? new List<Permiso>();
-        foreach(TipoPermiso tp in listaTipoPermisos){
-            AgregarPermiso(tp,permisosActuales);
-        }
-        user.Permisos= permisosActuales;
-    }
-
-    //puede que no sea la solución mas eficiente
-    private void AgregarPermiso(TipoPermiso tipoPermiso, List<Permiso> permisosActuales){
-        
-        switch (tipoPermiso)
-        {
-            case TipoPermiso.Lectura:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.Lectura } );
-                break;
-            case TipoPermiso.ExpedienteAlta:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta } );
-                break;
-            case TipoPermiso.ExpedienteBaja:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja } );
-                break;
-            case TipoPermiso.ExpedienteModificacion:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion } );
-                break;
-            case TipoPermiso.TramiteAlta:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteAlta } );
-                break;
-            case TipoPermiso.TramiteBaja:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteBaja } );
-                break;
-            case TipoPermiso.TramiteModificacion:
-                permisosActuales.Add(new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion } );
-                break;
-            default:
-            break;
-        }
-        
-    }
-
 
 }

@@ -158,8 +158,7 @@ else
         
         if (userToUpdate != null && !string.IsNullOrEmpty(newPassword))
         {
-            userToUpdate.Password = servicioHash.GetHashSha256(newPassword);
-            modificarUserAccount.Ejecutar(userToUpdate);
+            modificarUserAccount.Ejecutar(userToUpdate,newPassword);
 
             Navigation.NavigateTo("/administracion");
         }

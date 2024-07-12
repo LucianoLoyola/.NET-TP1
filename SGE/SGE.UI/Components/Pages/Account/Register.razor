@@ -85,34 +85,7 @@
             errorMessage = "El usuario ya existe";
             return;
         }
-
-        // Crear una nueva cuenta de usuario
-        var userAccount = new UserAccount
-        {
-            UserName = Model.UserName,
-            Password = servicioHash.GetHashSha256(Model.Password),
-            Role = hayUsuarios ? "Usuario" : "Administrador",
-            Name = Model.Name,
-            Surname = Model.Surname,
-            Email = Model.Email,
-            Permisos = hayUsuarios
-                ? new List<Permiso>
-                {
-                    new Permiso { tipoPermiso = TipoPermiso.Lectura } // Asignar permiso de lectura
-                }
-                : new List<Permiso>
-                {
-                    new Permiso { tipoPermiso = TipoPermiso.Lectura }, // Asignar permiso de lectura
-                    new Permiso { tipoPermiso = TipoPermiso.ExpedienteAlta },
-                    new Permiso { tipoPermiso = TipoPermiso.ExpedienteModificacion },
-                    new Permiso { tipoPermiso = TipoPermiso.ExpedienteBaja },
-                    new Permiso { tipoPermiso = TipoPermiso.TramiteAlta },
-                    new Permiso { tipoPermiso = TipoPermiso.TramiteModificacion },
-                    new Permiso { tipoPermiso = TipoPermiso.TramiteBaja }
-                }
-        };
-
-        agregarUsuario.Ejecutar(userAccount);
+        agregarUsuario.Ejecutar(Model,hayUsuarios);
         mostrarForm = false;
         successMessage = "Se ha registrado con exito!";
 
